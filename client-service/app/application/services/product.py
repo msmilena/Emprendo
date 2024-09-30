@@ -8,7 +8,7 @@ from app.domain.repositories.product import ProductRepository
 
 class ProductService(ProductUseCases):
 
-    __media_url = 'https://devlusaja.com/{}'
+    __media_url = 'https://github.com/msmilena/Emprendo'
 
     def __init__(self, product_repository: ProductRepository,
                  product_created_event: ProductCreatedEvent,
