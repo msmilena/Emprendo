@@ -1,0 +1,40 @@
+.cardNav {
+  background-color: #edfeff !important;
+  border: none !important;
+  border-radius: 15px !important;
+}
+
+#container_nav {
+  height: 1rem;
+}
+
+.img_icono_2 {
+  width: 35px;
+  height: 40px;
+  background-image: url("../../assets/puntoVenta_icono.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.brandNav {
+  color: #3d5a80;
+  font-weight: bolder;
+}
+
+.nav-link {
+  text-decoration: none !important; /* Quita el subrayado */
+  transition:
+    background-color 0.3s,
+    color 0.3s !important; /* Transición suave */
+  font-weight: 700 !important;
+}
+
+.nav-link:hover {
+  color: #3d5a80; /* Color del texto al pasar el ratón */
+}
+
+.IniciarSesionBtn {
+  background-color: #fe5f55 !important;
+  border: none !important;
+  border-radius: 10px !important;
+}

@@ -1,0 +1,13 @@
+/* src/components/FormControl.css */
+.custom-form-control {
+  border-radius: 5px;
+  padding: 13px !important;
+  font-size: 16px;
+  border-radius: 20px !important;
+  margin-bottom: 15px !important;
+}
+
+.custom-form-control:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
