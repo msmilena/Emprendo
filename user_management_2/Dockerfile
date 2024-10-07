@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 5000
 
 # Start the Flask app
-CMD ["python", "index.py"]
+CMD ["flask", "--app", "index", "run", "--host=0.0.0.0", "--port=5000"]
