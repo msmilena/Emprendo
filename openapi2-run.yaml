@@ -1,13 +1,19 @@
 swagger: '2.0'
 info:
   version: 1.0.0
-  title: API Gateway
+  title: emprendo API-Gateway
   description: API Gateway para los servicios de usuario y emprendimiento
-
+schemes:
+  - https
+produces:
+  - application/json
 paths:
-  /auth/login:
+  /auth:
     post:
       summary: Iniciar sesión
+      operationId: login
+      x-google-backend:
+        address: https://usuario-service-26932749356.us-west1.run.app
       parameters:
         - in: body
           name: body
@@ -57,6 +63,9 @@ paths:
   /auth/register:
     post:
       summary: Registrar un nuevo usuario
+      operationId: register
+      x-google-backend:
+        address: https://usuario-service-26932749356.us-west1.run.app
       parameters:
         - in: body
           name: body
@@ -106,6 +115,9 @@ paths:
   /user/info:
     get:
       summary: Obtener información del usuario
+      operationId: getInfo
+      x-google-backend:
+        address: https://usuario-service-26932749356.us-west1.run.app
       parameters:
         - in: query
           name: userId
@@ -145,6 +157,9 @@ paths:
   /emprendimiento/emprendimientoInfo:
     get:
       summary: Obtener información del emprendimiento
+      operationId: emprendimientoInfo
+      x-google-backend:
+        address: https://emprendimiento-service-26932749356.us-west1.run.app      
       parameters:
         - in: query
           name: idEmprendimiento
@@ -192,6 +207,9 @@ paths:
   /emprendimiento/guardarEmprendimiento:
     post:
       summary: Guardar datos del emprendimiento
+      operationId: emprendimientoRegister
+      x-google-backend:
+        address: https://emprendimiento-service-26932749356.us-west1.run.app   
       parameters:
         - in: body
           name: body
@@ -239,6 +257,9 @@ paths:
   /emprendimiento/emprendimientos:
     get:
       summary: Obtener los mejores emprendimientos
+      operationId: emprendimientosInfo
+      x-google-backend:
+        address: https://emprendimiento-service-26932749356.us-west1.run.app   
       responses:
         200:
           description: Lista de los mejores emprendimientos obtenida exitosamente
