@@ -19,7 +19,7 @@ class UserService():
     def get_infoUsuario(cls, idUser):
         try:
             db = get_connection()
-            user_ref = db.collection('usuario').document(idUser)
+            user_ref = db.collection('usuarios').document(idUser)
             user_data = user_ref.get()
             if user_data.exists:
                 doc_data = user_data.to_dict()

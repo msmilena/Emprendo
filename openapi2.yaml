@@ -1,0 +1,275 @@
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: API Gateway
+  description: API Gateway para los servicios de usuario y emprendimiento
+
+paths:
+  /auth/login:
+    post:
+      summary: Iniciar sesión
+      parameters:
+        - in: body
+          name: body
+          description: Datos de inicio de sesión
+          required: true
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                format: email
+                example: john.doe@example.com
+              password:
+                type: string
+                format: password
+                example: securepassword123
+      responses:
+        200:
+          description: Inicio de sesión exitoso
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              token:
+                type: string
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+              nombre:
+                type: string
+                example: John Doe
+              email:
+                type: string
+                example: john.doe@example.com
+              tipo:
+                type: string
+                example: admin
+        401:
+          description: No autorizado
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Unauthorized
+
+  /auth/register:
+    post:
+      summary: Registrar un nuevo usuario
+      parameters:
+        - in: body
+          name: body
+          description: Datos de registro
+          required: true
+          schema:
+            type: object
+            properties:
+              nombre:
+                type: string
+                example: John Doe
+              email:
+                type: string
+                format: email
+                example: john.doe@example.com
+              password:
+                type: string
+                format: password
+                example: securepassword123
+              tipo:
+                type: string
+                example: admin
+      responses:
+        200:
+          description: Registro exitoso
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Usuario registrado exitosamente
+        400:
+          description: Error en la solicitud
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Ingrese un Correo Electrónico válido
+
+  /user/info:
+    get:
+      summary: Obtener información del usuario
+      parameters:
+        - in: query
+          name: userId
+          type: string
+          required: true
+          description: ID del usuario
+      responses:
+        200:
+          description: Información del usuario obtenida exitosamente
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              user:
+                type: object
+                properties:
+                  nombre:
+                    type: string
+                    example: John Doe
+                  email:
+                    type: string
+                    example: john.doe@example.com
+                  tipo:
+                    type: string
+                    example: admin
+        404:
+          description: Usuario no encontrado
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Usuario no encontrado
+
+  /emprendimiento/emprendimientoInfo:
+    get:
+      summary: Obtener información del emprendimiento
+      parameters:
+        - in: query
+          name: idEmprendimiento
+          type: string
+          required: true
+          description: ID del emprendimiento
+      responses:
+        200:
+          description: Información del emprendimiento obtenida exitosamente
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              emprendimientoData:
+                type: object
+                properties:
+                  nombreComercial:
+                    type: string
+                    example: Mi Emprendimiento
+                  localizacion:
+                    type: string
+                    example: Ciudad, País
+                  ruc:
+                    type: string
+                    example: 1234567890
+        404:
+          description: Emprendimiento no encontrado
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Emprendimiento no encontrado
+        400:
+          description: Falta el parámetro idEmprendimiento
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Falta el parámetro idEmprendimiento
+
+  /emprendimiento/guardarEmprendimiento:
+    post:
+      summary: Guardar datos del emprendimiento
+      parameters:
+        - in: body
+          name: body
+          description: Datos del emprendimiento
+          required: true
+          schema:
+            type: object
+            properties:
+              idEmprendedor:
+                type: string
+                example: 123
+              nombreComercial:
+                type: string
+                example: Mi Emprendimiento
+              localizacion:
+                type: string
+                example: Ciudad, País
+              ruc:
+                type: string
+                example: 1234567890
+      responses:
+        200:
+          description: Guardado de datos exitoso
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Guardado de datos exitoso
+        400:
+          description: Error en la solicitud
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Error al guardar los datos
+
+  /emprendimiento/emprendimientos:
+    get:
+      summary: Obtener los mejores emprendimientos
+      responses:
+        200:
+          description: Lista de los mejores emprendimientos obtenida exitosamente
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              emprendimientos:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    nombreComercial:
+                      type: string
+                      example: Mi Emprendimiento
+                    localizacion:
+                      type: string
+                      example: Ciudad, País
+                    ruc:
+                      type: string
+                      example: 1234567890
+        500:
+          description: Error interno del servidor
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Error interno del servidor
+              success:
+                type: boolean
+                example: false

@@ -19,8 +19,8 @@ class AuthService():
                 doc_data = doc.to_dict()
                 print(f"Datos del usuario: {doc_data}")
                 if doc_data and doc_data['password'] == user.password:
-                    return User( doc.id, doc_data['email'], doc_data['password'], doc_data['tipo'])
-                return None
+                    return User( doc.id, doc_data['nombres'],doc_data['email'], doc_data['password'], doc_data['tipo'])
+            return None
         except Exception as ex:
             raise CustomException(ex)
         
@@ -50,3 +50,5 @@ class AuthService():
             return {'success': True, 'message': 'Usuario registrado exitosamente'}
         except Exception as ex:
             raise CustomException(ex)
+        
+        

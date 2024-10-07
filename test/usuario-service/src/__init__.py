@@ -2,6 +2,7 @@ from flask import Flask, make_response, request
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
+# Routes
 from .routes import AuthRoutes
 from .routes import UserRoutes
 
@@ -13,7 +14,7 @@ app = Flask(__name__)
 CORS(app, origins="*", supports_credentials=True, methods=["GET", "POST", "PUT", "DELETE"], allow_headers=["Content-Type", "Authorization"])
 
 
-cred = credentials.Certificate(r"src/token/emprendo-1c101-firebase-adminsdk-xtepa-375cfe69f3.json")
+cred = credentials.Certificate(r"credenciales.json")
 firebase_admin.initialize_app(cred)
 
 # Definir la función handle_options

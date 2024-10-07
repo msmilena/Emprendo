@@ -2,7 +2,7 @@
 FROM python:3.8-slim
 
 # Set the working directory
-WORKDIR /user_management_2
+WORKDIR /backend
 
 # Copy the requirements file into the container
 COPY requirements.txt .
@@ -13,8 +13,11 @@ RUN pip install -r requirements.txt
 # Copy the rest of the application code into the container
 COPY . .
 
+# Define una variable de entorno
+ENV SECRET_KEY=mysecretkey
+ENV JWT_KEY=mysecretkey
 # Expose the port that your Flask app listens on
-EXPOSE 5000
+EXPOSE 8080
 
 # Start the Flask app
-CMD ["flask", "--app", "index", "run", "--host=0.0.0.0", "--port=5000"]
+CMD ["python", "index.py"]
