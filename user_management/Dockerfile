@@ -1,13 +1,13 @@
 FROM python:3.11-alpine
 
-WORKDIR /code
+WORKDIR /user_management
 
-COPY requirements.txt /requirements.txt
+COPY requirements.txt /user_management/requirements.txt
 
-ADD ./app /code/app
+ADD ./app /user_management/app
 
-RUN pip install -r /requirements.txt
+RUN pip install -r /user_management/requirements.txt
 
-EXPOSE 8000
+EXPOSE 8080
 
-CMD ["uvicorn", "app.main:application", "--reload", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app.main:application", "--reload", "--host", "0.0.0.0", "--port", "8080"]

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <form id="loginForm" action="/auth" method="POST" onsubmit="submitForm(event)">
+            EMAIL: <input type="text" name="username">
+            <br>
+            PASSWORD: <input type="text" name="password">
+            <input type="submit">
+        </form>
+        <script>
+            function submitForm(event) {
+                event.preventDefault(); // Evita el envío del formulario normal
+    
+                // Obtén los datos del formulario
+                const formData = new FormData(document.getElementById('loginForm'));
+    
+                // Realiza la solicitud Fetch
+                fetch('/auth', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Aquí puedes manejar la respuesta del servidor
+                    console.log(data);
+                    if (data.success) {
+                     // Guarda el token en localStorage o sessionStorage
+                     localStorage.setItem('token', data.token);
+                    // Redirige a la nueva página si la autenticación es exitosa
+                    window.location.href = '/catalogo_peliculas';
+                    } else {
+                    // Maneja otros casos según sea necesario
+                    console.error('Autenticación fallida');
+                }
+                   
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        </script>
+</body>
+</html>
