@@ -1,0 +1,31 @@
+/* src/components/CSS/ProgressSteps.css */
+.step {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.step.active {
+  color: #fe5f55;
+}
+
+.progress-bar-orange {
+  background-color: #fe5f55;
+}
+
+.progress-bar-orange .progress-bar {
+  background-color: #fe5f55;
+}
+
+.progress-bar-darkblue {
+  background-color: #3d5a80;
+}
+
+.progress-bar-darkblue .progress-bar {
+  background-color: #3d5a80;
+}
+.container {
+  height: 6rem;
+}
+.text-center {
+  height: 0;
+}

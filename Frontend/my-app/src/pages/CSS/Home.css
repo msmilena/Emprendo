@@ -1,0 +1,125 @@
+.home--page--title--section {
+  color: #3d5a80;
+  font-weight: 700;
+  font-size: 26px;
+}
+.home--page--container {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero--section--container {
+  background-color: #edfeff;
+}
+.hero--image--container {
+  width: 60%;
+}
+.hero--image--container img {
+  width: 100%;
+  object-fit: cover;
+}
+.hero--section--content {
+  display: flex;
+  align-items: center;
+  max-width: 1200px;
+  gap: 50px;
+  padding: 100px 40px;
+  margin: auto;
+}
+
+.hero--layout {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  gap: 20px;
+}
+.hero--layout h1 {
+  font-size: 80px;
+  text-align: start;
+  color: #3d5a80;
+}
+.hero--layout p {
+  font-size: 25px;
+}
+.category--section--container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 100px 0;
+  align-items: center;
+}
+.category--list--container {
+  display: flex;
+  max-width: 1200px;
+  align-self: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 20px;
+}
+
+.explore--section--container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 100px;
+  gap: 40px;
+}
+.explore--section--actions {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  gap: 5px;
+  padding: 0 20px;
+}
+.explore--section--actions--categories {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  border-radius: 50px;
+  padding: 10px;
+  color: #3d5a80;
+}
+.explore--section--actions--categories p {
+  margin-bottom: 0;
+  font-weight: 600;
+  font-size: 14px;
+}
+.explore--section--actions--search {
+  display: flex;
+  width: 100%;
+}
+.explore--section--actions--search input {
+  outline: none;
+  border: none;
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+  border-left: 1px solid #d9d9d9;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  padding: 0 20px;
+  width: 100%;
+}
+.explore--section--actions--search input::placeholder {
+  color: #3d5a80;
+  font-weight: 600;
+}
+.explore--section--actions--search--icon {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+
+  color: white;
+  background-color: #fe5f55;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  font-size: 15px;
+}
+.product--list--container {
+  display: flex;
+  max-width: 1200px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+}

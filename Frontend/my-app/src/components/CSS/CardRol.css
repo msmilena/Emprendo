@@ -1,0 +1,38 @@
+.custom-button2 {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 15px !important;
+  border-radius: 20px !important;
+  width: 300px;
+  font-size: 18px !important;
+  font-weight: bold !important;
+  color: white !important;
+  border: none !important;
+  background-color: #3d5a80 !important;
+  height: 7rem !important;
+  justify-content: flex-start !important;
+}
+
+.icon-circle {
+  background-color: white;
+  border-radius: 50%;
+  padding: 10px;
+  margin-right: 15px;
+  height: 5rem;
+  width: 5rem;
+  /* text-align: center; */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-image {
+  width: 50px;
+  height: 45px;
+}
+
+.button-text {
+  margin-left: 10px;
+  font-size: 20px;
+}

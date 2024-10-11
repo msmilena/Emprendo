@@ -1,0 +1,27 @@
+.ladoEmprendo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.img_icono {
+  width: 150px;
+  height: 150px;
+  background-image: url("../../assets/puntoVenta_icono.png");
+  background-size: cover;
+  background-position: center;
+}
+.texto_ladoEmprendo {
+  margin-left: 10px;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.eslogan {
+  color: #f8f9fa;
+  font-weight: 500;
+}
