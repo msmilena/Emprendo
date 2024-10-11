@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendación de Emprendimientos</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+        }
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .category-button {
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .category-button.selected {
+            border-color: #4CAF50;
+            background-color: #E8F5E9;
+        }
+        .location-selects {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        select {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .recommendation-card {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            background-color: white;
+        }
+        .loader {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .loader.active {
+            display: block;
+        }
+        .error {
+            color: red;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Recomendación de Emprendimientos</h1>
+        
+        <div id="step1" class="step active">
+            <h2>Selecciona las categorías que te interesan</h2>
+            <div class="categories-grid" id="categoriesGrid"></div>
+            <button id="nextButton" class="button" disabled>Continuar</button>
+        </div>
+        
+        <div id="step2" class="step">
+            <h2>Selecciona tu ubicación</h2>
+            <div class="location-selects">
+                <select id="departamento">
+                    <option value="">Selecciona un departamento</option>
+                </select>
+                <select id="provincia">
+                    <option value="">Selecciona una provincia</option>
+                </select>
+            </div>
+            <button id="backButton1" class="button">Atrás</button>
+            <button id="submitButton" class="button" disabled>Ver recomendaciones</button>
+        </div>
+        
+        <div id="step3" class="step">
+            <h2>Tus recomendaciones</h2>
+            <div class="recommendations" id="recommendationsContainer"></div>
+            <button id="backButton2" class="button">Comenzar de nuevo</button>
+        </div>
+        
+        <div id="loader" class="loader">Cargando...</div>
+    </div>
+
+    <script>
+        const categories = [
+            "1. Manufactura y Producción",
+            "2. Comercio",
+            "3. Servicios",
+            "4. Tecnología y comunicaciones",
+            "5. Educación y cultura",
+            "6. Construcción y bienes raíces",
+            "7. Hotelería y turismo",
+            "8. Servicios personales",
+            "Otros"
+        ];
+
+        const locations = {
+            "Lima": ["Lima", "Callao"],
+            "Arequipa": ["Arequipa", "Camaná"],
+            // Añade más según necesites
+        };
+
+        let selectedCategories = new Set();
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCategories();
+            initializeLocations();
+            setupEventListeners();
+        });
+
+        function initializeCategories() {
+            const categoriesGrid = document.getElementById('categoriesGrid');
+            categories.forEach(category => {
+                const button = document.createElement('button');
+                button.textContent = category;
+                button.className = 'category-button';
+                button.onclick = () => toggleCategory(button, category);
+                categoriesGrid.appendChild(button);
+            });
+        }
+
+        function initializeLocations() {
+            const departamentoSelect = document.getElementById('departamento');
+            Object.keys(locations).forEach(dep => {
+                const option = document.createElement('option');
+                option.value = dep;
+                option.textContent = dep;
+                departamentoSelect.appendChild(option);
+            });
+        }
+
+        function setupEventListeners() {
+            document.getElementById('nextButton').addEventListener('click', () => goToStep(2));
+            document.getElementById('backButton1').addEventListener('click', () => goToStep(1));
+            document.getElementById('backButton2').addEventListener('click', () => goToStep(1));
+            document.getElementById('submitButton').addEventListener('click', getRecommendations);
+            
+            document.getElementById('departamento').addEventListener('change', function(e) {
+                updateProvincias(e.target.value);
+                checkLocationSelection();
+            });
+            
+            document.getElementById('provincia').addEventListener('change', checkLocationSelection);
+        }
+
+        function toggleCategory(button, category) {
+            button.classList.toggle('selected');
+            if (selectedCategories.has(category)) {
+                selectedCategories.delete(category);
+            } else {
+                selectedCategories.add(category);
+            }
+            document.getElementById('nextButton').disabled = selectedCategories.size === 0;
+        }
+
+        function updateProvincias(departamento) {
+            const provinciaSelect = document.getElementById('provincia');
+            provinciaSelect.innerHTML = '<option value="">Selecciona una provincia</option>';
+            
+            if (departamento && locations[departamento]) {
+                locations[departamento].forEach(provincia => {
+                    const option = document.createElement('option');
+                    option.value = provincia;
+                    option.textContent = provincia;
+                    provinciaSelect.appendChild(option);
+                });
+            }
+        }
+
+        function checkLocationSelection() {
+            const departamento = document.getElementById('departamento').value;
+            const provincia = document.getElementById('provincia').value;
+            document.getElementById('submitButton').disabled = !departamento || !provincia;
+        }
+
+        function goToStep(step) {
+            document.querySelectorAll('.step').forEach(el => el.classList.remove('active'));
+            document.getElementById(`step${step}`).classList.add('active');
+            
+            if (step === 1) {
+                resetLocation();
+            }
+        }
+
+        function resetLocation() {
+            document.getElementById('departamento').value = '';
+            document.getElementById('provincia').innerHTML = '<option value="">Selecciona una provincia</option>';
+            document.getElementById('submitButton').disabled = true;
+        }
+
+        async function getRecommendations() {
+            const loader = document.getElementById('loader');
+            const submitButton = document.getElementById('submitButton');
+            
+            loader.classList.add('active');
+            submitButton.disabled = true;
+
+            try {
+                const response = await fetch('http://localhost:8000/recomendar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        categorias: Array.from(selectedCategories),
+                        departamento: document.getElementById('departamento').value,
+                        provincia: document.getElementById('provincia').value
+                    }),
+                });
+
+                if (!response.ok) throw new Error('Error al obtener recomendaciones');
+                
+                const data = await response.json();
+                displayRecommendations(data);
+                goToStep(3);
+            } catch (error) {
+                alert('Error al obtener recomendaciones: ' + error.message);
+            } finally {
+                loader.classList.remove('active');
+                submitButton.disabled = false;
+            }
+        }
+
+        function displayRecommendations(recommendations) {
+            const container = document.getElementById('recommendationsContainer');
+            container.innerHTML = '';
+            
+            recommendations.forEach(emp => {
+                const card = document.createElement('div');
+                card.className = 'recommendation-card';
+                card.innerHTML = `
+                    <h3>${emp.razon_social}</h3>
+                    <p><strong>Categoría:</strong> ${emp.categoria}</p>
+                    <p><strong>Ubicación:</strong> ${emp.distrito}, ${emp.provincia}, ${emp.departamento}</p>
+                    <p><strong>Puntaje:</strong> ${emp.puntaje}</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
