@@ -1,53 +1,86 @@
-// src/components/Login.js
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Button from "../components/Button";
 import FormControl from "../components/FormControl";
 import "./CSS/Login.css"; // Importa el archivo CSS específico
-import LeftSide from "../components/leftSide";
+import { auth } from "../firebaseConfig";
+import {
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+} from "firebase/auth";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [userId, setUserId] = useState(""); // Define el estado para userId
+  const navigate = useNavigate();  
 
-  const handleLogin = () => {
-    // Aquí debes realizar una llamada a tu API de autenticación
-    // y verificar las credenciales del usuario.
-    // Si la autenticación es exitosa, puedes redirigir al usuario a la página de inicio.
+  const handleLogin = async () => {
+    console.log("login");
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password,
+      );
+      const user = userCredential.user;
+      setUserId(user.uid);
+      localStorage.setItem("userId", user.uid);
+      // Redirigir al usuario a la página de inicio
+      navigate("/home"); // Ajusta la ruta según tu configuración
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    console.log("google login");
+    const provider = new GoogleAuthProvider();
+    try {
+      const userCredential = await signInWithPopup(auth, provider);
+      const user = userCredential.user;
+      setUserId(user.uid);
+      localStorage.setItem("userId", user.uid);
+      // Redirigir al usuario a la página de inicio
+      navigate("/EmprendoHome"); // Ajusta la ruta según tu configuración
+    } catch (error) {
+      setError(error.message);
+    }
+  };
+
+  const handleRegister = () => {
+    navigate("/rolSelect");
   };
 
   return (
     <Container fluid className="">
       <Row>
-        <Col xs={6} className="left-side">
-          <LeftSide />
-        </Col>
-        <Col xs={6} className="right-side">
-          <h1>Bienvenido</h1>
-          <p className="textIngreso">Ingresa sesión a tu cuenta</p>
+        <Col>
           <form>
             <FormControl
-              controlId="formBasicEmail"
               type="email"
-              placeholder="Ingresa tu correo"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              label="Correo electrónico"
             />
             <FormControl
-              controlId="formBasicPassword"
               type="password"
-              placeholder="Ingresa tu contraseña"
+              placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              label="Contraseña"
             />
-            <Button variant="orange" onClick={handleLogin}>
+            <Button onClick={handleLogin}>
               Iniciar Sesión
             </Button>
-            <Button variant="secondary" onClick={() => alert("Registrarse")}>
-              Regístrate
+            <Button onClick={handleGoogleLogin}>
+              Iniciar Sesión con Google
             </Button>
+            <Button onClick={handleRegister}>Registrarse</Button>
+            {error && <p>{error}</p>}
+            {userId && <p>Usuario ID: {userId}</p>}
           </form>
         </Col>
       </Row>
