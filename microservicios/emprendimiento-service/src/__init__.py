@@ -14,7 +14,7 @@ CORS(app, origins="*", supports_credentials=True, methods=["GET", "POST", "PUT",
 
 
 cred = credentials.Certificate(r"credenciales.json")
-firebase_admin.initialize_app(cred)
+firebase_admin.initialize_app(cred, {  'storageBucket': "emprendo-1c101.firebasestorage.app" })
 
 # Definir la función handle_options
 def handle_options():
