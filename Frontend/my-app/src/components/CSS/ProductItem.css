@@ -38,3 +38,46 @@
   align-self: center;
   padding-bottom: 20px;
 }
+
+.product-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+}
+
+.product-item img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.product-info {
+  margin-top: 10px;
+}
+
+.product-category {
+  font-size: 14px;
+  color: #3d5a80;
+}
+
+.product-name {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.product-desc {
+  font-size: 14px;
+  color: #7a7a7a;
+}
+
+.product-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: #fe5f55;
+}

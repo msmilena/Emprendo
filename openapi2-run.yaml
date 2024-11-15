@@ -8,12 +8,12 @@ schemes:
 produces:
   - application/json
 paths:
-  /auth:
+  /login:
     post:
       summary: Iniciar sesión
       operationId: login
       x-google-backend:
-        address: https://usuario-service-26932749356.us-west1.run.app
+        address: https://emprendo-usuario-service-26932749356.us-west1.run.app
       parameters:
         - in: body
           name: body
@@ -22,14 +22,9 @@ paths:
           schema:
             type: object
             properties:
-              email:
+              token:
                 type: string
-                format: email
-                example: john.doe@example.com
-              password:
-                type: string
-                format: password
-                example: securepassword123
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
       responses:
         200:
           description: Inicio de sesión exitoso
@@ -39,33 +34,47 @@ paths:
               success:
                 type: boolean
                 example: true
-              token:
+              uid:
                 type: string
-                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-              nombre:
-                type: string
-                example: John Doe
+                example: abc123
               email:
                 type: string
                 example: john.doe@example.com
+              nombre:
+                type: string
+                example: John Doe
               tipo:
                 type: string
                 example: admin
+        404:
+          description: Usuario no encontrado
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Usuario no encontrado
         401:
           description: No autorizado
           schema:
             type: object
             properties:
+              success:
+                type: boolean
+                example: false
               message:
                 type: string
                 example: Unauthorized
 
-  /auth/register:
+  /register:
     post:
       summary: Registrar un nuevo usuario
       operationId: register
       x-google-backend:
-        address: https://usuario-service-26932749356.us-west1.run.app
+        address: https://emprendo-usuario-service-26932749356.us-west1.run.app
       parameters:
         - in: body
           name: body
@@ -74,6 +83,9 @@ paths:
           schema:
             type: object
             properties:
+              id:
+                type: string
+                example: abc123
               nombre:
                 type: string
                 example: John Doe
@@ -88,6 +100,9 @@ paths:
               tipo:
                 type: string
                 example: admin
+              tipoAuth:
+                type: integer
+                example: 0
       responses:
         200:
           description: Registro exitoso
@@ -117,7 +132,7 @@ paths:
       summary: Obtener información del usuario
       operationId: getInfo
       x-google-backend:
-        address: https://usuario-service-26932749356.us-west1.run.app
+        address: https://emprendo-usuario-service-26932749356.us-west1.run.app
       parameters:
         - in: query
           name: userId

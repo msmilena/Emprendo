@@ -1,19 +1,97 @@
-// src/components/Login.js
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import Button from "../components/Button";
 import FormControl from "../components/FormControl";
 import "./CSS/Login.css"; // Importa el archivo CSS específico
+import { auth } from "../firebaseConfig";
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import LeftSide from "../components/leftSide";
 
 function RegisterUsuario() {
+  const [nombre, setNombre] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleRegister = () => {
-    // Aquí debes realizar una llamada a tu API de autenticación
-    // y verificar las credenciales del usuario.
-    // Si la autenticación es exitosa, puedes redirigir al usuario a la página de inicio.
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      // Enviar datos del usuario a la API para registrarlo en Firestore
+      const response = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          nombre,
+          email,
+          password,
+          tipo: "user", // Puedes ajustar esto según tu lógica de negocio
+          tipoAuth: 0
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        console.log("Usuario registrado en Firestore:", data.message);
+
+        // Crear usuario con Firebase Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        console.log("User registered:", user);
+
+        // Redirigir al usuario a la página de inicio o a otra página
+        navigate("/login"); // Ajusta la ruta según tu configuración
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
+      setError(error.message);
+    }
+  };
+
+  const handleGoogleRegister = async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const userCredential = await signInWithPopup(auth, provider);
+      const user = userCredential.user;
+      console.log("User registered with Google:", user);
+
+      // Enviar datos del usuario a la API para registrarlo en Firestore
+      const response = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: user.uid,
+          nombre: user.displayName,
+          email: user.email,
+          password: "", // No necesitas la contraseña aquí
+          tipo: "user", // Puedes ajustar esto según tu lógica de negocio
+          tipoAuth: 1
+        }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        console.log("Usuario registrado en Firestore:", data.message);
+        // Redirigir al usuario a la página de inicio o a otra página
+        navigate("/login"); // Ajusta la ruta según tu configuración
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+      console.error("Error registering user with Google:", error);
+      setError(error.message);
+    }
+  };
+
+  const handleLoginRedirect = () => {
+    navigate("/login");
   };
 
   return (
@@ -30,8 +108,8 @@ function RegisterUsuario() {
               controlId="formBasicName"
               type="text"
               placeholder="Ingresa tu nombre completo"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
               label="Nombre Completo"
             />
             <FormControl
@@ -50,8 +128,15 @@ function RegisterUsuario() {
               onChange={(e) => setPassword(e.target.value)}
               label="Contraseña"
             />
+            {error && <p className="text-danger">{error}</p>}
             <Button variant="orange" onClick={handleRegister}>
               Registrarme
+            </Button>
+            <Button variant="orange" onClick={handleGoogleRegister}>
+              Registrarme con Google
+            </Button>
+            <Button variant="transparent" onClick={handleLoginRedirect}>
+              Ya tengo una cuenta
             </Button>
           </form>
         </Col>

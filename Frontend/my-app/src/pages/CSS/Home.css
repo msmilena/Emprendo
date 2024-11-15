@@ -52,10 +52,15 @@
   display: flex;
   max-width: 1200px;
   align-self: center;
-  justify-content: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
+  flex-wrap: nowrap;
   width: 100%;
   gap: 20px;
+  overflow-x: auto;
+}
+.category--list--container > * {
+  flex: 1 1 auto;
+  min-width: 200px;
 }
 
 .explore--section--container {
@@ -116,10 +121,10 @@
   font-size: 15px;
 }
 .product--list--container {
-  display: flex;
-  max-width: 1200px;
-  flex-wrap: wrap;
-  justify-content: center;
-  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); /* Ajusta el número de columnas automáticamente */
   gap: 20px;
+  max-width: 1200px;
+  width: 100%;
+  justify-content: center;
 }

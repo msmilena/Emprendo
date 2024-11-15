@@ -36,3 +36,12 @@
   width: 150px;
   margin-top: 0;
 }
+.nav--container--profile {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.profile--image {
+  width: 50px; /* Adjust the size as needed */
+  height: 50px; /* Adjust the size as needed */
+}

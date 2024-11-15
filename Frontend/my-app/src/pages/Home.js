@@ -1,5 +1,4 @@
 // src/pages/Home.js
-import React from "react";
 import CategoryItem from "../components/CategoryItem";
 import "./CSS/Home.css";
 import { BsSearch } from "react-icons/bs";
@@ -7,8 +6,30 @@ import ProductItem from "../components/ProductItem";
 import { MdFilterList } from "react-icons/md";
 import Footer2 from "../components/Footer2";
 import Nav from "../components/Nav";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 function Home() {
+
+  const responsive = {
+    superLargeDesktop: {
+      breakpoint: { max: 4000, min: 3000 },
+      items: 5
+    },
+    desktop: {
+      breakpoint: { max: 3000, min: 1024 },
+      items: 3
+    },
+    tablet: {
+      breakpoint: { max: 1024, min: 464 },
+      items: 2
+    },
+    mobile: {
+      breakpoint: { max: 464, min: 0 },
+      items: 1
+    }
+  };
+
   return (
     <div className="home--page--container">
       <Nav />
@@ -28,7 +49,7 @@ function Home() {
       </section>
       <section className="category--section--container">
         <p className="home--page--title--section">Categorías</p>
-        <div className="category--list--container">
+        <Carousel responsive={responsive} className="category--list--container">
           <CategoryItem
             imgURL="https://media.istockphoto.com/id/171583541/es/foto/marr%C3%B3n-bolsa-de-papel-llena-de-comestibles-en-blanco-de-fondo.jpg?s=612x612&w=0&k=20&c=lhcde1yNZRondiR2kGj9K0DpMDes0zEUFx3IZjyZYdM="
             title="Comida"
@@ -49,11 +70,11 @@ function Home() {
             title="Hogar"
             imgURL="https://www.capitanofertas.com/images/articulos/100/101/1_101.jpg"
           />
-        </div>
+        </Carousel>
       </section>
       <section className="explore--section--container">
         <p className="home--page--title--section">
-          Descrubre productos y emprendedores
+          Descubre productos y emprendedores
         </p>
         <div className="explore--section--actions">
           <div className="explore--section--actions--categories">
@@ -75,6 +96,7 @@ function Home() {
           <ProductItem
             category="Tecnología"
             name="Laptop Intel Core"
+            imgURL="https://imagedelivery.net/4fYuQyy-r8_rpBpcY7lH_A/falabellaPE/883322793_001/w=1500,h=1500,fit=pad"
             desc="Descripción"
             price={2500}
           />

@@ -6,16 +6,41 @@
   justify-content: center;
   align-items: center;
   gap: 15px;
+  max-width: 100%; /* Asegura que el ancho máximo sea el 100% del contenedor padre */
+  flex-shrink: 0; /* Evita que los elementos se reduzcan más allá de su tamaño mínimo */
 }
+
+@media (min-width: 600px) {
+  .category--item {
+    max-width: 150px; /* Ajusta el ancho máximo para pantallas medianas */
+  }
+}
+
+@media (min-width: 900px) {
+  .category--item {
+    max-width: 200px; /* Ajusta el ancho máximo para pantallas grandes */
+  }
+}
+
 .category--item--image {
   width: 100%;
   height: 100%;
   border: 1px solid #d9d9d9;
   border-radius: 10px;
   overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .category--item--image--container {
   object-fit: cover;
   width: 100%;
   height: 100%;
+}
+.category--item img {
+  max-width: 100%; /* Asegura que el ancho de la imagen esté limitado por el div padre */
+  max-height: 100%; /* Asegura que la altura de la imagen esté limitada por el div padre */
+  width: 300px; /* Limita el ancho de la imagen a 300px */
+  height: 300px; /* Limita la altura de la imagen a 300px */
+  object-fit: cover;
 }
