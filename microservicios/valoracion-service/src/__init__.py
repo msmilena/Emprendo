@@ -3,8 +3,7 @@ import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
 # Routes
-from .routes import AuthRoutes
-from .routes import UserRoutes
+from .routes import ValoracionRoutes
 
 from flask_cors import CORS, cross_origin
 
@@ -37,7 +36,6 @@ def init_app(config):
     app.config.from_object(config)
     app.config['WTF_CSRF_ENABLED'] = False
     # Blueprints
-    app.register_blueprint(AuthRoutes.main, url_prefix='/auth')
-    app.register_blueprint(UserRoutes.main, url_prefix='/user')
+    app.register_blueprint(ValoracionRoutes.main, url_prefix='/valoracion')
 
     return app

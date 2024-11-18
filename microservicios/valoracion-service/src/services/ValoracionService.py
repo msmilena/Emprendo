@@ -21,7 +21,7 @@ class ValoracionService():
             emprendimiento_ref = db.collection('emprendimientos').document(valoracion.idEmprendimiento)
             # Agregar a usuario un nuevo documento en la colección 'valoracion'
             db.collection('usuarios').document(valoracion.idUsuario).collection('valoraciones').add({
-                "fechaValoracion": firebase_admin.firestore.SERVER_TIMESTAMP,
+                "fechaValoracion": firestore.SERVER_TIMESTAMP,
                 "idEmprendimiento": emprendimiento_ref,
                 "valoracion": valoracion.valor
             })
@@ -36,7 +36,7 @@ class ValoracionService():
         try:
             db = get_connection()
             
-            emprendimiento_ref = db.document(idEmprendimiento)
+            emprendimiento_ref = db.collection('emprendimientos').document(idEmprendimiento)
             doc = emprendimiento_ref.get()
 
             if not doc.exists:
@@ -69,8 +69,12 @@ class ValoracionService():
         try:
             db = get_connection()
             valoracion_list = []
-            valoraciones_ref = db.collection('usuarios').document(idUsuario)
+            valoraciones_ref = db.collection('usuarios').document(idUsuario).collection('valoraciones')
             valoraciones_docs = valoraciones_ref.stream()
+
+            if not valoraciones_docs:
+            # Si no hay valoraciones para ese usuario, puedes manejarlo así:
+                return {"message": "No se encontraron valoraciones para este usuario", "success": True}
 
             for doc in valoraciones_docs:
                 valoracion_data = doc.to_dict()

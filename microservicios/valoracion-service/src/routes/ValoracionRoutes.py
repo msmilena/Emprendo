@@ -34,7 +34,7 @@ def get_valoraciones():
         return jsonify({'message': str(e), 'success': False}), 500
 
 
-@main.route('/uptValoraciones/emprendimiento', methods=['UPDATE'])
+@main.route('/uptValoraciones/emprendimiento', methods=['PUT'])
 def upt_valoraciones():
 
     idEmprendimiento = request.args.get('idEmprendimiento')
