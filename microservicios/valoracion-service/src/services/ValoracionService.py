@@ -107,3 +107,25 @@ class ValoracionService():
             return valoracion_list
         except Exception as ex:
             raise CustomException(ex)
+
+
+
+
+
+    @classmethod
+    def save_favorito(cls, idUsuario, idEmprendimiento, idProducto):
+        try:
+            db = get_connection()
+
+            emprendimiento_ref = db.collection('emprendimientos').document(idEmprendimiento)
+            producto_ref = emprendimiento_ref.collection('productos').document(idProducto)
+
+            # Agregar a la colección 'favoritos' del usuario
+            db.collection('usuarios').document(idUsuario).collection('favoritos').add({
+                "fechaValoracion": firestore.SERVER_TIMESTAMP,
+                "idProducto": producto_ref  # Se guarda la referencia al producto
+            })
+
+            return {'success': True, 'message': 'Producto favorito guardado exitosamente'}
+        except Exception as ex:
+            raise CustomException(ex)

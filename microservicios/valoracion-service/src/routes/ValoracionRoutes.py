@@ -52,3 +52,24 @@ def upt_valoraciones():
             return jsonify({'message': 'Faltan parámetros'}), 400
     except CustomException as e:
         return jsonify({'message': str(e), 'success': False}), 500
+    
+
+
+#obtener 2da funcion
+
+
+
+@main.route('/guardarFavorito', methods=['POST'])
+def post_guardarFavorito():
+    idUsuario = request.args.get('idUsuario')
+
+    data = request.json
+    idEmprendimiento = data.get('iEmprendimiento') 
+    idProducto = data.get('idProducto') 
+
+    save_result = ValoracionService.save_favorito(idUsuario, idEmprendimiento, idProducto)
+
+    if save_result['success']:
+        return jsonify({'success': True, 'message': 'Guardado de datos existoso'})
+    else:
+        return jsonify({'success': False, 'message': save_result['message']}), 400
