@@ -153,7 +153,8 @@ class ValoracionService():
             if query:
                 for doc in query:
                     doc.reference.delete()
-            return {'success': True, 'message': 'Producto favorito guardado exitosamente'}
+                return {'success': True, 'message': 'Favorito eliminado exitosamente'}
+            return {'success': False, 'message': 'No se encontró el favorito'}
         except Exception as ex:
             raise CustomException(ex)
 
