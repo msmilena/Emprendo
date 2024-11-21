@@ -34,24 +34,21 @@ def get_valoraciones():
         return jsonify({'message': str(e), 'success': False}), 500
 
 
-@main.route('/uptValoraciones/emprendimiento', methods=['PUT'])
+@main.route('/uptValoraciones', methods=['PUT'])
 def upt_valoraciones():
 
-    idEmprendimiento = request.args.get('idEmprendimiento')
+    idUsuario = request.args.get('idUsuario') 
+
     data = request.json
-    valor = data.get("valoracion")
+    idEmprendimiento = data.get("idEmprendimiento")
+    valor = data.get("valor")
+    
+    save_result = ValoracionService.upd_valoracion(idUsuario,idEmprendimiento,valor)
 
-    try:
-
-        if idEmprendimiento and valor:
-
-            upt_valoracion = ValoracionService.upt_valoracion(idEmprendimiento,valor)
-            if upt_valoracion is not None:
-                return jsonify({'success': True, "actualizacionValoracion": upt_valoracion})
-        else:
-            return jsonify({'message': 'Faltan parámetros'}), 400
-    except CustomException as e:
-        return jsonify({'message': str(e), 'success': False}), 500
+    if save_result['success']:
+        return jsonify({'success': True, 'message': 'Actualización de datos existoso'})
+    else:
+        return jsonify({'success': False, 'message': save_result['message']}), 400
 
 
 
@@ -69,7 +66,23 @@ def post_guardarFavorito():
         return jsonify({'success': True, 'message': 'Guardado de datos existoso'})
     else:
         return jsonify({'success': False, 'message': save_result['message']}), 400
+
+
+@main.route('/eliminarFavorito', methods=['DELETE'])
+def dlt_favoritos():
+
+    idUsuario = request.args.get('idUsuario') 
+
+    data = request.json
+    idEmprendimiento = data.get("idEmprendimiento")
+    idProducto = data.get("idProducto")
     
+    save_result = ValoracionService.dlt_favorito(idUsuario,idEmprendimiento,idProducto)
+
+    if save_result['success']:
+        return jsonify({'success': True, 'message': 'Actualización de datos existoso'})
+    else:
+        return jsonify({'success': False, 'message': save_result['message']}), 400
 
 @main.route('/getFavoritos/usuario', methods=['POST'])
 def get_favorito():
