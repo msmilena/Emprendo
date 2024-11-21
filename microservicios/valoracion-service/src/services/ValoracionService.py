@@ -21,10 +21,37 @@ class ValoracionService():
             emprendimiento_ref = db.collection('emprendimientos').document(valoracion.idEmprendimiento)
             # Agregar a usuario un nuevo documento en la colección 'valoracion'
             db.collection('usuarios').document(valoracion.idUsuario).collection('valoraciones').add({
-                "fechaValoracion": firestore.SERVER_TIMESTAMP,
-                "idEmprendimiento": emprendimiento_ref,
-                "valoracion": valoracion.valor
+                'fechaValoracion': firestore.SERVER_TIMESTAMP,
+                'idEmprendimiento': emprendimiento_ref,
+                'valoracion': valoracion.valor
             })
+
+
+
+            #actualización valoracion de emprendimiento!!!
+            doc = emprendimiento_ref.get()
+
+            if not doc.exists:
+                return None
+
+            # Obtener los valores actuales
+            datos = doc.to_dict().get('valoracion', {})
+            promedio_actual = datos.get('promedioValoracion', 0)
+            total_valoraciones = datos.get('totalesValoracion', 0)
+
+            # Calcular el nuevo promedio
+            nuevo_total = total_valoraciones + 1
+            nuevo_promedio = ((promedio_actual * total_valoraciones) + valor) / nuevo_total
+
+            # Actualizar los datos en Firestore
+            nueva_valoracion = {
+                'valoracion.promedioValoracion': nuevo_promedio,
+                'valoracion.totalesValoracion': nuevo_total
+            }
+            emprendimiento_ref.update(nueva_valoracion)
+
+
+
 
             return {'success': True, 'message': 'Valoracion guardada exitosamente'}
         except Exception as ex:
@@ -74,7 +101,7 @@ class ValoracionService():
 
             if not valoraciones_docs:
             # Si no hay valoraciones para ese usuario, puedes manejarlo así:
-                return {"message": "No se encontraron valoraciones para este usuario", "success": True}
+                return {'message': 'No se encontraron valoraciones para este usuario', 'success': True}
 
             for doc in valoraciones_docs:
                 valoracion_data = doc.to_dict()
@@ -122,10 +149,67 @@ class ValoracionService():
 
             # Agregar a la colección 'favoritos' del usuario
             db.collection('usuarios').document(idUsuario).collection('favoritos').add({
-                "fechaValoracion": firestore.SERVER_TIMESTAMP,
-                "idProducto": producto_ref  # Se guarda la referencia al producto
+                'fechaValoracion': firestore.SERVER_TIMESTAMP,
+                'idProducto': producto_ref  # Se guarda la referencia al producto
+            })
+
+
+
+            #actualización cantidad favorito de producto!!!
+            producto_ref.update({
+                'cantidadFavoritos': firestore.Increment(1)  # Incrementa en 1
             })
 
             return {'success': True, 'message': 'Producto favorito guardado exitosamente'}
+        except Exception as ex:
+            raise CustomException(ex)
+
+
+
+    @classmethod
+    def get_favoritos(cls, idUsuario):
+        try:
+            db = get_connection()
+            favoritos_list = []
+            favoritos_ref = db.collection('usuarios').document(idUsuario).collection('favoritos')
+            favoritos_docs = favoritos_ref.stream()
+
+            if not favoritos_docs:
+            # Si no hay favoritos para ese usuario, puedes manejarlo así:
+                return {'message': 'No se encontraron favoritos para este usuario', 'success': True}
+
+            for doc in favoritos_docs:
+                favoritos_data = doc.to_dict()
+                idProducto_ref = favoritos_data.get('idProducto')
+
+                if idProducto_ref:  # Verifica si la referencia es válida
+                    # Obtén el ID del emprendimiento desde la referencia
+                    id_emprendimiento = idProducto_ref.parent.parent.id
+
+                    # Verifica si el documento del emprendimiento existe
+                    emprendimiento_doc = db.collection("emprendimientos").document(id_emprendimiento).get()
+                    if emprendimiento_doc.exists:
+                        emprendimiento_data = emprendimiento_doc.to_dict()
+                        nombre_comercial = emprendimiento_data.get("nombreComercial")
+
+                        # Obtén el documento del producto referenciado
+                        producto_doc = idProducto_ref.get()
+                        if producto_doc.exists:
+                            producto_data = producto_doc.to_dict()
+                            id_producto = producto_doc.id
+
+                            # Construye el objeto del favorito
+                            favoritos_list.append({
+                                "idEmprendimiento": id_emprendimiento,
+                                "nombreComercial": nombre_comercial,
+                                "idProducto": id_producto,
+                                "nombre_producto": producto_data.get("nombre_producto"),
+                                "imagen": producto_data.get("imagen"),
+                                "categoria_producto": producto_data.get("categoria_producto"),
+                                "descripcion_producto": producto_data.get("descripcion_producto"),
+                                "flgDisponible": producto_data.get("flgDisponible"),
+                                "precio": producto_data.get("precio")
+                            })
+            return favoritos_list
         except Exception as ex:
             raise CustomException(ex)
