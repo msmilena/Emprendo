@@ -7,12 +7,13 @@ import RegisterUsuario from "./pages/RegisterUsuario";
 import TipoPerfil from "./pages/TipoPerfil";
 import Home from "./pages/Home";
 import DetalleEmprendimiento from "./pages/Detalle-Emprendimiento";
+import './App.css'
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/home" />} />
+        <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/home" element={<Home />} />
         <Route path="/registerEmprendedor" element={<RegisterEmprendedor />} />
         <Route path="/registerUsuario" element={<RegisterUsuario />} />

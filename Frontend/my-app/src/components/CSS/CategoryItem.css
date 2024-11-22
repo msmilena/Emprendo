@@ -44,3 +44,14 @@
   height: 300px; /* Limita la altura de la imagen a 300px */
   object-fit: cover;
 }
+
+.category-item{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.category-item p{
+  margin-top: 10px;
+  font-family: 'Outfit', sans-serif;
+}
