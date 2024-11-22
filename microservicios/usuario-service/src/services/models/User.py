@@ -1,8 +1,6 @@
-class User():
-
-    def __init__(self, id, nombre, email, password, tipo):
-        self.id = id
+class User:
+    def __init__(self, uid, nombre, correo, tipo):
+        self.uid = uid
         self.nombre = nombre
-        self.email = email
-        self.password = password
+        self.correo = correo
         self.tipo = tipo

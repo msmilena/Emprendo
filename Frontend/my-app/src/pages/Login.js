@@ -57,6 +57,7 @@ function Login() {
       );
       const user = userCredential.user;
       const token = await user.getIdToken();
+      console.log(token);
       const response = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/login", {
         method: "POST",
         headers: {

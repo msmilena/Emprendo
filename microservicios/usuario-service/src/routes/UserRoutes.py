@@ -22,7 +22,7 @@ def get_infoUsuario():
             if infoUser is not None:
                 return jsonify({'success': True,"userData": infoUser})
             else:
-                response = jsonify({'message': 'No se encontr� informaci�n del usuario', 'success': False, 'idUser': idUser})
+                response = jsonify({'message': 'No se encontro informacion del usuario', 'success': False, 'idUser': idUser})
                 return response, 401
         else:
             return jsonify({'message': 'Missing idUser parameter'}), 400

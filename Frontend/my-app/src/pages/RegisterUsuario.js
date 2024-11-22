@@ -18,6 +18,19 @@ function RegisterUsuario() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+      // Validar que el email esté disponible
+      const checkResponse = await fetch(`https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/check_email?email=${email}`);
+      const checkData = await checkResponse.json();
+      if (!checkData.success) {
+        setError(checkData.message);
+        return;
+      }
+
+      // Crear usuario con Firebase Authentication
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log("User registered:", user);
+
       // Enviar datos del usuario a la API para registrarlo en Firestore
       const response = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/register", {
         method: "POST",
@@ -25,6 +38,7 @@ function RegisterUsuario() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          id: user.uid,
           nombre,
           email,
           password,
@@ -36,12 +50,6 @@ function RegisterUsuario() {
       const data = await response.json();
       if (data.success) {
         console.log("Usuario registrado en Firestore:", data.message);
-
-        // Crear usuario con Firebase Authentication
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        console.log("User registered:", user);
-
         // Redirigir al usuario a la página de inicio o a otra página
         navigate("/login"); // Ajusta la ruta según tu configuración
       } else {

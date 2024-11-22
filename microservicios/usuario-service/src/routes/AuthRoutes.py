@@ -15,8 +15,9 @@ PASSWORD_REGEX = r'^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$'
 @main.route('/login', methods=['POST'])
 def login():
     data = request.json
+    print(data)
     token = data.get('token')
-
+    print(token)
     try:
         # Verificar el token de Firebase
         decoded_token = firebase_auth.verify_id_token(token)
@@ -28,13 +29,14 @@ def login():
         if user:
             return jsonify({'success': True, 'uid': uid, 'email': email, 'nombre': user.nombre, 'tipo': user.tipo})
         else:
-            return jsonify({'success': False, 'message': 'Usuario no encontrado en la base de datos'}), 404
+            return jsonify({'success': False, 'message': 'Usuario no encontrado en la base de datos'}), 403
     except Exception as ex:
         return jsonify({'success': False, 'message': str(ex)}), 401
 
 @main.route('/register', methods=['POST'])
 def register():
     data = request.json
+    print(data)
     id = data.get("id")
     nombre = data.get("nombre")
     email = data.get("email")
@@ -62,3 +64,15 @@ def register():
         return jsonify({'success': True, 'message': 'Usuario registrado exitosamente'})
     else:
         return jsonify({'success': False, 'message': register_result['message']}), 400
+
+@main.route('/check_email', methods=['GET'])
+def check_email():
+    email = request.args.get('email')
+    if not email:
+        return jsonify({'success': False, 'message': 'Email parameter is missing'}), 400
+
+    check_result = AuthService.check_email_availability(email)
+    if check_result['success']:
+        return jsonify({'success': True, 'message': check_result['message']}), 200
+    else:
+        return jsonify({'success': False, 'message': check_result['message']}), 200
