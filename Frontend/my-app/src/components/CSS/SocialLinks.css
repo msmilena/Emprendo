@@ -1,0 +1,12 @@
+/* src/components/SocialLinks.css */
+.social-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .social-links h5 {
+    margin-bottom: 5px;
+    width: 20%;
+  }
+  

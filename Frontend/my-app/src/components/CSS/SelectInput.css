@@ -1,0 +1,21 @@
+/* src/components/SelectInput.css */
+.select-input {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  }
+  
+  .select-input label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    width: 20%;
+  }
+  
+  .select-input select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 75%;
+  }
+  

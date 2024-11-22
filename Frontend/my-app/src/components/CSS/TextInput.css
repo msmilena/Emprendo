@@ -1,0 +1,23 @@
+/* src/components/TextInput.css */
+.text-input {
+  display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      width: 100%;
+  }
+  
+  .text-input label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    width:20%;
+  }
+  
+  .text-input input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 75%;
+  }
+  

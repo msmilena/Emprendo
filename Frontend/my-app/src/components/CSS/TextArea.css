@@ -1,0 +1,21 @@
+/* src/components/TextArea.css */
+.text-area {
+  display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .text-area label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    width: 20%;
+  }
+  
+  .text-area textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 75%;
+  }
+  

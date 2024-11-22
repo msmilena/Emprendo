@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import DetalleEmprendimiento from "./pages/Detalle-Emprendimiento";
 import FavoritosUsuarios from "./pages/FavoritosUsuario.js";
 import HomeEmprendedor from "./pages/HomeEmprendedor.js"
+import Emprendimiento from "./pages/EmprendimientoDatos.js"
 import './App.css'
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/emprendimiento/:id" element={<DetalleEmprendimiento />} />
         <Route path="/favoritos/:id" element={< FavoritosUsuarios />} />
         <Route path="/homeEmprendedor" element={< HomeEmprendedor />} />
+        <Route path="/detalleEmpredimiento/:id" element={< Emprendimiento />} />
       </Routes>
     </Router>
   );
