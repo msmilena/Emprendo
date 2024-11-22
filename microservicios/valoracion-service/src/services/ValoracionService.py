@@ -26,66 +26,37 @@ class ValoracionService():
                 'valoracion': valoracion.valor
             })
 
-
-
-            #actualización valoracion de emprendimiento!!!
-            doc = emprendimiento_ref.get()
-
-            if not doc.exists:
-                return None
-
-            # Obtener los valores actuales
-            datos = doc.to_dict().get('valoracion', {})
-            promedio_actual = datos.get('promedioValoracion', 0)
-            total_valoraciones = datos.get('totalesValoracion', 0)
-
-            # Calcular el nuevo promedio
-            nuevo_total = total_valoraciones + 1
-            nuevo_promedio = ((promedio_actual * total_valoraciones) + valor) / nuevo_total
-
-            # Actualizar los datos en Firestore
-            nueva_valoracion = {
-                'valoracion.promedioValoracion': nuevo_promedio,
-                'valoracion.totalesValoracion': nuevo_total
-            }
-            emprendimiento_ref.update(nueva_valoracion)
-
-
-
-
             return {'success': True, 'message': 'Valoracion guardada exitosamente'}
         except Exception as ex:
             raise CustomException(ex)
 
 
     @classmethod
-    def upt_valoracion(cls, idEmprendimiento, valor):
+    def upd_valoracion(cls,idUsuario,idEmprendimiento,valor):
         try:
             db = get_connection()
             
+            if not idUsuario or not idEmprendimiento or valor is None:
+                return ({'success': False, 'message': 'Faltan datos obligatorios'}), 400
+            
+            # Referencia a la colección de valoraciones del usuario
+            valoraciones_ref = db.collection('usuarios').document(idUsuario).collection('valoraciones')
+
+            # Buscar la valoración que corresponde al emprendimiento
             emprendimiento_ref = db.collection('emprendimientos').document(idEmprendimiento)
-            doc = emprendimiento_ref.get()
+            query = valoraciones_ref.where('idEmprendimiento', '==', emprendimiento_ref).limit(1).get()
 
-            if not doc.exists:
-                return None
+            if not query:
+                return {'success': False, 'message': 'No se encontró una valoración para este emprendimiento'}
 
-            # Obtener los valores actuales
-            datos = doc.to_dict().get('valoracion', {})
-            promedio_actual = datos.get('promedioValoracion', 0)
-            total_valoraciones = datos.get('totalesValoracion', 0)
+            # Obtener el ID del documento para actualizar
+            valoracion_doc = query[0].reference
+            valoracion_doc.update({
+                'valoracion': valor,
+                'fechaValoracion': firestore.SERVER_TIMESTAMP
+            })
 
-            # Calcular el nuevo promedio
-            nuevo_total = total_valoraciones + 1
-            nuevo_promedio = ((promedio_actual * total_valoraciones) + valor) / nuevo_total
-
-            # Actualizar los datos en Firestore
-            nueva_valoracion = {
-                'valoracion.promedioValoracion': nuevo_promedio,
-                'valoracion.totalesValoracion': nuevo_total
-            }
-            emprendimiento_ref.update(nueva_valoracion)
-
-            return nueva_valoracion
+            return {'success': True, 'message': 'Valoración actualizada exitosamente'}
         
         except Exception as ex:
             raise CustomException(ex)
@@ -153,17 +124,39 @@ class ValoracionService():
                 'idProducto': producto_ref  # Se guarda la referencia al producto
             })
 
-
-
             #actualización cantidad favorito de producto!!!
-            producto_ref.update({
-                'cantidadFavoritos': firestore.Increment(1)  # Incrementa en 1
-            })
-
+            #producto_ref.update({
+            #    'cantidadFavoritos': firestore.Increment(1)  # Incrementa en 1
+            #})
             return {'success': True, 'message': 'Producto favorito guardado exitosamente'}
         except Exception as ex:
             raise CustomException(ex)
 
+
+    @classmethod
+    def dlt_favorito(cls, idUsuario, idEmprendimiento, idProducto):
+        try:
+            db = get_connection()
+
+            if not idUsuario or not idEmprendimiento or idProducto is None:
+                return ({'success': False, 'message': 'Faltan datos obligatorios'}), 400
+            
+            favoritos_ref = db.collection('usuarios').document(idUsuario).collection('favoritos')
+
+            query = favoritos_ref.where('idProducto', '==', db.document(idProducto)) \
+                     .where('idEmprendimiento', '==', db.document(f'emprendimientos/{idEmprendimiento}')) \
+                     .limit(1).get()
+
+            emprendimiento_ref = db.collection('emprendimientos').document(idEmprendimiento)
+            producto_ref = emprendimiento_ref.collection('productos').document(idProducto)
+
+            if query:
+                for doc in query:
+                    doc.reference.delete()
+                return {'success': True, 'message': 'Favorito eliminado exitosamente'}
+            return {'success': False, 'message': 'No se encontró el favorito'}
+        except Exception as ex:
+            raise CustomException(ex)
 
 
     @classmethod
