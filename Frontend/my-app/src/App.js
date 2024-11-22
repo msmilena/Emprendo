@@ -8,6 +8,7 @@ import TipoPerfil from "./pages/TipoPerfil";
 import Home from "./pages/Home";
 import DetalleEmprendimiento from "./pages/Detalle-Emprendimiento";
 import FavoritosUsuarios from "./pages/FavoritosUsuario.js";
+import HomeEmprendedor from "./pages/HomeEmprendedor.js"
 import './App.css'
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/emprendimiento/:id" element={<DetalleEmprendimiento />} />
         <Route path="/favoritos/:id" element={< FavoritosUsuarios />} />
+        <Route path="/homeEmprendedor" element={< HomeEmprendedor />} />
       </Routes>
     </Router>
   );

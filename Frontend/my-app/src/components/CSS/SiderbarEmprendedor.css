@@ -1,0 +1,29 @@
+/* src/components/Sidebar.css */
+.sidebar {
+    width: 250px;
+    background-color: #3D5A80;
+    color: white;
+    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+  flex-direction: column; /* Distribuye sus elementos en columna */
+  }
+  
+  .logo-section {
+    text-align: center;
+  }
+  
+  .logo {
+    width: 80px;
+    margin-bottom: 10px;
+  }
+  
+  .nav-menu ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .nav-menu li {
+    margin: 20px 0;
+    cursor: pointer;
+  }

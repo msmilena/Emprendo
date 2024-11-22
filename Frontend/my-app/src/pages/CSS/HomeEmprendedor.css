@@ -1,0 +1,17 @@
+/* src/App.css */
+.app-container {
+    display: flex;
+  }
+  
+  .main-content {
+    width: 100%;
+    overflow-y: auto;
+  }
+  
+  .dashboard-content {
+    margin-top: 20px;
+    padding: 20px;
+    text-align: center;
+    color: #3D5A80;
+  }
+  
