@@ -1,0 +1,10 @@
+/* src/components/DashboardOverview.css */
+.dashboard-overview {
+  display: flex;
+      gap: 40px;
+      margin-top: 60px;
+      flex-wrap: wrap;
+      justify-content: center;
+  
+  }
+  

@@ -1,0 +1,13 @@
+/* src/components/SummaryCard.css */
+.summary-card {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 180%;
+  }
+.puntuacion_Valores
+{
+  font-size: -webkit-xxx-large
+}
