@@ -24,6 +24,8 @@ class ValoracionService():
                 return {'success': False, 'message': 'El campo valor no puede estar vacío'}
             
             emprendimiento_ref = db.collection('emprendimientos').document(valoracion.idEmprendimiento)
+            print("emprendimiento ref",emprendimiento_ref)
+            print("valoracion id", valoracion.idEmprendimiento)
             if not emprendimiento_ref.get().exists:
                 return {'success': False, 'message': 'El emprendimiento especificado no existe'}
 
@@ -150,22 +152,27 @@ class ValoracionService():
             if not idUsuario or not idEmprendimiento or idProducto is None:
                 return ({'success': False, 'message': 'Faltan datos obligatorios'}), 400
             
+            # Obtener la referencia del usuario y su colección de favoritos
             favoritos_ref = db.collection('usuarios').document(idUsuario).collection('favoritos')
 
-            query = favoritos_ref.where('idProducto', '==', db.document(idProducto)) \
-                     .where('idEmprendimiento', '==', db.document(f'emprendimientos/{idEmprendimiento}')) \
-                     .limit(1).get()
+            # Crear la referencia al documento del producto
+            producto_ref = db.document(f'emprendimientos/{idEmprendimiento}/productos/{idProducto}')
 
-            emprendimiento_ref = db.collection('emprendimientos').document(idEmprendimiento)
-            producto_ref = emprendimiento_ref.collection('productos').document(idProducto)
+            # Realizar la consulta usando la referencia del documento
+            query = favoritos_ref.where('idProducto', '==', producto_ref).limit(1).get()
 
-            if query:
-                for doc in query:
-                    doc.reference.delete()
+            # Verificar si se encontraron documentos
+            documentos = list(query)
+            if documentos:
+                documentos[0].reference.delete()
                 return {'success': True, 'message': 'Favorito eliminado exitosamente'}
+            
             return {'success': False, 'message': 'No se encontró el favorito'}
+
         except Exception as ex:
+            print(f"Error al eliminar favorito: {str(ex)}")
             raise CustomException(ex)
+
 
 
     @classmethod
