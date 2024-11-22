@@ -1,0 +1,72 @@
+.favorites-container {
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .search-bar {
+    width: 100%;
+    padding: 10px;
+    margin: 20px 0;
+    border-radius: 20px;
+    border: 1px solid #FE5F55;
+    font-size: 16px;
+  }
+  
+  .favorites-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  .favorites-table th, .favorites-table td {
+    padding: 30px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .favorites-table th {
+    color: #3d5a80;
+  }
+  
+  .product-image {
+    width: 100px;
+    height: auto;
+  }
+  
+  .delete-button {
+    background-color: transparent;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 18px;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 40px 20px;
+  }
+  
+  .pagination button {
+    padding: 5px 10px;
+    border: none;
+    background-color: #FE5F55;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  
+.favorites-container h2{
+  margin-top: 15px;
+    color: #3d5a80;
+    font-weight: 600;
+    font-size: x-large;
+}
