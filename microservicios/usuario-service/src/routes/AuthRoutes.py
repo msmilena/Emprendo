@@ -26,6 +26,7 @@ def login():
 
         # Obtener información adicional del usuario desde Firestore si es necesario
         user = AuthService.get_user_by_uid(uid)
+        print(user)
         if user:
             return jsonify({'success': True, 'uid': uid, 'email': email, 'nombre': user.nombre, 'tipo': user.tipo})
         else:
@@ -62,6 +63,51 @@ def register():
 
     if register_result['success']:
         return jsonify({'success': True, 'message': 'Usuario registrado exitosamente'})
+    else:
+        return jsonify({'success': False, 'message': register_result['message']}), 400
+
+@main.route('/register_with_emprendimiento', methods=['POST'])
+def register_with_emprendimiento():
+    
+    data = request.form.to_dict()
+    print(data)
+    if 'file' not in request.files:
+        return jsonify({'success': False, 'message': 'No file part in the request'}), 400
+    image_file = request.files['file']
+    if image_file.filename == '':
+        return jsonify({'success': False, 'message': 'No file selected for uploading'}), 400
+
+    id = data.get("id")
+    nombre = data.get("nombre")
+    email = data.get("email")
+    password = data.get("password")
+    tipo = data.get("tipo")
+    tipoAuth = int(data.get("tipoAuth"))  # Ensure tipoAuth is an integer
+    emprendimiento_data = {
+        'nombreComercial': data.get("nombreComercial"),
+        'ruc': data.get("ruc"),
+        'localizacion_latitud': float(data.get("localizacion_latitud")),  # Convert to float
+        'localizacion_longitud': float(data.get("localizacion_longitud"))  # Convert to float
+    }
+
+    # Validación del formato del correo electrónico
+    if not re.match(EMAIL_REGEX, email):
+        return jsonify({'success': False, 'message': 'Ingrese un Correo Electrónico válido'}), 400
+
+    # Validación del formato de la contraseña solo si tipoAuth es 0
+    if tipoAuth == 0 and not re.match(PASSWORD_REGEX, password):
+        return jsonify({'success': False, 'message': 'La contraseña debe contener al menos 8 caracteres, incluyendo al menos una letra, un número y un carácter especial'}), 400
+
+    # Validación del tipoAuth
+    if tipoAuth not in [0, 1]:
+        return jsonify({'success': False, 'message': 'Error en la validación del tipo de autenticación'}), 400
+
+    _userR = UserRegister(id, nombre, email, password if tipoAuth == 0 else "", tipo, tipoAuth)
+
+    register_result = AuthService.register_user_with_emprendimiento(_userR, emprendimiento_data, image_file)
+
+    if register_result['success']:
+        return jsonify({'success': True, 'message': 'Usuario y emprendimiento registrados exitosamente'})
     else:
         return jsonify({'success': False, 'message': register_result['message']}), 400
 
