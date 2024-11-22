@@ -24,6 +24,7 @@ const Nav = () => {
 
   const handleLogoutClick = () => {
     localStorage.removeItem("user");
+    localStorage.removeItem("userId");
     setIsLoggedIn(false);
     setUserName("");
     navigate("/login");
@@ -51,7 +52,7 @@ const Nav = () => {
         </div>
         {isLoggedIn ? (
           <div className="nav--container--profile">
-            <img className="profile--image" alt="profile" src="profile-user-account.svg"></img>
+            <img className="profile--image" alt="profile" src="../assets/profile-user-account.svg"></img>
             <strong>{userName}</strong>
             <Button variant="orange" onClick={handleLogoutClick}>
               Cerrar sesión
