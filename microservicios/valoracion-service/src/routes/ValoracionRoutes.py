@@ -84,11 +84,11 @@ def dlt_favoritos():
     else:
         return jsonify({'success': False, 'message': save_result['message']}), 400
 
-@main.route('/getFavoritos/usuario', methods=['POST'])
+@main.route('/getFavoritos/usuario', methods=['GET'])
 def get_favorito():
     idUsuario = request.args.get('idUsuario')
     try:
-        list_favoritos = ValoracionService.save_favorito(idUsuario)
+        list_favoritos = ValoracionService.get_favoritos(idUsuario)
         return jsonify({'success': True, 'valoraciones': list_favoritos})
     except CustomException as e:
         return jsonify({'message': str(e), 'success': False}), 500
