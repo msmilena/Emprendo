@@ -16,9 +16,18 @@ class ValoracionService():
             for field in required_fields:
                 if not getattr(valoracion, field):
                     return {'success': False, 'message': f'El campo {field} no puede estar vacío'}
-
+            if not valoracion.idUsuario:
+                return {'success': False, 'message': 'El campo idUsuario no puede estar vacío'}
+            if not valoracion.idEmprendimiento:
+                return {'success': False, 'message': 'El campo idEmprendimiento no puede estar vacío'}
+            if not valoracion.valor:
+                return {'success': False, 'message': 'El campo valor no puede estar vacío'}
             
             emprendimiento_ref = db.collection('emprendimientos').document(valoracion.idEmprendimiento)
+            if not emprendimiento_ref.get().exists:
+                return {'success': False, 'message': 'El emprendimiento especificado no existe'}
+
+
             # Agregar a usuario un nuevo documento en la colección 'valoracion'
             db.collection('usuarios').document(valoracion.idUsuario).collection('valoraciones').add({
                 'fechaValoracion': firestore.SERVER_TIMESTAMP,
