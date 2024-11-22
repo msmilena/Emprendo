@@ -1,0 +1,84 @@
+.emprendimiento-detail {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+
+  
+  .emprendimiento-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background-color: #EDFEFF;
+    border-radius: 40px;
+    padding: 20px;
+    margin: 20px;
+  }
+  
+  .emprendimiento-column {
+    padding: 20px;
+  }
+  
+  .image-column {
+    width: 30%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .image-column img {
+    max-width: 70%;
+    border-radius: 10px;
+  }
+  
+  .info-column {
+    width: 70%;
+    padding-left: 20px;
+    border-left: 1px solid #3D5A80;
+  }
+  
+  .rating-section {
+    margin-top: 20px;
+  }
+  
+  .rating-section button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #3D5A80;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .rating-section button:hover {
+    background-color: #2C3E50;
+  }
+  .subtitulo{
+    color:#3D5A80
+  }
+
+  .breadcrumb {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  
+.breadcrumb a {
+    color: #3D5A80;
+    text-decoration: none;
+  }
+  
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .seccion-superior {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea los elementos al inicio de la fila */
+  }
