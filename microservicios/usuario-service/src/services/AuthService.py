@@ -6,6 +6,7 @@ from src.utils.errors.CustomException import CustomException
 from src.services.models.User import User
 from datetime import datetime
 from google.cloud.firestore_v1.base_query import FieldFilter
+import requests
 
 
 class AuthService:
@@ -53,6 +54,8 @@ class AuthService:
                 return {'success': False, 'message': 'El correo electrónico ya está en uso'}
 
             # Crear un nuevo documento de usuario en la base de datos
+            user_ref = db.collection('usuarios').document()
+            user.id = user_ref.id  # Asignar el ID generado por Firestore al usuario
             usuario_nuevo = {
                 "nombre": user.nombre,
                 "email": user.email,
@@ -61,13 +64,35 @@ class AuthService:
                 "tipoAuth": user.tipoAuth,
                 "fechaCreacion": datetime.now().isoformat()
             }
-            user_ref = db.collection('usuarios').document(user.id)
             user_ref.set(usuario_nuevo)
             print(f"Usuario registrado con ID: {user.id}")
             # Crear las colecciones "favoritos" y "valoraciones" dentro del documento del usuario
             user_ref.collection('favoritos').add({})
             user_ref.collection('valoraciones').add({})
 
-            return {'success': True, 'message': 'Usuario registrado exitosamente'}
+            return {'success': True, 'message': 'Usuario registrado exitosamente', 'user_id': user.id}
+        except Exception as ex:
+            raise CustomException(ex)
+
+    @classmethod
+    def register_user_with_emprendimiento(cls, user, emprendimiento_data, image_file):
+        try:
+            # Register user
+            user_registration_result = cls.register_user(user)
+            if not user_registration_result['success']:
+                return user_registration_result
+
+            # Use the Firestore-assigned user ID for the emprendimiento
+            user_id = user_registration_result['user_id']
+            emprendimiento_data['idEmprendedor'] = user_id
+
+            # Register emprendimiento with image
+            emprendimiento_service_url = "https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/guardarEmprendimiento"
+            files = {'file': image_file}
+            response = requests.post(emprendimiento_service_url, data=emprendimiento_data, files=files)
+            if response.status_code == 200:
+                return {'success': True, 'message': 'Usuario y emprendimiento registrados exitosamente'}
+            else:
+                return {'success': False, 'message': 'Error al registrar el emprendimiento'}
         except Exception as ex:
             raise CustomException(ex)

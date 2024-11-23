@@ -7,6 +7,7 @@ import "./CSS/Register-Emprendedor.css"; // Importa el archivo CSS específico
 import LeftSide from "../components/leftSide";
 import ProgressSteps from "../components/ProgressStep"; // Importa el nuevo componente
 import LogoUpload from "../components/LogoUpload";
+import { useNavigate } from "react-router-dom";
 
 function RegisterEmprendedor() {
   const [name, setName] = useState("");
@@ -17,6 +18,7 @@ function RegisterEmprendedor() {
   const [currentStep, setCurrentStep] = useState(1);
   const [nameStore, setNameStore] = useState("");
   const [logo, setLogo] = useState(null);
+  const navigate = useNavigate();  
 
   const handleNextStep = () => {
     setCurrentStep(currentStep + 1);
@@ -24,7 +26,39 @@ function RegisterEmprendedor() {
   const handleLogoChange = (event) => {
     setLogo(event.target.files[0]);
   };
-  const handleRegister = () => {};
+  const handleRegister = async () => {
+    const formData = new FormData();
+    formData.append("nombre", name);
+    formData.append("email", email);
+    formData.append("password", password);
+    formData.append("tipo", 'emprendedor'); // Replace with actual user type
+    formData.append("tipoAuth", 0); // Replace with actual auth type
+    formData.append("nombreComercial", nameStore);
+    formData.append("ruc", ruc);
+    formData.append("localizacion_latitud", 0); // Replace with actual latitaude
+    formData.append("localizacion_longitud", 0); // Replace with actual longitude
+    if (logo) {
+      formData.append("file", logo);
+    }
+    console.log("formData", formData);
+    try {
+      const response = await fetch("http://127.0.0.1:8080/auth/register_with_emprendimiento", {
+        method: "POST",
+        body: formData
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        alert("Usuario y emprendimiento registrados exitosamente");
+        navigate("/");
+      } else {
+        alert(result.message);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Error al registrar usuario y emprendimiento");
+    }
+  };
 
   const renderStepContent = () => {
     if (currentStep === 1) {
@@ -71,7 +105,7 @@ function RegisterEmprendedor() {
             Completa tus datos personales y del emprendimiento
           </p>
           <FormControl
-            controlId="formBasicName"
+            controlId="formBasicNameStore"
             type="text"
             placeholder="Ingresa nombre del emprendimiento"
             value={nameStore}
