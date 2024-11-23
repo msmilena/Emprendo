@@ -10,6 +10,7 @@ const FormControl = ({
   onChange,
   controlId,
   label,
+  error // Añadimos la prop error
 }) => {
   return (
     <Form.Group controlId={controlId}>
@@ -19,8 +20,9 @@ const FormControl = ({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
-        className="custom-form-control" // Aplica la clase CSS
+        className={`custom-form-control ${error ? 'is-invalid' : ''}`} // Modificamos la clase CSS
       />
+      {error && <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>}
     </Form.Group>
   );
 };

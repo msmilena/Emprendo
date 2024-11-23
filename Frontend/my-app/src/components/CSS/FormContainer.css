@@ -9,3 +9,14 @@
     gap: 15px;
   }
   
+  .form-row {
+    display: flex; /* Utiliza Flexbox */
+    justify-content: space-between; /* Espacio entre los campos */
+    gap: 10px; /* Espacio entre los campos */
+  }
+  
+  .form-row .text-input {
+    flex: 1; /* Hace que los campos se expandan para ocupar el mismo espacio */
+    min-width: 0; /* Evita que el contenido se desborde */
+  }
+  

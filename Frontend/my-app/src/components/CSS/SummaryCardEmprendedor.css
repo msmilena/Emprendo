@@ -6,8 +6,9 @@
     text-align: center;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     font-size: 180%;
+    width: 400px;
   }
 .puntuacion_Valores
-{
-  font-size: -webkit-xxx-large
-}
+  {
+    font-size: -webkit-xxx-large
+  }

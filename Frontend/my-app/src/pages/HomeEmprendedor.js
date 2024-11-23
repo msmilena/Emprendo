@@ -4,6 +4,7 @@ import Sidebar from "../components/SidebarEmprendedor";
 import Header from "../components/HeaderEmprendedor";
 import DashboardOverview from "../components/DashboardOverviewEmprendedor";
 import TopProductsList from "../components/TopProductsListEmprendedor";
+import Button from "../components/Button";
 import './CSS/HomeEmprendedor.css';
 
 function HomeEmprendedor() {
@@ -13,7 +14,16 @@ function HomeEmprendedor() {
       <div className="main-content">
         <Header />
         <div className="dashboard-content">
-          <h2>Resumen del emprendimiento</h2>
+          {/* Contenedor con flexbox para título y botón */}
+          <h2 className="centered-title">Resumen del emprendimiento</h2>
+          <p className="custom-button">
+            <Button 
+              variant="primary" 
+              onClick={() => alert("Botón presionado")}
+            >
+              Ver dashboard
+            </Button>
+          </p>
           <DashboardOverview />
           <TopProductsList />
         </div>

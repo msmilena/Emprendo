@@ -19,8 +19,39 @@ function RegisterEmprendedor() {
   const [nameStore, setNameStore] = useState("");
   const [logo, setLogo] = useState(null);
   const navigate = useNavigate();  
+  const [errors, setErrors] = useState({});  // Añade este estado para manejar errores
+
+  const validateStep1 = () => {
+    const newErrors = {};
+    if (!name.trim()) newErrors.name = "El nombre es requerido";
+    if (!email.trim()) newErrors.email = "El correo es requerido";
+    if (!password.trim()) newErrors.password = "La contraseña es requerida";
+    return newErrors;
+  };
+
+  const validateStep2 = () => {
+    const newErrors = {};
+    if (!nameStore.trim()) newErrors.nameStore = "El nombre del emprendimiento es requerido";
+    if (!ubicacion.trim()) newErrors.ubicacion = "La ubicación es requerida";
+    if (!ruc.trim()) newErrors.ruc = "El RUC es requerido";
+    return newErrors;
+  };
 
   const handleNextStep = () => {
+    let stepErrors = {};
+    
+    if (currentStep === 1) {
+      stepErrors = validateStep1();
+    } else if (currentStep === 2) {
+      stepErrors = validateStep2();
+    }
+
+    if (Object.keys(stepErrors).length > 0) {
+      setErrors(stepErrors);
+      return; // No avanza si hay errores
+    }
+
+    setErrors({}); // Limpia errores si todo está bien
     setCurrentStep(currentStep + 1);
   };
   const handleBackStep = () => {
@@ -78,7 +109,9 @@ function RegisterEmprendedor() {
             value={name}
             onChange={(e) => setName(e.target.value)}
             label="Nombre Completo"
+            error={errors.name} // Añade esta prop
           />
+
           <FormControl
             controlId="formBasicEmail"
             type="email"
@@ -86,7 +119,9 @@ function RegisterEmprendedor() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             label="Correo electrónico"
+            error={errors.email}
           />
+
           <FormControl
             controlId="formBasicPassword"
             type="password"
@@ -94,6 +129,7 @@ function RegisterEmprendedor() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             label="Contraseña"
+            error={errors.password}
           />
           <Button variant="orange" onClick={handleNextStep}>
             Siguiente
@@ -114,7 +150,9 @@ function RegisterEmprendedor() {
             value={nameStore}
             onChange={(e) => setNameStore(e.target.value)}
             label="Nombre del Emprendimiento"
+            error={errors.nameStore}
           />
+
           <FormControl
             controlId="formBasicUbicacion"
             type="text"
@@ -122,20 +160,21 @@ function RegisterEmprendedor() {
             value={ubicacion}
             onChange={(e) => setUbicacion(e.target.value)}
             label="Ubicación del Emprendimiento"
+            error={errors.ubicacion}
           />
+
           <FormControl
             controlId="formBasicRuc"
-            type="number"
+            type="text"
             placeholder="Ingresa el Registro Único de Contribuyente"
             value={ruc}
             onChange={(e) => {
               const valor = e.target.value;
-              // Solo permite números y limita a 11 dígitos
               if ((/^\d*$/.test(valor)) && (valor.length <= 11)) {
                 setRuc(valor);
               }
             }}
-            maxLength={11}
+            error={errors.ruc}
             label="RUC"
           />
           <div style={{ display: 'flex', gap: '10px' }}>

@@ -16,7 +16,7 @@
   }
   
   .centered-title {
-    margin: 0;
+    margin-bottom: 20px;
     flex-grow: 1; /* Permite que el título ocupe todo el espacio disponible */
     text-align: center; /* Centra el texto */
   }

@@ -94,4 +94,3 @@ def get_favorito():
         return jsonify({'message': str(e), 'success': False}), 500
     
 
-#emprendimientos    productos

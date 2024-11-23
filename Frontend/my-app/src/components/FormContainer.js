@@ -39,9 +39,9 @@ const FormContainer = () => {
   return (
 
       <form className="form-container">
-        <TextInput label="Emprendimiento" name="emprendimiento" value={formData.emprendimiento} onChange={handleChange} />
-        <TextInput label="RUC" name="ruc" value={formData.ruc} onChange={handleChange} />
-        <TextInput label="Ubicación" name="ubicacion" value={formData.ubicacion} onChange={handleChange} />
+        <TextInput disabled={true} label="Emprendimiento" name="emprendimiento" value={formData.emprendimiento} onChange={handleChange} />
+        <TextInput disabled={true} label="RUC" name="ruc" value={formData.ruc} onChange={handleChange} />
+        <TextInput disabled={true} label="Ubicación" name="ubicacion" value={formData.ubicacion} onChange={handleChange} />
         <TextArea label="Descripción" name="descripcion" value={formData.descripcion} onChange={handleChange} />
         
         <SelectInput label="Categoría" name="categoria" value={formData.categoria} options={["Opción 1", "Opción 2"]} onChange={handleChange} />

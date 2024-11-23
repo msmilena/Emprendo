@@ -7,9 +7,12 @@ import RegisterUsuario from "./pages/RegisterUsuario";
 import TipoPerfil from "./pages/TipoPerfil";
 import Home from "./pages/Home";
 import DetalleEmprendimiento from "./pages/Detalle-Emprendimiento";
-import FavoritosUsuarios from "./pages/FavoritosUsuario.js";
-import HomeEmprendedor from "./pages/HomeEmprendedor.js"
-import Emprendimiento from "./pages/EmprendimientoDatos.js"
+import FavoritosUsuarios from "./pages/FavoritosUsuario";
+import HomeEmprendedor from "./pages/HomeEmprendedor";
+import ProductosEmprendedor from "./pages/ProductosEmprendedor";
+import EmprendimientoDatos from "./pages/EmprendimientoDatos";
+import PublicidadEmprendedor from "./pages/PublicidadEmprendedor";
+import MiPerfilEmprendedor from "./pages/MiPerfilEmprendedor";
 import './App.css'
 
 function App() {
@@ -24,8 +27,14 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/emprendimiento/:id" element={<DetalleEmprendimiento />} />
         <Route path="/favoritos/:id" element={< FavoritosUsuarios />} />
-        <Route path="/homeEmprendedor" element={< HomeEmprendedor />} />
-        <Route path="/detalleEmpredimiento/:id" element={< Emprendimiento />} />
+        <Route path="/detalleEmprendimiento/:id" element={< DetalleEmprendimiento />} />
+
+        <Route path="/homeEmprendedor/:id" element={< HomeEmprendedor />} />
+        <Route path="/productosEmprendedor/:id" element={< ProductosEmprendedor />} />
+        <Route path="/emprendimientoDatos/:id" element={< EmprendimientoDatos />} />
+        <Route path="/publicidadEmprendedor/:id" element={< PublicidadEmprendedor />} />
+        <Route path="/miPerfilEmprendedor/:id" element={< MiPerfilEmprendedor />} />
+
       </Routes>
     </Router>
   );
