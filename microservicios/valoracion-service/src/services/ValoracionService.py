@@ -135,10 +135,6 @@ class ValoracionService():
                 'idProducto': producto_ref  # Se guarda la referencia al producto
             })
 
-            #actualización cantidad favorito de producto!!!
-            #producto_ref.update({
-            #    'cantidadFavoritos': firestore.Increment(1)  # Incrementa en 1
-            #})
             return {'success': True, 'message': 'Producto favorito guardado exitosamente'}
         except Exception as ex:
             raise CustomException(ex)

@@ -9,7 +9,7 @@ In the project directory, you can run:
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://127.0.0.1:8080](http://127.0.0.1:8080) to view it in your browser.
+Open [https://emprendo-valoracion-service-26932749356.us-west1.run.app](https://emprendo-valoracion-service-26932749356.us-west1.run.app) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.

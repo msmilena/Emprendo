@@ -58,7 +58,7 @@ function Login() {
       const user = userCredential.user;
       const token = await user.getIdToken();
       console.log(token);
-      const response = await fetch("http://127.0.0.1:8080/auth/login", {
+      const response = await fetch("https://emprendo-valoracion-service-26932749356.us-west1.run.app/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -88,7 +88,7 @@ function Login() {
       const user = userCredential.user;
       console.log("User logged in with Google:", user);
       const token = await user.getIdToken();
-      const response = await fetch("http://127.0.0.1:8080/auth/login", {
+      const response = await fetch("https://emprendo-valoracion-service-26932749356.us-west1.run.app/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -13,7 +13,7 @@ paths:
       summary: Iniciar sesión
       operationId: login
       x-google-backend:
-        address: http://127.0.0.1:8080
+        address: https://emprendo-valoracion-service-26932749356.us-west1.run.app
       parameters:
         - in: body
           name: body
@@ -74,7 +74,7 @@ paths:
       summary: Registrar un nuevo usuario
       operationId: register
       x-google-backend:
-        address: http://127.0.0.1:8080
+        address: https://emprendo-valoracion-service-26932749356.us-west1.run.app
       parameters:
         - in: body
           name: body
@@ -132,7 +132,7 @@ paths:
       summary: Obtener información del usuario
       operationId: getInfo
       x-google-backend:
-        address: http://127.0.0.1:8080
+        address: https://emprendo-valoracion-service-26932749356.us-west1.run.app
       parameters:
         - in: query
           name: userId
