@@ -23,6 +23,9 @@ function RegisterEmprendedor() {
   const handleNextStep = () => {
     setCurrentStep(currentStep + 1);
   };
+  const handleBackStep = () => {
+    setCurrentStep(currentStep - 1);
+  };
   const handleLogoChange = (event) => {
     setLogo(event.target.files[0]);
   };
@@ -125,12 +128,24 @@ function RegisterEmprendedor() {
             type="number"
             placeholder="Ingresa el Registro Único de Contribuyente"
             value={ruc}
-            onChange={(e) => setRuc(e.target.value)}
+            onChange={(e) => {
+              const valor = e.target.value;
+              // Solo permite números y limita a 11 dígitos
+              if ((/^\d*$/.test(valor)) && (valor.length <= 11)) {
+                setRuc(valor);
+              }
+            }}
+            maxLength={11}
             label="RUC"
           />
-          <Button variant="orange" onClick={handleNextStep}>
-            Siguiente
-          </Button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <Button variant="secondary" onClick={handleBackStep}>
+              Atrás
+            </Button>
+            <Button variant="orange" onClick={handleNextStep}>
+              Siguiente
+            </Button>
+          </div>
         </>
       );
     } else if (currentStep === 3) {
@@ -141,9 +156,14 @@ function RegisterEmprendedor() {
             Completa tus datos personales y del emprendimiento
           </p>
           <LogoUpload onLogoChange={handleLogoChange} />
-          <Button variant="orange" onClick={handleRegister}>
-            Registrar
-          </Button>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <Button variant="secondary" onClick={handleBackStep}>
+              Atrás
+            </Button>
+            <Button variant="orange" onClick={handleRegister}>
+              Registrar
+            </Button>
+          </div>
         </>
       );
     }
