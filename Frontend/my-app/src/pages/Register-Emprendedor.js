@@ -12,6 +12,8 @@ function RegisterEmprendedor() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [ubicacion, setUbicacion] = useState("");
+  const [ruc, setRuc] = useState("");
   const [currentStep, setCurrentStep] = useState(1);
   const [nameStore, setNameStore] = useState("");
   const [logo, setLogo] = useState(null);
@@ -77,19 +79,19 @@ function RegisterEmprendedor() {
             label="Nombre del Emprendimiento"
           />
           <FormControl
-            controlId="formBasicEmail"
+            controlId="formBasicUbicacion"
             type="text"
             placeholder="Ingresa la ubicación del emprendimiento"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={ubicacion}
+            onChange={(e) => setUbicacion(e.target.value)}
             label="Ubicación del Emprendimiento"
           />
           <FormControl
-            controlId="formBasicPassword"
+            controlId="formBasicRuc"
             type="number"
             placeholder="Ingresa el Registro Único de Contribuyente"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={ruc}
+            onChange={(e) => setRuc(e.target.value)}
             label="RUC"
           />
           <Button variant="orange" onClick={handleNextStep}>
