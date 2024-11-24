@@ -82,12 +82,12 @@ def register_with_emprendimiento():
     email = data.get("email")
     password = data.get("password")
     tipo = data.get("tipo")
-    tipoAuth = int(data.get("tipoAuth"))  # Ensure tipoAuth is an integer
+    tipoAuth = data.get("tipoAuth")
     emprendimiento_data = {
         'nombreComercial': data.get("nombreComercial"),
         'ruc': data.get("ruc"),
-        'localizacion_latitud': float(data.get("localizacion_latitud")),  # Convert to float
-        'localizacion_longitud': float(data.get("localizacion_longitud"))  # Convert to float
+        'localizacion_latitud': data.get("localizacion_latitud"),
+        'localizacion_longitud': data.get("localizacion_longitud")
     }
 
     # Validación del formato del correo electrónico
