@@ -1,0 +1,10 @@
+.preferences-container {
+  background-color: lightgray; /* Color de fondo gris */
+  padding: 20px;
+  min-height: 180px; /* Establece una altura mínima para evitar que el contenido se mueva */
+  position: relative; /* Asegura que el contenedor mantenga su posición */
+  border-radius: 15px; /* Establece esquinas redondeadas */
+}
+.preferences-container .btn-success {
+  background-color: green;
+}

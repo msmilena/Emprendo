@@ -13,6 +13,9 @@ import ProductosEmprendedor from "./pages/ProductosEmprendedor";
 import EmprendimientoDatos from "./pages/EmprendimientoDatos";
 import PublicidadEmprendedor from "./pages/PublicidadEmprendedor";
 import MiPerfilEmprendedor from "./pages/MiPerfilEmprendedor";
+
+import RegisterPreferencias from "./pages/RegisterPreferencias";
+
 import './App.css'
 
 function App() {
@@ -28,6 +31,9 @@ function App() {
         <Route path="/emprendimiento/:id" element={<DetalleEmprendimiento />} />
         <Route path="/favoritos/:id" element={< FavoritosUsuarios />} />
         <Route path="/detalleEmprendimiento/:id" element={< DetalleEmprendimiento />} />
+        
+        <Route path="/registerPreferencias" element={<RegisterPreferencias />} />
+
 
         <Route path="/homeEmprendedor/:id" element={< HomeEmprendedor />} />
         <Route path="/productosEmprendedor/:id" element={< ProductosEmprendedor />} />
