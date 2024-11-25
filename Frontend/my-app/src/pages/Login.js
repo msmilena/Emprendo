@@ -120,10 +120,10 @@ function Login() {
   return (
     <Container fluid className="">
       <Row>
-        <Col xs={6} className="left-side">
+        <Col xs={5} className="left-side">
           <LeftSide />
         </Col>
-        <Col xs={6} className="right-side">
+        <Col xs={7} className="right-side">
           <h1>¡Inicia sesión en Emprendo!</h1>
           <p className="textIngreso">Ingresa tus credenciales</p>
           <form>

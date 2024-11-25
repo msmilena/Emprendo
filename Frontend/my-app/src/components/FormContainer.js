@@ -56,7 +56,7 @@ const FormContainer = () => {
 
         <LogoUploader logo={formData.logo} onUpload={handleLogoUpload} />
         
-        <SubmitButton onClick={handleSubmit} />
+        <SubmitButton onClick={handleSubmit} nameText={"Guardar"}/>
       </form>
   );
 };

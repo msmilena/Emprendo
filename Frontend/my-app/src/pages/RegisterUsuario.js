@@ -42,7 +42,7 @@ function RegisterUsuario() {
           nombre,
           email,
           password,
-          tipo: "user", // Puedes ajustar esto según tu lógica de negocio
+          tipo: "cliente", 
           tipoAuth: 0
         }),
       });
@@ -79,7 +79,7 @@ function RegisterUsuario() {
           nombre: user.displayName,
           email: user.email,
           password: "", // No necesitas la contraseña aquí
-          tipo: "user", // Puedes ajustar esto según tu lógica de negocio
+          tipo: "cliente", // Puedes ajustar esto según tu lógica de negocio
           tipoAuth: 1
         }),
       });

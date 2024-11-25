@@ -2,10 +2,10 @@
 import React from "react";
 import "./CSS/SubmitButton.css";
 
-const SubmitButton = ({ onClick }) => {
+const SubmitButton = ({ onClick, nameText,className}) => {
   return (
-    <button className="submit-button" type="button" onClick={onClick}>
-      Guardar
+    <button className={`submit-button ${className}`}type="button" onClick={onClick}>
+      {nameText}
     </button>
   );
 };

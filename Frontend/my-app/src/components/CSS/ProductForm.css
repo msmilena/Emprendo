@@ -1,0 +1,22 @@
+.marginTop20px{
+    margin-top: 20px;
+}
+
+.marginTop50px{
+    margin-top: 50px;
+}
+
+.cancelarBtn{
+    background-color: #FF8179 !important;
+    width: 35%;
+}
+
+.guaAgreBtn{
+    width: 35%;
+}
+
+.form-buttons{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}

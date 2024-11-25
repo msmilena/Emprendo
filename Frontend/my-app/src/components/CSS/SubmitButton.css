@@ -4,10 +4,10 @@
     color: white;
     padding: 10px 15px;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px;
     cursor: pointer;
     font-size: 16px;
-    margin-top: 20px;
+    margin-top: 50px;
   }
   
   .submit-button:hover {

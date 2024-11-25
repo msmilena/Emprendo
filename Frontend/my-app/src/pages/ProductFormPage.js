@@ -22,14 +22,14 @@ const ProductFormPage = ({ mode }) => {
     }, [id, isEditMode, isViewMode]);
 
     const handleSave = (formData) => {
-        if (mode === 'view') {
+        if (isEditMode) {
             console.log('Guardar cambios de edición:', formData);
-        } else if (mode === 'add') {
+            // Aquí agregarías la lógica para guardar cambios en la base de datos o API.
+        } else if (isNewMode) {
             console.log('Agregar nuevo producto:', formData);
-        }else if (mode === 'new') {
-            console.log('Agregar nuevo producto:', formData);
+            // Aquí agregarías la lógica para agregar un nuevo producto.
         }
-        navigate('/productos'); // Redirigir después de guardar
+        navigate('/productosEmprendedor'); // Redirigir después de guardar
     };
 
     return (

@@ -46,8 +46,9 @@ function ProductosEmprendedor() {
             <h2 className="centered-title">Lista de productos</h2>
             <ProductsTable data={datos} />
             <Button 
-                variant="primary" 
+                variant="btn-center btn-color-verde" 
                 onClick={handleAddProduct}
+                style={{"background-color": "#4CAF50 !important" }}
                 >
                 Agregar producto
             </Button>

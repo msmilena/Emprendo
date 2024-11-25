@@ -33,7 +33,7 @@ function App() {
 
         <Route path="/homeEmprendedor/:id" element={< HomeEmprendedor />} />
         <Route path="/productosEmprendedor/:id" element={< ProductosEmprendedor />} />
-        <Route path="/productosEmprendedor/nuevo" element={<ProductFormPage mode="add" />} />
+        <Route path="/productosEmprendedor/nuevo" element={<ProductFormPage mode="new" />} />
         <Route path="/productosEmprendedor/ver/:id" element={<ProductFormPage mode="view" />} />
         <Route path="/productosEmprendedor/editar/:id" element={<ProductFormPage mode="edit" />} />
 

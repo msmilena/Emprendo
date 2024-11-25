@@ -1,0 +1,12 @@
+.switch {
+    display: flex;
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    
+    .switch label{
+      font-weight: bold;
+      margin-bottom: 10px;
+      width: 20%;
+    }

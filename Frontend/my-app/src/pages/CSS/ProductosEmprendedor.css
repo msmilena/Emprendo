@@ -21,10 +21,20 @@
     text-align: center; /* Centra el texto */
   }
   
-  .custom-button {
+  /*.custom-button {
     width: 200px;
     padding: 10px;
     margin-left: 20px;
+  }*/
+  
+  .btn-center{
+    margin: 0 auto;
+    width: 50%;
+    border: none !important;
+    box-shadow: 0 0 5px #a7a7a7;
   }
   
-  
+  .btn-color-verde{
+    margin-top: 50px;
+    background-color:#4CAF50 !important
+  }
