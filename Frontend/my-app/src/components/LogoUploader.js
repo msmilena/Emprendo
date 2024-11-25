@@ -2,7 +2,7 @@
 import React from "react";
 import "./CSS/LogoUploader.css";
 
-const LogoUploader = ({ logo, onUpload }) => {
+const LogoUploader = ({ logo, onUpload, disabled}) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     onUpload(file);
@@ -11,7 +11,7 @@ const LogoUploader = ({ logo, onUpload }) => {
   return (
     <div className="logo-uploader">
       <label>Logo</label>
-      <input type="file" accept="image/*" onChange={handleFileChange} />
+      <input type="file" accept="image/*" onChange={handleFileChange} disabled={disabled}/>
       {logo && <img src={URL.createObjectURL(logo)} alt="Logo" className="logo-preview" />}
     </div>
   );

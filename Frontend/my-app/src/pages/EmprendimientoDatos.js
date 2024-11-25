@@ -2,7 +2,7 @@
 import React from "react";
 import Sidebar from "../components/SidebarEmprendedor";
 import Header from "../components/HeaderEmprendedor";
-import DashBoarDatosEmprendimiento from "../components/DashBoarDatosEmprendimiento";
+import FormContainer from "../components/FormContainer";
 import './CSS/HomeEmprendedor.css';
 
 function HomeEmprendedor() {
@@ -11,10 +11,7 @@ function HomeEmprendedor() {
       <Sidebar />
       <div className="main-content">
         <Header />
-        <div className="dashboard-content">
-          <h2>Información del emprendimiento</h2>
-          <DashBoarDatosEmprendimiento />
-        </div>
+        <FormContainer />
       </div>
     </div>
   );
