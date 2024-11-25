@@ -14,6 +14,7 @@ import EmprendimientoDatos from "./pages/EmprendimientoDatos";
 import PublicidadEmprendedor from "./pages/PublicidadEmprendedor";
 import MiPerfilEmprendedor from "./pages/MiPerfilEmprendedor";
 import ProductFormPage from "./pages/ProductFormPage";
+import DetallesCuenta from "./pages/DetallesCuenta";
 import './App.css'
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
         <Route path="/emprendimientoDatos/:id" element={< EmprendimientoDatos />} />
         <Route path="/publicidadEmprendedor/:id" element={< PublicidadEmprendedor />} />
         <Route path="/miPerfilEmprendedor/:id" element={< MiPerfilEmprendedor />} />
+        <Route path="/profile" element={<DetallesCuenta />} />
 
       </Routes>
     </Router>
