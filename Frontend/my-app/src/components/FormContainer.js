@@ -6,7 +6,6 @@ import SelectInput from "./SelectInput";
 import SocialLinks from "./SocialLinks";
 import LogoUploader from "./LogoUploader";
 import SubmitButton from "./SubmitButton";
-import Button from "./Button"
 import "./CSS/FormContainer.css";
 
 const FormContainer = () => {
