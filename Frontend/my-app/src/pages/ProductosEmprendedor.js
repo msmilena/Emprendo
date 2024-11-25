@@ -5,6 +5,7 @@ import Header from "../components/HeaderEmprendedor";
 import Button from "../components/Button";
 import ProductsTable from "../components/ProductsTable";
 import './CSS/ProductosEmprendedor.css';
+import { useNavigate } from 'react-router-dom';
 
 function ProductosEmprendedor() {
 
@@ -30,6 +31,12 @@ function ProductosEmprendedor() {
         }
     ];
 
+    const navigate = useNavigate();
+
+    const handleAddProduct = () => {
+        navigate('/productosEmprendedor/nuevo');
+    };
+
     return (
         <div className="app-container">
         <Sidebar />
@@ -40,10 +47,10 @@ function ProductosEmprendedor() {
             <ProductsTable data={datos} />
             <Button 
                 variant="primary" 
-                onClick={() => alert("Botón presionado")}
+                onClick={handleAddProduct}
                 >
                 Agregar producto
-                </Button>
+            </Button>
             </div>
         </div>
         </div>

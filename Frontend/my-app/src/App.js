@@ -13,6 +13,7 @@ import ProductosEmprendedor from "./pages/ProductosEmprendedor";
 import EmprendimientoDatos from "./pages/EmprendimientoDatos";
 import PublicidadEmprendedor from "./pages/PublicidadEmprendedor";
 import MiPerfilEmprendedor from "./pages/MiPerfilEmprendedor";
+import ProductFormPage from "./pages/ProductFormPage";
 import './App.css'
 
 function App() {
@@ -31,6 +32,10 @@ function App() {
 
         <Route path="/homeEmprendedor/:id" element={< HomeEmprendedor />} />
         <Route path="/productosEmprendedor/:id" element={< ProductosEmprendedor />} />
+        <Route path="/productosEmprendedor/nuevo" element={<ProductFormPage mode="add" />} />
+        <Route path="/productosEmprendedor/ver/:id" element={<ProductFormPage mode="view" />} />
+        <Route path="/productosEmprendedor/editar/:id" element={<ProductFormPage mode="edit" />} />
+
         <Route path="/emprendimientoDatos/:id" element={< EmprendimientoDatos />} />
         <Route path="/publicidadEmprendedor/:id" element={< PublicidadEmprendedor />} />
         <Route path="/miPerfilEmprendedor/:id" element={< MiPerfilEmprendedor />} />

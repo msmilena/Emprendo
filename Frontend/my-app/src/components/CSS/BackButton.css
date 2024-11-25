@@ -1,0 +1,22 @@
+/* BackButton.css */
+.back-button {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: none;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .back-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .back-button span {
+    margin-left: 8px;
+  }
+  

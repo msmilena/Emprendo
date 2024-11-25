@@ -3,15 +3,23 @@ import React, { useState } from "react";
 import { Eye, Edit, Trash2 } from 'lucide-react';
 import "./CSS/ProductsTable.css";
 import Modal from "./Modal";
+import { useNavigate } from 'react-router-dom';
 
 const ProductsTable = ({ data }) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
-
-    const handleView = (id) => console.log('Ver', id);
-    const handleEdit = (id) => console.log('Editar', id);
     
+    const navigate = useNavigate();
+
+    const handleViewClick = (product) => {
+        navigate(`/productosEmprendedor/ver/${product.id}`);
+    };
+
+    const handleEditClick = (product) => {
+        navigate(`/productosEmprendedor/editar/${product.id}`);
+    };
+
     const handleDeleteClick = (product) => {
         setSelectedProduct(product);
         setIsModalOpen(true);
@@ -52,13 +60,13 @@ const ProductsTable = ({ data }) => {
                 <div className="action-buttons">
                     <button 
                         className="action-button view"
-                        onClick={() => handleView(item.id)}
+                        onClick={() => handleViewClick(item)}
                     >
                         <Eye size={18} />
                     </button>
                     <button 
                         className="action-button edit"
-                        onClick={() => handleEdit(item.id)}
+                        onClick={() => handleEditClick(item)}
                     >
                         <Edit size={18} />
                     </button>

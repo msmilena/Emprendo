@@ -5,7 +5,7 @@ import "./CSS/SubmitButton.css";
 const SubmitButton = ({ onClick }) => {
   return (
     <button className="submit-button" type="button" onClick={onClick}>
-      Actualizar
+      Guardar
     </button>
   );
 };
