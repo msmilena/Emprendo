@@ -1,0 +1,20 @@
+.avatar--input label{
+    margin-bottom: 0px;
+    width: 100% !important;
+    cursor: pointer !important;
+}
+
+.avatar--input {
+    position: relative;
+  }
+  
+  #avatar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  

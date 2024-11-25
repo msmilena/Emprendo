@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import SidebarEmprendedor from "../components/SidebarEmprendedor";
 import { MdEdit } from "react-icons/md";
 import "./CSS/DetallesCuenta.css";
-import Button from "../components/Button";
+import SubmitButton from "../components/SubmitButton";
 import HeaderEmprendedor from "../components/HeaderEmprendedor";
+import TextInput from "../components/TextInput";
+import AvatarInput from "../components/AvatarInput";
 
 const initialUserInfo = {
   name: "Esmeralda",
@@ -41,84 +43,73 @@ const DetallesCuenta = () => {
     <div className="account--details--page">
       <SidebarEmprendedor />
 
-      <div className="account--details--form--container">
+      <div className="main-content">
         <HeaderEmprendedor />
-        <strong className="account--details--page--title">Mi perfil</strong>
-        <div className="form--account--details">
-          <div className="form--field">
-            <label className="form--label">Nombres</label>
-            <input
-              disabled
-              type="text"
+        <div className="dashboard-content">
+          <h2 className="centered-title">Mi Perfil</h2>
+          <div className="dashboard-content">
+            <TextInput
+              label="Nombres"
               name="name"
               value={userDetails.name}
-              className="form--input"
-              onChange={(e) => handleChangeDetails(e)}
-            ></input>
-          </div>
-          <div className="form--field">
-            <label className="form--label">Apellidos</label>
-            <input
-              disabled
-              type="text"
+              disabled={true}
+              className="form--field marginTop20px"
+              onChange={handleChangeDetails}
+            />
+            
+            <TextInput
+              label="Apellidos"
               name="surname"
               value={userDetails.surname}
-              className="form--input"
-              onChange={(e) => handleChangeDetails(e)}
-            ></input>
-          </div>
-          <div className="form--field">
-            <label className="form--label">Correo</label>
-            <input
-              disabled={!editEmail}
-              name="email"
-              value={userDetails.email}
-              type="text"
-              className="form--input"
-              onChange={(e) => handleChangeDetails(e)}
-            ></input>
-            <div className="edit--btn" onClick={() => setEditEmail(!editEmail)}>
-              <MdEdit />
-            </div>
-          </div>
-          <div className="form--field">
-            <label className="form--label">Contraseña</label>
-            <input
-              name="password"
-              disabled={!editPassword}
-              value={userDetails.password}
-              type={editPassword ? "text" : "password"}
-              onChange={(e) => handleChangeDetails(e)}
-              className="form--input"
-            ></input>
-            <div
-              className="edit--btn"
-              onClick={() => setEditPassword(!editPassword)}
-            >
-              <MdEdit />
-            </div>
-          </div>
-          <div className="avatar--form">
-            <p>Imagen de perfil</p>
-            <div className="avatar--field">
-              <img
-                alt="avatar"
-                className="avatar--image"
-                src={userDetails.avatar}
-              ></img>
-            </div>
-            <div className="avatar--input">
-              <label htmlFor="avatar">Cambiar imagen de perfil</label>
-              <input
-                id="avatar"
-                type="file"
-                name="avatar"
-                accept="image/*"
-                onChange={(e) => handleChangeAvatar(e)}
+              disabled={true}
+              className="form--field marginTop20px"
+              onChange={handleChangeDetails}
+            />
+
+            <div className="form--field">
+              <TextInput
+                label="Correo"
+                name="email"
+                value={userDetails.email}
+                disabled={!editEmail}
+                onChange={handleChangeDetails}
+                className="editable-field marginTop20px"
               />
+              <div
+                className="edit--btn"
+                onClick={() => setEditEmail(!editEmail)}
+              >
+                <MdEdit />
+              </div>
             </div>
+
+            <div className="form--field">
+              <TextInput
+                label="Contraseña"
+                name="password"
+                value={userDetails.password}
+                disabled={!editPassword}
+                type={editPassword ? "text" : "password"}
+                onChange={handleChangeDetails}
+                className="editable-field marginTop20px"
+              />
+              <div
+                className="edit--btn"
+                onClick={() => setEditPassword(!editPassword)}
+              >
+                <MdEdit />
+              </div>
+            </div>
+
+            <AvatarInput
+            className=" marginTop20px"
+              label="Imagen de perfil"
+              avatar={userDetails.avatar}
+              onChange={handleChangeAvatar}
+            />
+
+            <SubmitButton className="guaAgreBtn" nameText="Guardar cambios" onClick={handleSubmit} />
           </div>
-          <Button children="Guardar cambios" onClick={() => handleSubmit()} />
         </div>
       </div>
     </div>
