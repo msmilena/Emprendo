@@ -12,11 +12,19 @@ import HomeEmprendedor from "./pages/HomeEmprendedor";
 import ProductosEmprendedor from "./pages/ProductosEmprendedor";
 import EmprendimientoDatos from "./pages/EmprendimientoDatos";
 import PublicidadEmprendedor from "./pages/PublicidadEmprendedor";
+<<<<<<< Updated upstream
 import ProductFormPage from "./pages/ProductFormPage";
 import DetallesCuenta from "./pages/DetallesCuenta";
 import PerfilCliente from "./pages/PerfilCliente";
 import ProductosxCategoria from "./pages/ProductosxCategoria";
 import EmprendimientosList from "./pages/EmprendimientosList";
+=======
+import MiPerfilEmprendedor from "./pages/MiPerfilEmprendedor";
+
+import RegisterPreferencias from "./pages/RegisterPreferencias";
+import CategoriaEmprendimiento from "./pages/CategoriaEmprendimiento";
+
+>>>>>>> Stashed changes
 import './App.css'
 
 function App() {
@@ -29,6 +37,7 @@ function App() {
         <Route path="/registerUsuario" element={<RegisterUsuario />} />
         <Route path="/rolSelect" element={<TipoPerfil />} />
         <Route path="/login" element={<Login />} />
+<<<<<<< Updated upstream
         <Route path="/emprendimiento/:id" element={<DetalleEmprendimiento />} />
         <Route path="/perfilCliente" element={<PerfilCliente />} />
         <Route path="/favoritos/:id" element={< FavoritosUsuarios />} />
@@ -37,6 +46,12 @@ function App() {
         <Route path="/detalleEmprendimiento/:id" element={< DetalleEmprendimiento />} />
         
 
+=======
+        <Route path="/favoritos/:id" element={< FavoritosUsuarios />} />
+        <Route path="/DetalleEmprendimiento/:id" element={< DetalleEmprendimiento />} />
+        <Route path="/registerPreferencias" element={<RegisterPreferencias />} />
+        <Route path="/categoriaEmprendimiento" element={<CategoriaEmprendimiento/>}/>
+>>>>>>> Stashed changes
         <Route path="/homeEmprendedor/:id" element={< HomeEmprendedor />} />
         <Route path="/productosEmprendedor/:id" element={< ProductosEmprendedor />} />
         <Route path="/productosEmprendedor/nuevo" element={<ProductFormPage mode="new" />} />
