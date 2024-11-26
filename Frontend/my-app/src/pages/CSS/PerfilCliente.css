@@ -1,0 +1,12 @@
+.perfilUsuario-container{
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+    margin-top: 50px;
+}
+
+.perfilUsuario-container h2{
+    margin-top: 15px;
+      color: #3d5a80;
+      font-weight: 600;
+  }
