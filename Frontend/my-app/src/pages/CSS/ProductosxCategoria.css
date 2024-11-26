@@ -1,0 +1,14 @@
+.categoria-container {
+    width: 80%;
+    margin: 40px auto;
+  }
+
+  .categoria-container h2{
+    margin-top: 15px;
+      color: #3d5a80;
+      font-weight: 600;
+  }
+
+  .categoria-container span{
+      font-weight: 500 !important;
+  }

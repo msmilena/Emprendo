@@ -1,6 +1,6 @@
 .favorites-container {
     width: 80%;
-    margin: 0 auto;
+    margin: 40px auto;
   }
   
   .search-bar {
@@ -68,5 +68,4 @@
   margin-top: 15px;
     color: #3d5a80;
     font-weight: 600;
-    font-size: x-large;
 }
