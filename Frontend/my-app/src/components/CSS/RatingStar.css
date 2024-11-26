@@ -1,0 +1,47 @@
+/* src/components/CSS/RatingStar.css */
+
+.rating-star {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  font-size: 24px;
+  margin: 0 2px;
+  color: #ccc; /* Color base para estrellas vacías */
+}
+
+.star.full {
+  color: #FFD700; /* Color dorado para estrellas llenas */
+}
+
+.star.half {
+  position: relative;
+  color: #FFD700; /* Color dorado para la mitad de la estrella */
+  overflow: hidden;
+  display: inline-block;
+  width: 12px; /* Mostrar solo la mitad izquierda de la estrella */
+}
+
+.star.half::before {
+  content: '★';
+  position: absolute;
+  left: 0;
+  width: 50%;
+  overflow: hidden;
+  color: #FFD700; /* Color dorado para la mitad de la estrella */
+}
+
+.star.empty {
+  color: #ccc; /* Color gris para estrellas vacías */
+}
+
+  
+  .rating{
+    display: flex
+;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+  }

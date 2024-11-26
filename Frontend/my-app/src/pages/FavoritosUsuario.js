@@ -51,7 +51,7 @@ function FavoritosUsuario() {
       <section className="">
         <div className="favorites-container">
           <h2>Mis Favoritos</h2>
-          <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
+          <SearchBar searchTerm={searchTerm} onSearch={handleSearch} placeholder="  Encuentra productos"/>
           <ProductTable products={currentItems} />
           <Pagination
             currentPage={currentPage}

@@ -19,37 +19,37 @@ function ProductosxCategoria() {
         {
           title: "Emprendimiento 2",
           products: [
-            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen" },
+            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen",rating:2},
+            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:2 },
+            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:2},
           ]
         },
         {
           title: "Emprendimiento 3",
           products: [
-            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen" },
+            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen",rating:3},
+            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:3},
+            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:3},
           ]
         },
         {
           title: "Emprendimiento 4",
           products: [
-            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen" },
+            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen",rating:3 },
+            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:3 },
+            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:3},
           ]
         },
         {
           title: "Emprendimiento 5",
           products: [
-            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen" },
+            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen",rating:4},
+            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:4 },
+            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:4 },
+            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:4 },
+            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:4 },
+            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:4 },
+            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:4 },
           ]
         }
       ];

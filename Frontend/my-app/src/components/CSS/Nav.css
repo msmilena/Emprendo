@@ -32,6 +32,14 @@
   margin-bottom: 0;
   font-weight: 600;
 }
+
+.nav--container--links li{
+  cursor: pointer;
+}
+
+.user-profileli{
+  cursor: pointer;
+}
 .nav--container button {
   width: 150px;
   margin-top: 0;

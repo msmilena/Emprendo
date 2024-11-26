@@ -64,10 +64,10 @@ const Nav = () => {
             <strong>Emprendo</strong>
           </div>
           <ul className="nav--container--links">
-            <li>
+            <li onClick={() => navigate("/home")}>
               <p>Inicio</p>
             </li>
-            <li>
+            <li onClick={() => navigate("/listaEmprendimientos")}>
               <p>Emprendimientos</p>
             </li>
             <li>

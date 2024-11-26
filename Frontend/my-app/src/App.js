@@ -16,6 +16,7 @@ import ProductFormPage from "./pages/ProductFormPage";
 import DetallesCuenta from "./pages/DetallesCuenta";
 import PerfilCliente from "./pages/PerfilCliente";
 import ProductosxCategoria from "./pages/ProductosxCategoria";
+import EmprendimientosList from "./pages/EmprendimientosList";
 import './App.css'
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route path="/perfilCliente" element={<PerfilCliente />} />
         <Route path="/favoritos/:id" element={< FavoritosUsuarios />} />
         <Route path="/categoria/:id" element={< ProductosxCategoria />} />
+        <Route path="/listaEmprendimientos" element={< EmprendimientosList />} />
         <Route path="/detalleEmprendimiento/:id" element={< DetalleEmprendimiento />} />
         
 
