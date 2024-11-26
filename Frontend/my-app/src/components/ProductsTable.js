@@ -84,8 +84,8 @@ const ProductsTable = ({ data }) => {
         </table>
         <Modal
             isOpen={isModalOpen}
-            onClose={handleCloseModal}
-            onConfirm={handleDeleteConfirm}
+            onCancel={handleCloseModal}
+            onDelete={handleDeleteConfirm}
             productData={selectedProduct}
         >
             <h3>¿Está seguro de eliminar este producto?</h3>

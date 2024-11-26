@@ -5,18 +5,19 @@ import TextArea from "./TextArea";
 import SubmitButton from "./SubmitButton";
 import SelectInput from "./SelectInput";
 import Switch from "./Switch.js";
+import Button from "./Button.js";
 import ProductImageUploader from "./ProductImageUploader.js"
 import "./CSS/ProductForm.css";
 
 const ProductForm = ({ productData, onSave, isEditMode, isViewMode, isNewMode }) => {
     const [formState, setFormState] = useState({
-        id: productData?.id || "",
-        nombre_producto: productData?.nombre_producto || "",
-        descripcion_producto: productData?.descripcion_producto || "",
-        categoria_producto: productData?.categoria_producto || "",
-        precio: productData?.precio || "",
-        disponible: productData?.disponible || false,
-        imagen: productData?.imagen || null,
+        id: isNewMode ? "" : productData?.id || "",
+        nombre_producto: isNewMode ? "" : productData?.nombre_producto || "",
+        descripcion_producto: isNewMode ? "" : productData?.descripcion_producto || "",
+        categoria_producto: isNewMode ? "" : productData?.categoria_producto || "",
+        precio: isNewMode ? "" : productData?.precio || "",
+        disponible: isNewMode ? false : productData?.disponible || false,
+        imagen: isNewMode ? null : productData?.imagen || null,
     });
     const [errors, setErrors] = useState({}); 
     const handleInputChange = (e) => {
@@ -45,38 +46,37 @@ const ProductForm = ({ productData, onSave, isEditMode, isViewMode, isNewMode })
         const newErrors = {};
         if (!formState.nombre_producto.trim()) newErrors.nombre_producto = "El nombre es requerido";
         if (!formState.descripcion_producto.trim()) newErrors.descripcion_producto = "La descripción es requerida";
-        if (!formState.categoria_producto.trim()) newErrors.categoria_producto = "La categoría es requerida";
-        if (!formState.precio.trim()) newErrors.precio = "El precio es requerido";
-        if (!formState.imagen.trim()) newErrors.imagen = "La imagen es requerida";
+        if (!formState.categoria_producto || formState.categoria_producto === "Seleccionar") newErrors.categoria_producto = "La categoría es requerida";
+        if (!formState.precio || !formState.precio === 0) newErrors.precio = "El precio es requerido";
+        if (!formState.imagen) newErrors.imagen = "La imagen es requerida";
         return newErrors;
       };
     const handleSubmit = () => {
         let errors = {};
         errors = validateFields();
         if (Object.keys(errors).length > 0) {
-        setErrors(errors);
-        return; // No avanza si hay errores
+            setErrors(errors);
+            return; // No avanza si hay errores
         }
         setErrors({}); // Limpia errores si todo está bien
-        onSave(formState);
+        console.log("Producto actualizado");
+        navigate('/productosEmprendedor/APEQO6fohuDykka1Uqjn')
     };
     const navigate = useNavigate();
     const handleEdit = () => {
         navigate('/productosEmprendedor/editar/APEQO6fohuDykka1Uqjn');
     };
     const handleCancel = () => {
+        console.log("Edición cancelada");
         navigate('/productosEmprendedor/APEQO6fohuDykka1Uqjn')
     };
 
     return (
         <div className="product-form marginTop50px">  
         {isNewMode ? null : (
-            <TextInput
-            label="ID"
-            name="id"
-            value={formState.id}
-            onChange={handleInputChange}
-            disabled={true} 
+            <TextInput 
+                label="ID"  name="id"           value={formState.id}
+                onChange={handleInputChange}    disabled={true} 
             />
         )}
 

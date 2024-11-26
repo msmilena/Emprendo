@@ -1,21 +1,30 @@
-/* src/components/TextArea.css */
+    /* src/components/TextArea.css */
 .text-area {
-  display: flex;
+    display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 20px;
-  }
-  
-  .text-area label {
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+
+.text-area label {
     margin-bottom: 5px;
     font-weight: bold;
     width: 20%;
-  }
-  
-  .text-area textarea {
-    padding: 10px;
+}
+
+.text-area textarea {
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 75%;
-  }
-  
+}
+
+.text-area .error-message {
+    color: red;
+    font-size: 12px;
+    display: block;
+    margin-left: 25%;
+    text-align: left;
+}

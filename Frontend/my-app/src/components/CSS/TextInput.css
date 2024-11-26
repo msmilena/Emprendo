@@ -1,23 +1,30 @@
 /* src/components/TextInput.css */
 .text-input {
-  display: flex;
-      flex-direction: row;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-      width: 100%;
-  }
-  
-  .text-input label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+
+.text-input label {
     margin-bottom: 5px;
     font-weight: bold;
     width:20%;
-  }
-  
-  .text-input input {
+}
+
+.text-input input {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 75%;
-  }
-  
+}
+
+.text-input .error-message {
+    color: red;
+    font-size: 12px;
+    display: block;
+    margin-left: 25%;
+    text-align: left;
+}

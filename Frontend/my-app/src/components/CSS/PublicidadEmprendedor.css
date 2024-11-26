@@ -1,0 +1,110 @@
+.app-container {
+    display: flex;
+  }
+  
+  .centered-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .publicidad-actual {
+    text-align: center;
+    display: flex
+    ;
+        flex-direction: column;
+        align-items: center;
+  }
+  
+  .imagen-publicidad {
+    max-width: 25%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .btn.cambiar-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn.cambiar-btn:hover {
+    background-color: #218838;
+  }
+  
+  .actualizar-publicidad {
+    text-align: center;
+  }
+  
+  .publicidad-upload {
+    margin: 20px 0;
+    border: 2px dashed #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+  }
+  
+  .file-input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  
+  .imagen-preview {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .btn.cancelar-btn {
+    background-color: #dc3545;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn.cancelar-btn:hover {
+    background-color: #c82333;
+  }
+  
+  .btn.publicar-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn.publicar-btn:hover {
+    background-color: #218838;
+  }
+  
+  .btn.publicar-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+  }
+  
+  .width50{
+    width: 50%;
+  }
+
+  .backSpan span{
+    font-size: -webkit-xxx-large;
+  }
