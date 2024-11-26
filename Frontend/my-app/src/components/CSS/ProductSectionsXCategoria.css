@@ -1,0 +1,26 @@
+/* src/components/CSS/ProductSections.css */
+.product-sections-container {
+    text-align: center;
+    margin: 50px 0;
+  }
+  
+   .section {
+    margin-bottom: 30px;
+  }
+  
+  .section.hidden {
+    display: none;
+  }
+  
+  .product-sections-container .view-all-button {
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  
+.product-sections-container h2{
+    font-weight: 500 !important;
+}
+
+.product-sections-container .carousel{
+    margin-top: 50px;
+}

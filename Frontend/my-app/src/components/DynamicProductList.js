@@ -12,8 +12,16 @@ function DynamicProductList({ products }) {
     groupedProducts.push(products.slice(i, i + chunkSize));
   }
 
+  // Si hay una sola diapositiva (4 productos o menos), no mostramos controles
+  const showControls = groupedProducts.length > 1;
+
   return (
-    <Carousel indicators={false} interval={3000} controls={true} slide={false}>
+    <Carousel
+      indicators={false}
+      interval={3000}
+      controls={showControls}
+      slide={false}
+    >
       {groupedProducts.map((group, groupIndex) => (
         <Carousel.Item key={groupIndex}>
           <div className="d-flex justify-content-center">
