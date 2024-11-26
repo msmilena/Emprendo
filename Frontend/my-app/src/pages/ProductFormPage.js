@@ -24,14 +24,14 @@ const ProductFormPage = ({ mode }) => {
     const handleSave = (formData) => {
         if (isEditMode) {
             console.log('Guardar cambios de edición:', formData);
-            // Aquí agregarías la lógica para guardar cambios en la base de datos o API.
+            // Endpoint guardar producto
         } else if (isNewMode) {
             console.log('Agregar nuevo producto:', formData);
-            // Aquí agregarías la lógica para agregar un nuevo producto.
+            // Endpoint nuevo producto
         }
         navigate('/productosEmprendedor'); // Redirigir después de guardar
     };
-
+    
     return (
         <div className="app-container">
             <Sidebar />
