@@ -14,12 +14,26 @@ const ProductFormPage = ({ mode }) => {
     const isViewMode = mode === 'view';
     const isNewMode = mode === 'new';
 
+    
     useEffect(() => {
         if (isEditMode || isViewMode) {
-            // Simulación de carga de datos de producto
-            fetchProductData(id).then((data) => setData(data));
+            const mockData = {
+                cantidadFavoritos: 4,
+                categoria_producto: "Sábanas de algodón",
+                descripcion_producto: "Ipsum aut neque non quibusdam ratione sunt.",
+                flgDisponible: true,
+                imagen: new File([""], "imagen_simulada.png", { type: "image/png" }),
+                nombre_producto: "consequuntur",
+                precio: 39.09,
+                disponible:true,
+                id: "gsrvbdsf",
+            };
+            setData(mockData);
+        }else if (isNewMode) {
+            // Limpiar data para nuevo producto
+            setData(null);
         }
-    }, [id, isEditMode, isViewMode]);
+    }, [id,isEditMode, isViewMode,isNewMode]);
 
     const handleSave = (formData) => {
         if (isEditMode) {
@@ -38,34 +52,41 @@ const ProductFormPage = ({ mode }) => {
             <div className="main-content">
                 <Header />
                 <div className="dashboard-content">
-                    <BackButton to='/productosEmprendedor/APEQO6fohuDykka1Uqjn' />
-                    <h2>{isEditMode? 'Editar Producto' : isViewMode?'Detalles de Producto': 'Agregar producto'}</h2>
-                    <ProductForm
-                        productData={data}
-                        onSave={handleSave}
-                        isEditMode={isEditMode}
-                        isViewMode={isViewMode}
-                        isNewMode={isNewMode}
-                    />
+                    <BackButton to="/productosEmprendedor/APEQO6fohuDykka1Uqjn" />
+                    <h2>
+                        {isEditMode
+                            ? "Editar Producto"
+                            : isViewMode
+                            ? "Detalles de Producto"
+                            : "Agregar producto"}
+                    </h2>
+                    {/* Lógica para mostrar el formulario o un mensaje de carga */}
+                    {isEditMode || isViewMode ? (
+                        data ? (
+                            <ProductForm
+                                productData={data}
+                                onSave={handleSave}
+                                isEditMode={isEditMode}
+                                isViewMode={isViewMode}
+                                isNewMode={isNewMode}
+                            />
+                        ) : (
+                            <p>Cargando...</p>
+                        )
+                    ) : (
+                        <ProductForm
+                            productData={data}
+                            onSave={handleSave}
+                            isEditMode={isEditMode}
+                            isViewMode={isViewMode}
+                            isNewMode={isNewMode}
+                        />
+                    )}
                 </div>
             </div>
         </div>
     );
-};
-
-const fetchProductData = async (id) => {
-    // Simulación de llamada a API para obtener producto
-    return { 
-        cantidadFavoritos: 4,
-        categoria_producto: "Sábanas de algodón",
-        descripcion_producto: "Ipsum aut neque non quibusdam ratione sunt.",
-        flgDisponible: true,
-        imagen: "https://picsum.photos/381/524",
-        nombre_producto: "consequuntur",
-        precio: 39.09,
-        imagen: null,
-        id: "gsrvbdsf"
-    };
+    
 };
 
 export default ProductFormPage;

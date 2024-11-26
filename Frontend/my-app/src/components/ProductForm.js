@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import TextInput from "./TextInput";
 import TextArea from "./TextArea";
 import SubmitButton from "./SubmitButton";
-import Button from "./Button";
 import SelectInput from "./SelectInput";
 import Switch from "./Switch.js";
 import ProductImageUploader from "./ProductImageUploader.js"

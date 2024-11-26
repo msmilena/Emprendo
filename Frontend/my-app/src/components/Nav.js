@@ -90,7 +90,7 @@ const Nav = () => {
             {isOpen && (
               <div className={`dropdown-menu ${isOpen ? 'open' : ''}`}>
                 <ul>
-                  <li onClick={() => navigate("/profile")}>Perfil</li>
+                  <li onClick={() => navigate("/perfilCliente")}>Perfil</li>
                   <li onClick={() => navigate("/favoritos/:id")}>Mis favoritos</li>
                   <li onClick={handleLogoutClick}>Cerrar sesión</li>
                 </ul>

@@ -14,6 +14,7 @@ import EmprendimientoDatos from "./pages/EmprendimientoDatos";
 import PublicidadEmprendedor from "./pages/PublicidadEmprendedor";
 import ProductFormPage from "./pages/ProductFormPage";
 import DetallesCuenta from "./pages/DetallesCuenta";
+import PerfilCliente from "./pages/PerfilCliente";
 import './App.css'
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
         <Route path="/rolSelect" element={<TipoPerfil />} />
         <Route path="/login" element={<Login />} />
         <Route path="/emprendimiento/:id" element={<DetalleEmprendimiento />} />
+        <Route path="/perfilCliente" element={<PerfilCliente />} />
         <Route path="/favoritos/:id" element={< FavoritosUsuarios />} />
         <Route path="/detalleEmprendimiento/:id" element={< DetalleEmprendimiento />} />
 
