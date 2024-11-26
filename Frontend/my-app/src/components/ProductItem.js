@@ -1,8 +1,7 @@
 import React from "react";
-import RatingStar from "../components/RatingStar"
 import "./CSS/ProductItem.css";
 
-const ProductItem = ({ category, name, desc, imgURL, price,rating  }) => {
+const ProductItem = ({ category, name, desc, imgURL, price}) => {
   return (
     <div className="product-item">
       <img src={imgURL} alt={name} style={{ width: "200px", height: "200px", objectFit: "cover" }}/>
@@ -11,10 +10,6 @@ const ProductItem = ({ category, name, desc, imgURL, price,rating  }) => {
         <h3 className="product-name">{name}</h3>
         <p className="product-desc">{desc}</p>
         <p className="product-price">${price}</p>
-        <div className="rating">
-        <RatingStar rating={rating} />
-        <span className="rating-number">{rating}</span>
-      </div>
       </div>
     </div>
   );

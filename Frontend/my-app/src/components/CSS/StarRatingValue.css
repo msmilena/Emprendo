@@ -1,0 +1,33 @@
+/* src/components/CSS/StarRating.css */
+
+.star-rating {
+    font-size: 2rem;
+    cursor: pointer;
+    color: #ccc;
+  }
+  
+  .star-rating .star.filled {
+    color: gold;
+  }
+  
+
+  .star-rating-container h4 {
+    margin-top: 15px;
+    /* color: #3d5a80; */
+    font-weight: 600;
+    font-size: large;
+  }
+
+  .star-rating-container{
+    display: flex
+;
+    /* flex-direction: column; */
+    align-items: center;
+    gap: 25px;
+  }
+
+  .rating-value {
+    font-size: 1.5rem;
+    margin:0px !important;
+    color: #555;
+  }

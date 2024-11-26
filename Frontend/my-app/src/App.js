@@ -18,12 +18,16 @@ import DetallesCuenta from "./pages/DetallesCuenta";
 import PerfilCliente from "./pages/PerfilCliente";
 import ProductosxCategoria from "./pages/ProductosxCategoria";
 import EmprendimientosList from "./pages/EmprendimientosList";
+<<<<<<< Updated upstream
 =======
 import MiPerfilEmprendedor from "./pages/MiPerfilEmprendedor";
 
 import RegisterPreferencias from "./pages/RegisterPreferencias";
 import CategoriaEmprendimiento from "./pages/CategoriaEmprendimiento";
 
+>>>>>>> Stashed changes
+=======
+import EmprendimientoPorCategoria from "./pages/EmprendimientoPorCategoria"
 >>>>>>> Stashed changes
 import './App.css'
 
@@ -44,6 +48,7 @@ function App() {
         <Route path="/categoria/:id" element={< ProductosxCategoria />} />
         <Route path="/listaEmprendimientos" element={< EmprendimientosList />} />
         <Route path="/detalleEmprendimiento/:id" element={< DetalleEmprendimiento />} />
+        <Route path="/emprendimientoCategoria/:id" element={< EmprendimientoPorCategoria />} />
         
 
 =======

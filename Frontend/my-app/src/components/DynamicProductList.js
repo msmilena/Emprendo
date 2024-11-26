@@ -33,7 +33,6 @@ function DynamicProductList({ products }) {
                   desc={product.desc}
                   price={product.price}
                   imgURL={product.imgURL}
-                  rating={product.rating}
                 />
               </div>
             ))}

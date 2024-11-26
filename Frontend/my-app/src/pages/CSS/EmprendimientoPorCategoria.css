@@ -1,0 +1,34 @@
+
+  .business-info {
+    background-color: #eafaf1;
+    padding: 30px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    display: flex
+;
+  }
+  
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+  }
+  
+  .products h2 {
+    margin-bottom: 20px;
+  }
+  
+  .productsEmprendimientoCategoria-container{
+    width: 80%;
+    margin: 40px auto;
+  }
+
+  .productsEmprendimientoCategoria-container h2{
+    margin-top: 15px;
+      color: #3d5a80;
+      font-weight: 600;
+  }
+
+  .productsEmprendimientoCategoria-container span{
+      font-weight: 500 !important;
+  }
