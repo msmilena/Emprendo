@@ -1,4 +1,3 @@
-
 # Database
 from src.database.db import get_connection
 # Errors
@@ -29,7 +28,11 @@ class EmprendimientoService():
             db = get_connection()
             emprendimientos_ref = db.collection('emprendimientos').limit(limit)
             docs = emprendimientos_ref.stream()
-            emprendimientos = [doc.to_dict() for doc in docs]
+            emprendimientos = []
+            for doc in docs:
+                emprendimiento = doc.to_dict()
+                emprendimiento['idEmprendimiento'] = doc.id
+                emprendimientos.append(emprendimiento)
             return emprendimientos
         except Exception as ex:
             raise CustomException(ex)
@@ -43,5 +46,4 @@ class EmprendimientoService():
             return {'success': True}
         except Exception as ex:
             raise CustomException(ex)
-          
- 
+

@@ -19,20 +19,22 @@ bucket = storage_client.bucket(BUCKET_NAME)
 
 # Subir imagen a Firebase Storage
 def upload_image_to_storage(image, filename):
-    blob = bucket.blob(f'productos/{filename}')
+    if not filename.startswith('productos/'):
+        filename = f'productos/{filename}'
+    blob = bucket.blob(filename)
     blob.upload_from_file(image, content_type=image.content_type)
     return blob.public_url
 
 
 # Eliminar imagen de Firebase Storage
 def delete_image_from_storage(filename):
-    blob = bucket.blob(f'productos/{filename}')
+    blob = bucket.blob(filename)
     blob.delete()
 
 
 # Endpoint para agregar un producto con imagen
-@app.route('/emprendimientos/<emprendimiento_id>/agregar_producto', methods=['POST'])
-def add_product_to_emprendimiento(emprendimiento_id):
+@app.route('/emprendimientos/<id_emprendimiento>/agregar_producto', methods=['POST'])
+def add_product_to_emprendimiento(id_emprendimiento):
     if 'imagen' not in request.files:
         return jsonify({'error': 'La imagen es obligatoria'}), 400
 
@@ -66,22 +68,23 @@ def add_product_to_emprendimiento(emprendimiento_id):
     }
 
     # Guardar el producto en Firestore
-    productos_ref = db.collection('emprendimientos').document(emprendimiento_id).collection('productos')
+    productos_ref = db.collection('emprendimientos').document(id_emprendimiento).collection('productos')
     productos_ref.add(product_data)
 
     return jsonify({'message': 'Producto agregado exitosamente', 'imagen_url': image_url}), 201
 
 
 # Endpoint para actualizar un producto (y su imagen si es necesario)
-@app.route('/emprendimientos/<emprendimiento_id>/productos/<producto_id>', methods=['PUT'])
-def update_product_in_emprendimiento(emprendimiento_id, producto_id):
+@app.route('/emprendimientos/<id_emprendimiento>/productos/<id_producto>', methods=['PUT'])
+def update_product_in_emprendimiento(id_emprendimiento, id_producto):
     data = request.form.to_dict()
     imagen = request.files.get('imagen')
 
     # Referencia al producto
-    producto_ref = db.collection('emprendimientos').document(emprendimiento_id).collection('productos').document(producto_id)
+    producto_ref = db.collection('emprendimientos').document(id_emprendimiento).collection('productos').document(id_producto)
     producto = producto_ref.get()
-    if not producto.exists():
+
+    if not producto.exists:
         return jsonify({'error': 'Producto no encontrado'}), 404
 
     product_data = producto.to_dict()
@@ -94,18 +97,16 @@ def update_product_in_emprendimiento(emprendimiento_id, producto_id):
         # Eliminar la imagen anterior
         old_image_url = product_data.get('imagen')
         if old_image_url:
-            old_filename = old_image_url.split('/')[-1]
-            delete_image_from_storage(f'productos/{old_filename}')
+            old_filename = '/'.join(old_image_url.split('/')[-2:])
+            delete_image_from_storage(old_filename)
 
         product_data['imagen'] = new_image_url
 
     # Actualizar los datos restantes
-    product_data.update({
-        key: value for key, value in data.items() if key in [
-            'nombre_producto', 'descripcion_producto', 'flgDisponible',
-            'categoria_producto', 'precio', 'cantidadFavoritos'
-        ]
-    })
+    for key in ['nombre_producto', 'descripcion_producto', 'flgDisponible', 'categoria_producto', 'precio', 'cantidadFavoritos']:
+        if key in data:
+            product_data[key] = data[key]
+
     product_data['fechaActualizacion'] = datetime.datetime.utcnow()
 
     producto_ref.set(product_data)
@@ -113,11 +114,12 @@ def update_product_in_emprendimiento(emprendimiento_id, producto_id):
 
 
 # Endpoint para eliminar un producto y su imagen
-@app.route('/emprendimientos/<emprendimiento_id>/productos/<producto_id>', methods=['DELETE'])
-def delete_product_from_emprendimiento(emprendimiento_id, producto_id):
-    producto_ref = db.collection('emprendimientos').document(emprendimiento_id).collection('productos').document(producto_id)
+@app.route('/emprendimientos/<id_emprendimiento>/productos/<id_producto>', methods=['DELETE'])
+def delete_product_from_emprendimiento(id_emprendimiento, id_producto):
+    producto_ref = db.collection('emprendimientos').document(id_emprendimiento).collection('productos').document(id_producto)
     producto = producto_ref.get()
-    if not producto.exists():
+
+    if not producto.exists:
         return jsonify({'error': 'Producto no encontrado'}), 404
 
     product_data = producto.to_dict()
@@ -125,8 +127,8 @@ def delete_product_from_emprendimiento(emprendimiento_id, producto_id):
     # Eliminar la imagen de Firebase Storage
     image_url = product_data.get('imagen')
     if image_url:
-        filename = image_url.split('/')[-1]
-        delete_image_from_storage(f'productos/{filename}')
+        filename = '/'.join(image_url.split('/')[-2:])
+        delete_image_from_storage(filename)
 
     # Eliminar el producto de Firestore
     producto_ref.delete()
@@ -134,9 +136,9 @@ def delete_product_from_emprendimiento(emprendimiento_id, producto_id):
 
 
 # Endpoint para obtener todos los productos de un emprendimiento
-@app.route('/emprendimientos/<emprendimiento_id>/productos', methods=['GET'])
-def get_products_of_emprendimiento(emprendimiento_id):
-    productos_ref = db.collection('emprendimientos').document(emprendimiento_id).collection('productos')
+@app.route('/emprendimientos/<id_emprendimiento>/productos', methods=['GET'])
+def get_products_of_emprendimiento(id_emprendimiento):
+    productos_ref = db.collection('emprendimientos').document(id_emprendimiento).collection('productos')
     productos = [doc.to_dict() for doc in productos_ref.stream()]
     return jsonify(productos), 200
 
@@ -152,5 +154,20 @@ def get_all_products():
     return jsonify(all_products), 200
 
 
+# Endpoint para obtener un solo producto por su ID
+@app.route('/emprendimientos/<id_emprendimiento>/productos/<id_producto>', methods=['GET'])
+def get_product_by_id(id_emprendimiento, id_producto):
+    # Referencia al producto
+    producto_ref = db.collection('emprendimientos').document(id_emprendimiento).collection('productos').document(id_producto)
+    producto = producto_ref.get()
+
+    if not producto.exists:
+        return jsonify({'error': 'Producto no encontrado'}), 404
+
+    # Retornar los datos del producto
+    product_data = producto.to_dict()
+    return jsonify(product_data), 200
+
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=8080)
+    app.run(host='0.0.0.0', debug=True, port=80)
