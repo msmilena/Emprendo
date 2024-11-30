@@ -14,7 +14,7 @@ import ProductosxCategoria from "./pages/ProductosxCategoria";
 import EmprendimientosList from "./pages/EmprendimientosList";
 import DetalleEmprendimiento from "./pages/Detalle-Emprendimiento";
 import EmprendimientoPorCategoria from "./pages/EmprendimientoPorCategoria"
-import RegisterPreferencias from "./pages/RegisterPreferencias";
+
 import CategoriaEmprendimiento from "./pages/CategoriaEmprendimiento";
 import HomeEmprendedor from "./pages/HomeEmprendedor";
 import ProductosEmprendedor from "./pages/ProductosEmprendedor";
@@ -22,9 +22,6 @@ import ProductFormPage from "./pages/ProductFormPage";
 import EmprendimientoDatos from "./pages/EmprendimientoDatos";
 import PublicidadEmprendedor from "./pages/PublicidadEmprendedor";
 import DetallesCuenta from "./pages/DetallesCuenta";
-
-import MiPerfilEmprendedor from "./pages/MiPerfilEmprendedor";
-//
 import './App.css'
 
 function App() {
@@ -43,7 +40,7 @@ function App() {
         <Route path="/listaEmprendimientos" element={< EmprendimientosList />} />
         <Route path="/detalleEmprendimiento/:id" element={< DetalleEmprendimiento />} />
         <Route path="/emprendimientoCategoria/:id" element={< EmprendimientoPorCategoria />} />
-        <Route path="/registerPreferencias" element={<RegisterPreferencias />} />
+        
         <Route path="/categoriaEmprendimiento" element={<CategoriaEmprendimiento/>}/>
         <Route path="/homeEmprendedor/:id" element={< HomeEmprendedor />} />
         <Route path="/productosEmprendedor/:id" element={< ProductosEmprendedor />} />
@@ -53,8 +50,13 @@ function App() {
         <Route path="/emprendimientoDatos/:id" element={< EmprendimientoDatos />} />
         <Route path="/publicidadEmprendedor/:id" element={< PublicidadEmprendedor />} />
         <Route path="/detalleCuenta/:id" element={< DetallesCuenta  />} />
+        {
+          /*
+        <Route path="/registerPreferencias" element={<RegisterPreferencias />} />
         <Route path="/miPerfilEmprendedor/:id" element={< MiPerfilEmprendedor />} />
-
+        */
+        }
+     
       </Routes>
     </Router>
   );
