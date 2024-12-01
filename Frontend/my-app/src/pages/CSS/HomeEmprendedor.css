@@ -21,16 +21,6 @@
     text-align: center; /* Centra el texto */
   }
   
- /* .custom-button {
-    width: 200px;
-    padding: 10px;
-    margin-left: 20px;
-  }*/
-  
-  
-  display: flex;
-  height: 100vh;
-}
 
 .main-content {
   flex-grow: 1;
