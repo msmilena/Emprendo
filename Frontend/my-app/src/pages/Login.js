@@ -63,7 +63,7 @@ function Login() {
       const token = await user.getIdToken(); // Obtiene el token del usuario
 
       // Envía el token al servicio externo para validación
-      const response = await fetch("https://emprendo-valoracion-service-26932749356.us-west1.run.app/auth/login", {
+      const response = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Especifica que los datos se envían como JSON
@@ -106,7 +106,7 @@ function Login() {
       const token = await user.getIdToken(); // Obtiene el token del usuario
 
       // Envía el token al servicio externo para validación
-      const response = await fetch("https://emprendo-valoracion-service-26932749356.us-west1.run.app/auth/login", {
+      const response = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json", // Especifica que los datos se envían como JSON
