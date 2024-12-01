@@ -54,7 +54,9 @@ class EmprendimientoService():
     def get_infoEmprendimiento_by_emprendedor(cls, idEmprendedor):
         try:
             db = get_connection()
-            emprendimientos_ref = db.collection('emprendimientos').where('idEmprendedor', '==', idEmprendedor)
+             # Crear una referencia al documento del emprendedor
+            emprendedor_ref = db.collection('usuarios').document(idEmprendedor)
+            emprendimientos_ref = db.collection('emprendimientos').where('idEmprendedor', '==', emprendedor_ref)
             docs = emprendimientos_ref.stream()
             emprendimientos = []
             for doc in docs:
