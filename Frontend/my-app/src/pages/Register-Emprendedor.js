@@ -39,7 +39,7 @@ function RegisterEmprendedor() {
         },
         (error) => {
           console.error("No se pudo obtener la ubicación. Por favor, permite el acceso a la ubicación en tu navegador.");
-          console.error(`Código de error: ${error.code}, Mensaje: ${error.message}`);
+          console.error(Código de error: ${error.code}, Mensaje: ${error.message});
         },
         {
           enableHighAccuracy: true, // Solicita alta precisión, puede usar GPS en móviles
@@ -97,7 +97,7 @@ function RegisterEmprendedor() {
   };
   const handleRegister = async () => {
     // Validate email availability
-    const checkResponse = await fetch(`https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/check_email?email=${email}`);
+    const checkResponse = await fetch(https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/check_email?email=${email});
     const checkData = await checkResponse.json();
     if (!checkData.success) {
       alert(checkData.message);
@@ -136,7 +136,7 @@ function RegisterEmprendedor() {
       }
 
       // Get user ID
-      const userIdResponse = await fetch(`http://127.0.0.1:8080/auth/get_user_id?email=${email}`);
+      const userIdResponse = await fetch(http://127.0.0.1:8080/auth/get_user_id?email=${email});
       const userIdResult = await userIdResponse.json();
       if (!userIdResult.success) {
         alert(userIdResult.message);
@@ -238,7 +238,7 @@ function RegisterEmprendedor() {
             controlId="formBasicUbicacion"
             type="text"
             placeholder="Ingresa la ubicación del emprendimiento"
-            value={`Lat: ${location.latitude}, Lng: ${location.longitude}`}
+            value={Lat: ${location.latitude}, Lng: ${location.longitude}}
             onChange={(e) => setUbicacion(e.target.value)}
             label="Ubicación del Emprendimiento"
             error={errors.ubicacion}

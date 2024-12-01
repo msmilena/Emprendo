@@ -29,9 +29,14 @@
   }
   
   .product-image {
-    width: 100px;
-    height: auto;
+    width: 150px; /* Ajusta el ancho deseado */
+    height: 150px; /* Ajusta la altura deseada */
+    object-fit: cover; /* Recorta la imagen para llenar el contenedor */
+    border-radius: 8px; /* Opcional: Bordes redondeados */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcional: Sombra */
+    background-color: #f0f0f0; /* Fondo gris claro si la imagen no carga */
   }
+  
   
   .delete-button {
     background-color: transparent;
