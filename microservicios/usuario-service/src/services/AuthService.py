@@ -7,6 +7,7 @@ from src.services.models.User import User
 from datetime import datetime
 from google.cloud.firestore_v1.base_query import FieldFilter
 import requests
+from google.cloud.firestore_v1 import GeoPoint
 
 
 class AuthService:
@@ -19,8 +20,12 @@ class AuthService:
             user_ref = db.collection('usuarios').document(uid)
             user_data = user_ref.get()
             if user_data.exists:
-                doc_data = user_data.to_dict()
-                return User(uid, doc_data['nombre'], doc_data['email'], doc_data['tipo'])
+                user_dict = user_data.to_dict()
+                # Convertir GeoPoint a un diccionario serializable
+                for key, value in user_dict.items():
+                    if isinstance(value, GeoPoint):
+                        user_dict[key] = {'latitude': value.latitude, 'longitude': value.longitude}
+                return user_dict  # Devolver los datos del usuario como un diccionario JSON
             return None
         except Exception as e:
             print(f"Error al obtener el usuario: {e}")
@@ -54,15 +59,16 @@ class AuthService:
                 return {'success': False, 'message': 'El correo electrónico ya está en uso'}
 
             # Crear un nuevo documento de usuario en la base de datos
-            user_ref = db.collection('usuarios').document()
-            user.id = user_ref.id  # Asignar el ID generado por Firestore al usuario
+            user_ref = db.collection('usuarios').document(user.id)  # Usar el ID del usuario proporcionado
             usuario_nuevo = {
                 "nombre": user.nombre,
                 "email": user.email,
                 "password": user.password,
                 "tipo": user.tipo,
                 "tipoAuth": user.tipoAuth,
-                "fechaCreacion": datetime.now().isoformat()
+                "fechaCreacion": datetime.now().isoformat(),
+                "urlPerfil":r"https://firebasestorage.googleapis.com/v0/b/emprendo-1c101.firebasestorage.app/o/perfil%2Fusuarios%2Fusuario.jpg?alt=media&token=eaa9f28c-e149-48d6-89c9-fb5e37d16606",
+                "primerLogin":0
             }
             user_ref.set(usuario_nuevo)
             print(f"Usuario registrado con ID: {user.id}")

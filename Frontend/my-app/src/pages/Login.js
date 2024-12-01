@@ -58,7 +58,7 @@ function Login() {
       const user = userCredential.user;
       const token = await user.getIdToken();
       console.log(token);
-      const response = await fetch("https://emprendo-valoracion-service-26932749356.us-west1.run.app/auth/login", {
+      const response = await fetch("http://127.0.0.1:8080//auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -66,10 +66,11 @@ function Login() {
         body: JSON.stringify({ token }),
       });
       const data = await response.json();
+      console.log(data)
       if (data.success) {
         setUserId(user.uid);
         localStorage.setItem("userId", user.uid);
-        localStorage.setItem("user", JSON.stringify({ uid: user.uid, name: user.displayName || user.email }));
+        localStorage.setItem("user", JSON.stringify(data));
         getLocation(); // Obtener la ubicación del usuario
         // Redirigir al usuario a la página de inicio
         navigate("/home"); // Ajusta la ruta según tu configuración
@@ -88,7 +89,8 @@ function Login() {
       const user = userCredential.user;
       console.log("User logged in with Google:", user);
       const token = await user.getIdToken();
-      const response = await fetch("https://emprendo-valoracion-service-26932749356.us-west1.run.app/auth/login", {
+      console.log(token);
+      const response = await fetch("http://127.0.0.1:8080//auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +102,7 @@ function Login() {
       if (data.success) {
         setUserId(user.uid);
         localStorage.setItem("userId", user.uid);
-        localStorage.setItem("user", JSON.stringify({ uid: user.uid, name: user.displayName || user.email }));
+        localStorage.setItem("user", JSON.stringify(data));
         getLocation(); // Obtener la ubicación del usuario
         // Redirigir al usuario a la página de inicio
         navigate("/home"); // Ajusta la ruta según tu configuración

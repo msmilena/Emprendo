@@ -48,12 +48,6 @@ def upload_file():
         return jsonify({'success': False, 'message': 'File upload failed'}), 500
 
 
-
-@main.route('/')
-def login_static():
-        print("Hola mundo")
-        return "Hola mundo"
-
 @main.route('/emprendimientoInfo', methods=['GET'])
 def get_infoEmprendimiento():
     idEmprendimiento = request.args.get('idEmprendimiento')  # Obtén el idEmprendimiento de los parámetros de la URL

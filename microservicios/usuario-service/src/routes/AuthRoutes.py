@@ -26,9 +26,10 @@ def login():
 
         # Obtener información adicional del usuario desde Firestore si es necesario
         user = AuthService.get_user_by_uid(uid)
+        
         print(user)
         if user:
-            return jsonify({'success': True, 'uid': uid, 'email': email, 'nombre': user.nombre, 'tipo': user.tipo})
+            return jsonify({'success': True, 'uid': uid, 'email': email, **user})  # Pasar todos los datos del usuario como JSON
         else:
             return jsonify({'success': False, 'message': 'Usuario no encontrado en la base de datos'}), 403
     except Exception as ex:

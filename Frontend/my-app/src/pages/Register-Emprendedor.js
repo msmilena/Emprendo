@@ -76,7 +76,7 @@ function RegisterEmprendedor() {
     }
     console.log("formData", formData);
     try {
-      const response = await fetch("https://emprendo-valoracion-service-26932749356.us-west1.run.app/auth/register_with_emprendimiento", {
+      const response = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/register_with_emprendimiento", {
         method: "POST",
         body: formData
       });
