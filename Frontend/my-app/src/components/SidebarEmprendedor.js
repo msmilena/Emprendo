@@ -1,10 +1,16 @@
 // src/components/Sidebar.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./CSS/SiderbarEmprendedor.css";
 import ecoVidaLogo from '../assets/ecoVidaLogo.png';
 import { useNavigate } from "react-router-dom";
 
 const SidebarEmprendedor = () => {
+  const [emprendimientoData, setEmprendimientoData] = useState(null);
+
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem("emprendimientoData"));
+    setEmprendimientoData(data);
+  }, []);
 
   const navigate = useNavigate();
   const handleNavigation = (path) => {
@@ -14,8 +20,12 @@ const SidebarEmprendedor = () => {
   return (
     <div className="sidebar">
       <div className="logo-section">
-        <img src={ecoVidaLogo} alt="EcoVida Market Logo" className="logo"  style={{ width: "150px", height: "150px", objectFit: "cover", borderRadius: "50%" }}/>
-        <h2>EcoVida Market</h2>
+        {emprendimientoData && (
+          <>
+            <img src={emprendimientoData.image_url} alt="Emprendimiento Logo" className="logo" style={{ width: "150px", height: "150px", objectFit: "cover", borderRadius: "50%" }} />
+            <h2 className="nombreEmprendimiento" style={{ wordWrap: "break-word", textAlign: "center" }}>{emprendimientoData.nombreComercial}</h2>
+          </>
+        )}
       </div>
       <nav className="nav-menu">
         <ul>

@@ -1,5 +1,5 @@
 // src/components/Register.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import Button from "../components/Button";
 import FormControl from "../components/FormControl";
@@ -8,6 +8,8 @@ import LeftSide from "../components/leftSide";
 import ProgressSteps from "../components/ProgressStep"; // Importa el nuevo componente
 import LogoUpload from "../components/LogoUpload";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../firebaseConfig";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 function RegisterEmprendedor() {
   const [name, setName] = useState("");
@@ -20,6 +22,39 @@ function RegisterEmprendedor() {
   const [logo, setLogo] = useState(null);
   const navigate = useNavigate();  
   const [errors, setErrors] = useState({});  // Añade este estado para manejar errores
+  const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation({ latitude, longitude });
+          
+          // Almacena las coordenadas en localStorage para acceso futuro
+          localStorage.setItem("latitude", latitude);
+          localStorage.setItem("longitude", longitude);
+          
+          console.log("Ubicación obtenida con alta precisión");
+        },
+        (error) => {
+          console.error("No se pudo obtener la ubicación. Por favor, permite el acceso a la ubicación en tu navegador.");
+          console.error(Código de error: ${error.code}, Mensaje: ${error.message});
+        },
+        {
+          enableHighAccuracy: true, // Solicita alta precisión, puede usar GPS en móviles
+          timeout: 20000, // Aumenta el tiempo de espera a 20 segundos para mayor precisión
+          maximumAge: 0 // No usar datos de ubicación en caché para obtener datos actualizados
+        }
+      );
+    } else {
+      console.error("La geolocalización no es compatible con este navegador.");
+    }
+  };
+
+  useEffect(() => {
+    getLocation();
+  }, []);
 
   const validateStep1 = () => {
     const newErrors = {};
@@ -32,7 +67,7 @@ function RegisterEmprendedor() {
   const validateStep2 = () => {
     const newErrors = {};
     if (!nameStore.trim()) newErrors.nameStore = "El nombre del emprendimiento es requerido";
-    if (!ubicacion.trim()) newErrors.ubicacion = "La ubicación es requerida";
+    if (!ubicacion.trim() && location.latitude === 0 && location.longitude === 0) newErrors.ubicacion = "La ubicación es requerida";
     if (!ruc.trim()) newErrors.ruc = "El RUC es requerido";
     return newErrors;
   };
@@ -61,35 +96,81 @@ function RegisterEmprendedor() {
     setLogo(event.target.files[0]);
   };
   const handleRegister = async () => {
-    const formData = new FormData();
-    formData.append("nombre", name);
-    formData.append("email", email);
-    formData.append("password", password);
-    formData.append("tipo", 'emprendedor'); // Replace with actual user type
-    formData.append("tipoAuth", 0); // Replace with actual auth type
-    formData.append("nombreComercial", nameStore);
-    formData.append("ruc", ruc);
-    formData.append("localizacion_latitud", 0); // Replace with actual latitaude
-    formData.append("localizacion_longitud", 0); // Replace with actual longitude
-    if (logo) {
-      formData.append("file", logo);
+    // Validate email availability
+    const checkResponse = await fetch(https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/check_email?email=${email});
+    const checkData = await checkResponse.json();
+    if (!checkData.success) {
+      alert(checkData.message);
+      return;
     }
-    console.log("formData", formData);
+
+    // Register user with Firebase Authentication
     try {
-      const response = await fetch("https://emprendo-valoracion-service-26932749356.us-west1.run.app/auth/register_with_emprendimiento", {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+      console.log("User registered:", user);
+
+      // Prepare form data for user registration
+      const userData = {
+        id: user.uid,
+        nombre: name,
+        email: email,
+        password: password,
+        tipo: "emprendedor",
+        tipoAuth: 0
+      };
+
+      // Register user
+      const userResponse = await fetch("http://127.0.0.1:8080/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+      });
+
+      const userResult = await userResponse.json();
+      if (!userResult.success) {
+        alert(userResult.message);
+        return;
+      }
+
+      // Get user ID
+      const userIdResponse = await fetch(http://127.0.0.1:8080/auth/get_user_id?email=${email});
+      const userIdResult = await userIdResponse.json();
+      if (!userIdResult.success) {
+        alert(userIdResult.message);
+        return;
+      }
+
+      const userId = userIdResult.user_id;
+
+      // Prepare form data for emprendimiento registration
+      const formData = new FormData();
+      formData.append("idEmprendedor", userId);
+      formData.append("nombreComercial", nameStore);
+      formData.append("ruc", ruc);
+      formData.append("localizacion_latitud", location.latitude);
+      formData.append("localizacion_longitud", location.longitude);
+      if (logo) {
+        formData.append("file", logo);
+      }
+
+      // Register emprendimiento
+      const emprendimientoResponse = await fetch(" https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/guardarEmprendimiento", {
         method: "POST",
         body: formData
       });
 
-      const result = await response.json();
-      if (result.success) {
+      const emprendimientoResult = await emprendimientoResponse.json();
+      if (emprendimientoResult.success) {
         alert("Usuario y emprendimiento registrados exitosamente");
         navigate("/");
       } else {
-        alert(result.message);
+        alert(emprendimientoResult.message);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error registering user:", error);
       alert("Error al registrar usuario y emprendimiento");
     }
   };
@@ -157,7 +238,7 @@ function RegisterEmprendedor() {
             controlId="formBasicUbicacion"
             type="text"
             placeholder="Ingresa la ubicación del emprendimiento"
-            value={ubicacion}
+            value={Lat: ${location.latitude}, Lng: ${location.longitude}}
             onChange={(e) => setUbicacion(e.target.value)}
             label="Ubicación del Emprendimiento"
             error={errors.ubicacion}

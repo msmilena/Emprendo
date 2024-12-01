@@ -19,7 +19,7 @@ function RegisterUsuario() {
     e.preventDefault();
     try {
       // Validar que el email esté disponible
-      const checkResponse = await fetch(`https://emprendo-valoracion-service-26932749356.us-west1.run.app/auth/check_email?email=${email}`);
+      const checkResponse = await fetch(`https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/check_email?email=${email}`);
       const checkData = await checkResponse.json();
       if (!checkData.success) {
         setError(checkData.message);
@@ -32,7 +32,7 @@ function RegisterUsuario() {
       console.log("User registered:", user);
 
       // Enviar datos del usuario a la API para registrarlo en Firestore
-      const response = await fetch("https://emprendo-valoracion-service-26932749356.us-west1.run.app/auth/register", {
+      const response = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +69,7 @@ function RegisterUsuario() {
       console.log("User registered with Google:", user);
 
       // Enviar datos del usuario a la API para registrarlo en Firestore
-      const response = await fetch("https://emprendo-valoracion-service-26932749356.us-west1.run.app/auth/register", {
+      const response = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

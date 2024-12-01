@@ -1,4 +1,3 @@
-
 # Database
 from src.database.db import get_connection
 # Errors
@@ -6,6 +5,7 @@ from src.utils.errors.CustomException import CustomException
 # Models
 from .models.Emprendimiento import Emprendimiento
 from google.cloud.firestore_v1.base_query import FieldFilter
+from datetime import datetime
 
 class EmprendimientoService():
 
@@ -29,7 +29,11 @@ class EmprendimientoService():
             db = get_connection()
             emprendimientos_ref = db.collection('emprendimientos').limit(limit)
             docs = emprendimientos_ref.stream()
-            emprendimientos = [doc.to_dict() for doc in docs]
+            emprendimientos = []
+            for doc in docs:
+                emprendimiento = doc.to_dict()
+                emprendimiento['idEmprendimiento'] = doc.id
+                emprendimientos.append(emprendimiento)
             return emprendimientos
         except Exception as ex:
             raise CustomException(ex)
@@ -39,9 +43,27 @@ class EmprendimientoService():
         try:
             db = get_connection()
             emprendimiento_ref = db.collection('emprendimientos').document()
-            emprendimiento_ref.set(emprendimiento.to_dict())
+            emprendimiento_data = emprendimiento.to_dict()
+            emprendimiento_data['fechaCreacion'] = datetime.now()
+            emprendimiento_ref.set(emprendimiento_data)
             return {'success': True}
         except Exception as ex:
             raise CustomException(ex)
-          
- 
+
+    @classmethod
+    def get_infoEmprendimiento_by_emprendedor(cls, idEmprendedor):
+        try:
+            db = get_connection()
+             # Crear una referencia al documento del emprendedor
+            emprendedor_ref = db.collection('usuarios').document(idEmprendedor)
+            emprendimientos_ref = db.collection('emprendimientos').where('idEmprendedor', '==', emprendedor_ref)
+            docs = emprendimientos_ref.stream()
+            emprendimientos = []
+            for doc in docs:
+                emprendimiento = doc.to_dict()
+                emprendimiento['idEmprendimiento'] = doc.id
+                emprendimientos.append(emprendimiento)
+            return emprendimientos if emprendimientos else None
+        except Exception as ex:
+            raise CustomException(ex)
+

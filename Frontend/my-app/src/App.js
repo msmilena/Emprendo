@@ -49,13 +49,9 @@ function App() {
         <Route path="/productosEmprendedor/editar/:id" element={<ProductFormPage mode="edit" />} />
         <Route path="/emprendimientoDatos/:id" element={< EmprendimientoDatos />} />
         <Route path="/publicidadEmprendedor/:id" element={< PublicidadEmprendedor />} />
-        <Route path="/detalleCuenta/:id" element={< DetallesCuenta  />} />
-        {
-          /*
-        <Route path="/registerPreferencias" element={<RegisterPreferencias />} />
-        <Route path="/miPerfilEmprendedor/:id" element={< MiPerfilEmprendedor />} />
-        */
-        }
+        <Route path="/miPerfilEmprendedor/:id" element={< DetallesCuenta  />} />
+        {/*<Route path="/registerPreferencias" element={<RegisterPreferencias />} />*/}
+  
      
       </Routes>
     </Router>

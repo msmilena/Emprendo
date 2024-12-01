@@ -48,28 +48,23 @@ def upload_file():
         return jsonify({'success': False, 'message': 'File upload failed'}), 500
 
 
-
-@main.route('/')
-def login_static():
-        print("Hola mundo")
-        return "Hola mundo"
-
 @main.route('/emprendimientoInfo', methods=['GET'])
 def get_infoEmprendimiento():
-    idEmprendimiento = request.args.get('idEmprendimiento')  # Obtén el idEmprendimiento de los parámetros de la URL
+    idEmprendimiento = request.args.get('idEmprendimiento')
+    idEmprendedor = request.args.get('idEmprendedor')
     try:
-        print(idEmprendimiento)
         if idEmprendimiento:
             infoEmprendimiento = EmprendimientoService.get_infoEmprendimiento(idEmprendimiento)
-            #print(infoEmprendimiento)
-            if infoEmprendimiento is not None:
-                serialized_info = serialize_emprendimiento(infoEmprendimiento)
-                return jsonify({'success': True, "emprendimientoData": serialized_info})
-            else:
-                response = jsonify({'message': 'Emprendimiento no encontrado'})
-                return response, 404
+        elif idEmprendedor:
+            infoEmprendimiento = EmprendimientoService.get_infoEmprendimiento_by_emprendedor(idEmprendedor)
         else:
-            return jsonify({'message': 'Falta el parámetro idEmprendimiento'}), 400
+            return jsonify({'message': 'Falta el parámetro idEmprendimiento o idEmprendedor'}), 400
+
+        if infoEmprendimiento is not None:
+            serialized_info = serialize_emprendimiento(infoEmprendimiento)
+            return jsonify({'success': True, "emprendimientoData": serialized_info})
+        else:
+            return jsonify({'message': 'Emprendimiento no encontrado'}), 404
     except CustomException as e:
         return jsonify({'message': str(e), 'success': False}), 500
 
@@ -83,15 +78,18 @@ def post_guardarDatos():
     if file.filename == '':
         return jsonify({'success': False, 'message': 'No file selected for uploading'}), 400
     if file:
-        filename = secure_filename(file.filename)
+        idEmprendedor = data.get("idEmprendedor")
+        filename, file_extension = os.path.splitext(file.filename)
+        print(file_extension)  # Changed from file.name to file.filename
+        full_filename = f'perfil/emprendimiento/perfil{idEmprendedor}{file_extension}'
         bucket = storage.bucket()  # El bucket se obtiene de la configuración inicial
-        blob = bucket.blob(filename)
-        blob.upload_from_file(file)
+        blob = bucket.blob(full_filename)
+        blob.upload_from_file(file, content_type=file.content_type)  # Set content type
         blob.make_public()
         file_url = blob.public_url
         data['image_url'] = file_url  # Agregar la URL de la imagen a los datos del emprendimiento
 
-    idEmprendedor = data.get("idEmprendedor")
+    
     nombreComercial = data.get("nombreComercial")
     localizacion_latitud = float(data.get("localizacion_latitud"))
     localizacion_longitud = float(data.get("localizacion_longitud"))

@@ -27,3 +27,8 @@
     margin: 20px 0;
     cursor: pointer;
   }
+
+.nombreEmprendimiento {
+  word-wrap: break-word;
+  text-align: center;
+}

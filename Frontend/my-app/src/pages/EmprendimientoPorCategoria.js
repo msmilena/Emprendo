@@ -1,5 +1,4 @@
-// src/pages/Home.js
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Footer2 from "../components/Footer2";
 import Nav from "../components/Nav";
 import BusinessInfo from "../components/BusinessInfo";
@@ -8,28 +7,11 @@ import Pagination from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
 import "./CSS/EmprendimientoPorCategoria.css";
 
+const GOOGLE_MAPS_API_KEY = "AIzaSyBcYYMGd6XzoGXr3GNobB49cEOJg_7N2wU"; 
 
 function EmprendimientoPorCategoria() {
-  
-    const [searchTerm, setSearchTerm] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // Datos de ejemplo (puedes reemplazarlo con datos desde una API)
-  const info = {
-    name: "EcoVida Market",
-    description:
-      "EcoVida Market es una tienda dedicada a la venta de productos orgánicos, saludables y sostenibles...",
-    location: "Calle Principal 123, Ciudad Verde",
-    image: "URL_DE_LA_IMAGEN", // URL de la imagen del logo o negocio
-    socials: {
-      facebook: "https://facebook.com/EcoVidaMarket",
-      instagram: "https://instagram.com/EcoVidaMarket",
-      tiktok: "https://tiktok.com/@EcoVidaMarket",
-    },
-    rating: 4.7,
-    };
-
-  const products = [
+  const [info, setInfo] = useState(null); // Estado para la información del negocio
+  const [products, setProducts] = useState([
     {
       category: "Tecnología",
       name: "Laptop Intel Core",
@@ -94,10 +76,66 @@ function EmprendimientoPorCategoria() {
       price: 4040.47,
       rating: 4.5,
     }
-    // Agrega más productos...
-  ];
+
+    // Agrega más productos según sea necesario...
+  ]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
 
   const ITEMS_PER_PAGE = 5; // Cantidad de productos por página
+
+  // Función para convertir coordenadas a dirección
+  const getAddressFromCoordinates = async (latitude, longitude) => {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${GOOGLE_MAPS_API_KEY}`
+      );
+      const data = await response.json();
+      if (data.status === "OK" && data.results.length > 0) {
+        return data.results[0].formatted_address;
+      }
+      return "Ubicación no disponible";
+    } catch (error) {
+      console.error("Error fetching address:", error);
+      return "Error al obtener ubicación";
+    }
+  };
+
+  // Cargar datos desde la API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          "https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientos"
+        );
+        const responseData = await response.json();
+
+        if (responseData.success) {
+          const firstEmprendimiento = responseData.emprendimientos[0]; // Simulación: tomamos el primer emprendimiento
+          const exactLocation = await getAddressFromCoordinates(
+            firstEmprendimiento.localizacion.latitude,
+            firstEmprendimiento.localizacion.longitude
+          );
+
+          const transformedInfo = {
+            name: firstEmprendimiento.nombreComercial,
+            description: firstEmprendimiento.descripcion,
+            location: exactLocation, // Ubicación exacta
+            socials: firstEmprendimiento.redesSociales || {},
+            rating: firstEmprendimiento.valoracion?.promedioValoracion || 0,
+          };
+
+          setInfo(transformedInfo);
+        }
+      } catch (error) {
+        console.error("Error fetching emprendimiento data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Filtrar productos
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -109,7 +147,7 @@ function EmprendimientoPorCategoria() {
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
-    setCurrentPage(1); // Reinicia la página al buscar
+    setCurrentPage(1);
   };
 
   const handlePageChange = (newPage) => {
@@ -121,11 +159,17 @@ function EmprendimientoPorCategoria() {
       <Nav />
       <section className="">
         <div className="productsEmprendimientoCategoria-container">
-          <h2>Emprendimientos: <span>Emprendimiento 1</span></h2>
-          <SearchBar searchTerm={searchTerm} onSearch={handleSearch} placeholder="  Encuentra productos"/>
-          
+          <h2>
+            Emprendimientos: <span>{info?.name || "Cargando..."}</span>
+          </h2>
+          <SearchBar
+            searchTerm={searchTerm}
+            onSearch={handleSearch}
+            placeholder="  Encuentra productos"
+          />
+
           {/* Información del negocio */}
-          <BusinessInfo info={info} />
+          {info && <BusinessInfo info={info} />}
 
           {/* Listado de productos */}
           <Products products={paginatedProducts} />

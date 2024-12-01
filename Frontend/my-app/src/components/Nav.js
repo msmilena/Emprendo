@@ -7,6 +7,8 @@ const Nav = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [userName, setUserName] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [profileImageUrl, setProfileImageUrl] = useState("");
+  const [userId, setUserId] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -16,7 +18,9 @@ const Nav = () => {
       const userData = JSON.parse(user);
       console.log(userData);
       setIsLoggedIn(true);
-      setUserName(userData.name);
+      setUserName(userData.nombre);
+      setProfileImageUrl(userData.urlPerfil);
+      setUserId(userData.uid);
     }
 
     // Manejo del clic fuera del dropdown
@@ -81,7 +85,7 @@ const Nav = () => {
               <img
                 className="profile--image"
                 alt="profile"
-                src="../assets/profile-user-account.svg"
+                src={profileImageUrl}
                 style={{ objectFit: "cover", borderRadius: "50%" }}
               />
               <strong>{userName}</strong>
@@ -91,7 +95,7 @@ const Nav = () => {
               <div className={`dropdown-menu ${isOpen ? 'open' : ''}`}>
                 <ul>
                   <li onClick={() => navigate("/perfilCliente")}>Perfil</li>
-                  <li onClick={() => navigate("/favoritos/:id")}>Mis favoritos</li>
+                  <li onClick={() => navigate(`/favoritos/${userId}`)}>Mis favoritos</li>
                   <li onClick={handleLogoutClick}>Cerrar sesión</li>
                 </ul>
               </div>

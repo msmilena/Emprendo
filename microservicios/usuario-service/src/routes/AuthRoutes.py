@@ -26,9 +26,10 @@ def login():
 
         # Obtener información adicional del usuario desde Firestore si es necesario
         user = AuthService.get_user_by_uid(uid)
+        
         print(user)
         if user:
-            return jsonify({'success': True, 'uid': uid, 'email': email, 'nombre': user.nombre, 'tipo': user.tipo})
+            return jsonify({'success': True, 'uid': uid, 'email': email, **user})  # Pasar todos los datos del usuario como JSON
         else:
             return jsonify({'success': False, 'message': 'Usuario no encontrado en la base de datos'}), 403
     except Exception as ex:
@@ -82,7 +83,7 @@ def register_with_emprendimiento():
     email = data.get("email")
     password = data.get("password")
     tipo = data.get("tipo")
-    tipoAuth = data.get("tipoAuth")
+    tipoAuth = int(data.get("tipoAuth"))
     emprendimiento_data = {
         'nombreComercial': data.get("nombreComercial"),
         'ruc': data.get("ruc"),
@@ -122,3 +123,15 @@ def check_email():
         return jsonify({'success': True, 'message': check_result['message']}), 200
     else:
         return jsonify({'success': False, 'message': check_result['message']}), 200
+
+@main.route('/get_user_id', methods=['GET'])
+def get_user_id():
+    email = request.args.get('email')
+    if not email:
+        return jsonify({'success': False, 'message': 'Email parameter is missing'}), 400
+
+    user_id_result = AuthService.get_user_id(email)
+    if user_id_result['success']:
+        return jsonify({'success': True, 'user_id': user_id_result['user_id']}), 200
+    else:
+        return jsonify({'success': False, 'message': user_id_result['message']}), 400

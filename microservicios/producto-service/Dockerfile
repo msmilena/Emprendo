@@ -11,7 +11,7 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Expone el puerto 80
-EXPOSE 8080
+EXPOSE 80
 
 # Comando para ejecutar la aplicación
 CMD ["python", "app.py"]
