@@ -67,3 +67,86 @@ class EmprendimientoService():
         except Exception as ex:
             raise CustomException(ex)
 
+
+    @classmethod
+    def get_summary_info_dashboard_by_emprendedor(cls, idEmprendedor):
+        try:
+            db = get_connection()
+            # Crear una referencia al emprendedor
+            emprendedor_ref = db.collection('usuarios').document(idEmprendedor)
+            
+            # Obtener los emprendimientos del emprendedor
+            emprendimientos_ref = db.collection('emprendimientos').where('idEmprendedor', '==', emprendedor_ref)
+            docs = emprendimientos_ref.stream()
+            
+            resumenes = []
+            for doc in docs:
+                emprendimiento_data = doc.to_dict()
+                emprendimiento_id = doc.id
+                
+                # Obtener los datos de valoración
+                promedio_valoracion = emprendimiento_data.get('valoracion', {}).get('promedioValoracion', 0)
+                totales_valoracion = emprendimiento_data.get('valoracion', {}).get('totalesValoracion', 0)
+                
+                # Contar el número de productos en la colección de productos
+                productos_ref = db.collection('emprendimientos').document(emprendimiento_id).collection('productos')
+                numero_productos = len(list(productos_ref.stream()))
+                
+                # Agregar los datos al resumen
+                resumenes.append({
+                    "idEmprendimiento": emprendimiento_id,
+                    "promedioValoracion": promedio_valoracion,
+                    "totalesValoracion": totales_valoracion,
+                    "numeroProductos": numero_productos
+                })
+            
+            return resumenes if resumenes else None
+        except Exception as ex:
+            raise CustomException(ex)
+
+
+
+    @classmethod
+    def get_top_productos_favoritos(cls, idEmprendimiento=None, idEmprendedor=None):
+        try:
+            db = get_connection()
+
+            # Si se proporciona idEmprendimiento, obtener los productos directamente
+            if idEmprendimiento:
+                emprendimiento_ref = db.collection('emprendimientos').document(idEmprendimiento)
+                productos_ref = emprendimiento_ref.collection('productos')
+                productos_docs = productos_ref.stream()
+                productos = [producto.to_dict() for producto in productos_docs]
+
+                # Ordenar los productos por cantidadFavoritos de mayor a menor
+                productos_ordenados = sorted(productos, key=lambda x: x.get('cantidadFavoritos', 0), reverse=True)
+
+                # Devolver los primeros 3 productos
+                return productos_ordenados[:3] if productos_ordenados else None
+
+            # Si no se proporciona idEmprendimiento pero sí idEmprendedor, buscar los emprendimientos asociados
+            if idEmprendedor:
+                emprendedor_ref = db.collection('usuarios').document(idEmprendedor)
+                emprendimientos_ref = db.collection('emprendimientos').where('idEmprendedor', '==', emprendedor_ref)
+                docs = emprendimientos_ref.stream()
+                productos = []
+
+                for doc in docs:
+                    emprendimiento = doc.to_dict()
+                    emprendimiento_ref = db.collection('emprendimientos').document(doc.id)
+                    productos_ref = emprendimiento_ref.collection('productos')
+                    productos_docs = productos_ref.stream()
+
+                    for producto_doc in productos_docs:
+                        producto = producto_doc.to_dict()
+                        producto['idProducto'] = producto_doc.id
+                        productos.append(producto)
+
+                # Ordenar los productos por cantidadFavoritos de mayor a menor
+                productos_ordenados = sorted(productos, key=lambda x: x.get('cantidadFavoritos', 0), reverse=True)
+
+                # Devolver los primeros 3 productos
+                return productos_ordenados[:3] if productos_ordenados else None
+
+        except Exception as ex:
+            raise CustomException(ex)

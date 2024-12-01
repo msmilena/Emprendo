@@ -1,14 +1,14 @@
-// src/components/TopProductItem.js
 import React from "react";
 import "./CSS/TopProductItemEmprendedor.css";
 
 const TopProductItemEmprendedor = ({ product }) => {
   return (
     <li className="top-product-item">
-      <span>{product.id}</span>
-      <span>{product.name}</span>
-      <span>{product.category}</span>
-      <span>S/ {product.price.toFixed(2)}</span>
+      <img src={product.imagen} alt={product.nombre_producto} className="product-image" />
+      <span>{product.nombre_producto}</span>
+      <span>{product.categoria_producto}</span>
+      <span>{product.descripcion_producto}</span>
+      <span>S/ {product.precio.toFixed(2)}</span>
     </li>
   );
 };

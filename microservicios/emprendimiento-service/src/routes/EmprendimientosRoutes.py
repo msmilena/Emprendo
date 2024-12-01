@@ -115,3 +115,34 @@ def get_top_emprendimientos():
         return jsonify({'success': True, 'emprendimientos': serialized_info})
     except CustomException as e:
         return jsonify({'message': str(e), 'success': False}), 500
+    
+@main.route('/resumenDashboardEmprendimiento', methods=['GET'])
+def get_emprendedor_summary():
+    idEmprendedor = request.args.get('idEmprendedor')
+    if not idEmprendedor:
+        return jsonify({'message': 'Falta el parámetro idEmprendedor'}), 400
+    try:
+        resumen_info = EmprendimientoService.get_summary_info_dashboard_by_emprendedor(idEmprendedor)
+        if resumen_info:
+            return jsonify({'success': True, 'resumen': resumen_info}), 200
+        else:
+            return jsonify({'message': 'No se encontraron emprendimientos para el emprendedor dado'}), 404
+    except CustomException as e:
+        return jsonify({'message': str(e), 'success': False}), 500
+
+@main.route('/topProductosDashboard', methods=['GET'])
+def get_top_productos():
+    idEmprendimiento = request.args.get('idEmprendimiento')
+    idEmprendedor = request.args.get('idEmprendedor')
+
+    try:
+        # Llamar al servicio que obtiene los productos top 3 favoritos
+        productos = EmprendimientoService.get_top_productos_favoritos(idEmprendimiento=idEmprendimiento, idEmprendedor=idEmprendedor)
+
+        if productos is not None:
+            return jsonify({'success': True, 'productos': productos})
+        else:
+            return jsonify({'message': 'No se encontraron productos favoritos'}), 404
+
+    except CustomException as e:
+        return jsonify({'message': str(e), 'success': False}), 500

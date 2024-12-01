@@ -40,6 +40,7 @@ function RegisterEmprendedor() {
         (error) => {
           console.error("No se pudo obtener la ubicación. Por favor, permite el acceso a la ubicación en tu navegador.");
           console.error(`Código de error: ${error.code}, Mensaje: ${error.message}`);
+          //console.error(Código de error: ${error.code}, Mensaje: ${error.message});
         },
         {
           enableHighAccuracy: true, // Solicita alta precisión, puede usar GPS en móviles
@@ -157,7 +158,7 @@ function RegisterEmprendedor() {
       }
 
       // Register emprendimiento
-      const emprendimientoResponse = await fetch(" https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/guardarEmprendimiento", {
+      const emprendimientoResponse = await fetch("https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/guardarEmprendimiento", {
         method: "POST",
         body: formData
       });
