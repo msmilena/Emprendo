@@ -66,14 +66,18 @@ function Login() {
         body: JSON.stringify({ token }),
       });
       const data = await response.json();
-      console.log(data)
+      console.log(data);
       if (data.success) {
         setUserId(user.uid);
         localStorage.setItem("userId", user.uid);
         localStorage.setItem("user", JSON.stringify(data));
         getLocation(); // Obtener la ubicación del usuario
-        // Redirigir al usuario a la página de inicio
-        navigate("/home"); // Ajusta la ruta según tu configuración
+        // Redirigir al usuario según el tipo
+        if (data.tipo === "emprendedor") {
+          navigate(`/homeEmprendedor/${user.uid}`);
+        } else {
+          navigate("/home");
+        }
       } else {
         setError(data.message);
       }
@@ -104,8 +108,12 @@ function Login() {
         localStorage.setItem("userId", user.uid);
         localStorage.setItem("user", JSON.stringify(data));
         getLocation(); // Obtener la ubicación del usuario
-        // Redirigir al usuario a la página de inicio
-        navigate("/home"); // Ajusta la ruta según tu configuración
+        // Redirigir al usuario según el tipo
+        if (data.tipo === "emprendedor") {
+          navigate(`/homeEmprendedor/${user.uid}`);
+        } else {
+          navigate("/home");
+        }
       } else {
         setError(data.message);
       }

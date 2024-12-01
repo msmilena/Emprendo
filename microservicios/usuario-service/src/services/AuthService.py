@@ -19,7 +19,7 @@ class AuthService:
             print(uid)
             user_ref = db.collection('usuarios').document(uid)
             user_data = user_ref.get()
-            if user_data.exists:
+            if (user_data.exists):
                 user_dict = user_data.to_dict()
                 # Convertir GeoPoint a un diccionario serializable
                 for key, value in user_dict.items():
@@ -81,14 +81,26 @@ class AuthService:
             raise CustomException(ex)
 
     @classmethod
+    def get_user_id(cls, email):
+        try:
+            db = get_connection()
+            user_ref = db.collection('usuarios').where('email', '==', email).get()
+            if user_ref:
+                return {'success': True, 'user_id': user_ref[0].id}
+            else:
+                return {'success': False, 'message': 'Usuario no encontrado'}
+        except Exception as e:
+            print(f"Error al obtener el ID del usuario: {e}")
+            return {'success': False, 'message': str(e)}
+
+    @classmethod
     def register_user_with_emprendimiento(cls, user, emprendimiento_data, image_file):
         try:
             # Register user
             user_registration_result = cls.register_user(user)
             if not user_registration_result['success']:
                 return user_registration_result
-
-            # Use the Firestore-assigned user ID for the emprendimiento
+            print(user_registration_result)
             user_id = user_registration_result['user_id']
             emprendimiento_data['idEmprendedor'] = user_id
 

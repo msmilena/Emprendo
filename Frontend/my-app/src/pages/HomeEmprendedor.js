@@ -1,5 +1,5 @@
 // src/App.js
-import React from "react";
+import React, { useEffect } from "react";
 import Sidebar from "../components/SidebarEmprendedor";
 import Header from "../components/HeaderEmprendedor";
 import DashboardOverview from "../components/DashboardOverviewEmprendedor";
@@ -8,13 +8,26 @@ import Button from "../components/Button";
 import './CSS/HomeEmprendedor.css';
 
 function HomeEmprendedor() {
+  useEffect(() => {
+    const fetchEmprendimientoData = async () => {
+      const userId = localStorage.getItem("userId");
+      const response = await fetch(`https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento//emprendimientoInfo?idEmprendedor=${userId}`);
+      const data = await response.json();
+      if (data.success) {
+        localStorage.setItem("emprendimientoData", JSON.stringify(data.emprendimientoData[0]));
+      }
+      console.log("info emprendimiento");
+      console.log(data);
+    };
+    fetchEmprendimientoData();
+  }, []);
+
   return (
     <div className="app-container">
       <Sidebar />
       <div className="main-content">
         <Header />
         <div className="dashboard-content">
-          {/* Contenedor con flexbox para título y botón */}
           <h2 className="centered-title">Resumen del emprendimiento</h2>
           <p className="custom-button">
             <Button 
