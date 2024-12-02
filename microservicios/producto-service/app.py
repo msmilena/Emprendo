@@ -138,8 +138,12 @@ def delete_product_from_emprendimiento(id_emprendimiento, id_producto):
 # Endpoint para obtener todos los productos de un emprendimiento
 @app.route('/emprendimientos/<id_emprendimiento>/productos', methods=['GET'])
 def get_products_of_emprendimiento(id_emprendimiento):
+    print("/emprendimientos/<id_emprendimiento>/productos")
     productos_ref = db.collection('emprendimientos').document(id_emprendimiento).collection('productos')
-    productos = [doc.to_dict() for doc in productos_ref.stream()]
+    productos = [
+        {**doc.to_dict(), 'id_producto': doc.id}  # Añade el id del documento como 'id_producto'
+        for doc in productos_ref.stream()
+    ]
     return jsonify(productos), 200
 
 
@@ -170,4 +174,4 @@ def get_product_by_id(id_emprendimiento, id_producto):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True, port=80)
+    app.run(host='0.0.0.0', debug=True, port=8080)

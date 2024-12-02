@@ -55,8 +55,7 @@ class EmprendimientoService():
         try:
             db = get_connection()
              # Crear una referencia al documento del emprendedor
-            emprendedor_ref = db.collection('usuarios').document(idEmprendedor)
-            emprendimientos_ref = db.collection('emprendimientos').where('idEmprendedor', '==', emprendedor_ref)
+            emprendimientos_ref = db.collection('emprendimientos').where('idEmprendedor', '==', idEmprendedor)
             docs = emprendimientos_ref.stream()
             emprendimientos = []
             for doc in docs:
@@ -72,11 +71,9 @@ class EmprendimientoService():
     def get_summary_info_dashboard_by_emprendedor(cls, idEmprendedor):
         try:
             db = get_connection()
-            # Crear una referencia al emprendedor
-            emprendedor_ref = db.collection('usuarios').document(idEmprendedor)
             
             # Obtener los emprendimientos del emprendedor
-            emprendimientos_ref = db.collection('emprendimientos').where('idEmprendedor', '==', emprendedor_ref)
+            emprendimientos_ref = db.collection('emprendimientos').where('idEmprendedor', '==', idEmprendedor)
             docs = emprendimientos_ref.stream()
             
             resumenes = []
@@ -126,8 +123,7 @@ class EmprendimientoService():
 
             # Si no se proporciona idEmprendimiento pero sí idEmprendedor, buscar los emprendimientos asociados
             if idEmprendedor:
-                emprendedor_ref = db.collection('usuarios').document(idEmprendedor)
-                emprendimientos_ref = db.collection('emprendimientos').where('idEmprendedor', '==', emprendedor_ref)
+                emprendimientos_ref = db.collection('emprendimientos').where('idEmprendedor', '==', idEmprendedor)
                 docs = emprendimientos_ref.stream()
                 productos = []
 
@@ -148,5 +144,21 @@ class EmprendimientoService():
                 # Devolver los primeros 3 productos
                 return productos_ordenados[:3] if productos_ordenados else None
 
+        except Exception as ex:
+            raise CustomException(ex)
+
+    @classmethod
+    def get_emprendimiento_por_emprendedor(cls, idEmprendedor):
+        try:
+            db = get_connection()
+            # Buscar el emprendimiento donde el campo 'idEmprendedor' coincida
+            emprendimiento_ref = db.collection('emprendimientos').where('idEmprendedor', '==', idEmprendedor)
+            emprendimiento_id = emprendimiento_ref.stream()
+
+            # Si se encuentra un emprendimiento, devolver solo el 'idEmprendimiento'
+            for doc in emprendimiento_id:
+                return doc.id  # Retorna el id del emprendimiento encontrado
+
+            return None
         except Exception as ex:
             raise CustomException(ex)

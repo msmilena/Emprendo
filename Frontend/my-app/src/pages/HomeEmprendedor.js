@@ -10,17 +10,24 @@ import './CSS/HomeEmprendedor.css';
 function HomeEmprendedor() {
   useEffect(() => {
     const fetchEmprendimientoData = async () => {
-      const userId = localStorage.getItem("userId");
-      const response = await fetch(`https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento//emprendimientoInfo?idEmprendedor=${userId}`);
+      const userId = localStorage.getItem("idusuario"); // O el ID que necesites
+      const response = await fetch(`https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientoPorEmprendedor?idEmprendedor=${userId}`);
+      //const response = await fetch("https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientoPorEmprendedor?idEmprendedor=4MIr6M0SyDFdMhb0Nloa");
       const data = await response.json();
+  
       if (data.success) {
-        localStorage.setItem("emprendimientoData", JSON.stringify(data.emprendimientoData[0]));
+        localStorage.setItem("emprendimientoId", data.emprendimientoId);  // Guardar el emprendimientoId
+      } else {
+        console.log("No se pudo obtener el emprendimientoId.");
       }
-      console.log("info emprendimiento");
-      console.log(data);
+  
+      console.log("Datos de emprendimiento:", data);
     };
+  
     fetchEmprendimientoData();
   }, []);
+  
+  
 
   return (
     <div className="app-container">

@@ -122,7 +122,7 @@ function RegisterEmprendedor() {
       };
 
       // Register user
-      const userResponse = await fetch("http://127.0.0.1:8080/auth/register", {
+      const userResponse = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.appauth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -137,7 +137,7 @@ function RegisterEmprendedor() {
       }
 
       // Get user ID
-      const userIdResponse = await fetch(`http://127.0.0.1:8080/auth/get_user_id?email=${email}`);
+      const userIdResponse = await fetch(`https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/get_user_id?email=${email}`);
       const userIdResult = await userIdResponse.json();
       if (!userIdResult.success) {
         alert(userIdResult.message);

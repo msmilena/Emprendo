@@ -11,7 +11,8 @@ const TopProductsListEmprendedor = () => {
   useEffect(() => {
     const fetchTopProducts = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8080/emprendimiento/topProductosDashboard?idEmprendedor=4MIr6M0SyDFdMhb0Nloa");
+        const idEmprendedor = localStorage.getItem("idusuario"); // O el ID que necesites
+        const response = await fetch(`https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/topProductosDashboard?idEmprendedor=${idEmprendedor}`);
         const data = await response.json();
 
         if (data.success) {

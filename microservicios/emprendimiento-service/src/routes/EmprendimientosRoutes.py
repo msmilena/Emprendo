@@ -146,3 +146,20 @@ def get_top_productos():
 
     except CustomException as e:
         return jsonify({'message': str(e), 'success': False}), 500
+
+@main.route('/emprendimientoPorEmprendedor', methods=['GET'])
+def get_emprendimiento_por_emprendedor():
+    idEmprendedor = request.args.get('idEmprendedor')
+    try:
+        if idEmprendedor:
+            emprendimiento = EmprendimientoService.get_emprendimiento_por_emprendedor(idEmprendedor)
+        else:
+            return jsonify({'message': 'Falta el parámetro idEmprendedor'}), 400
+
+        if emprendimiento is not None:
+            serialized_info = serialize_emprendimiento(emprendimiento)
+            return jsonify({'success': True, "emprendimientoId": serialized_info})
+        else:
+            return jsonify({'message': 'No se encontró emprendimiento para el emprendedor especificado'}), 404
+    except CustomException as e:
+        return jsonify({'message': str(e), 'success': False}), 500

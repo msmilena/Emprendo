@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import SummaryCard from "./SummaryCardEmprendedor";
 import "./CSS/DashboardOverviewEmprendedor.css";
 
-const DashboardOverviewEmprendedor = ({ idEmprendedor }) => {
+const DashboardOverviewEmprendedor = () => {
   const [data, setData] = useState(null); // Estado para guardar los datos
   const [loading, setLoading] = useState(true); // Estado para mostrar un indicador de carga
   const [error, setError] = useState(null); // Estado para manejar errores
 
-  idEmprendedor='4MIr6M0SyDFdMhb0Nloa'
+  const idEmprendedor = localStorage.getItem("idusuario"); // O el ID que necesites
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,8 +19,9 @@ const DashboardOverviewEmprendedor = ({ idEmprendedor }) => {
 
       try {
         const response = await fetch(
-          `http://127.0.0.1:8080/emprendimiento/resumenDashboardEmprendimiento?idEmprendedor=${idEmprendedor}`
+          `https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/resumenDashboardEmprendimiento?idEmprendedor=${idEmprendedor}`
         );
+        console.log(response);
         if (!response.ok) {
           throw new Error("Error al obtener los datos del servidor");
         }
