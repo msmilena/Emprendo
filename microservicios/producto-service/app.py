@@ -139,13 +139,21 @@ def delete_product_from_emprendimiento(id_emprendimiento, id_producto):
 # Endpoint para obtener todos los productos de un emprendimiento
 @app.route('/emprendimientos/<id_emprendimiento>/productos', methods=['GET'])
 def get_products_of_emprendimiento(id_emprendimiento):
-    print("/emprendimientos/<id_emprendimiento>/productos")
-    productos_ref = db.collection('emprendimientos').document(id_emprendimiento).collection('productos')
-    productos = [
-        {**doc.to_dict(), 'id_producto': doc.id}  # Añade el id del documento como 'id_producto'
-        for doc in productos_ref.stream()
-    ]
-    return jsonify(productos), 200
+    try:
+        print(f"Obteniendo productos para el emprendimiento: {id_emprendimiento}")
+        productos_ref = db.collection('emprendimientos').document(id_emprendimiento).collection('productos')
+        productos = [
+            {**doc.to_dict(), 'id_producto': doc.id}  # Incluye el ID del documento como 'id_producto'
+            for doc in productos_ref.stream()
+        ]
+        if not productos:  # Si no hay productos
+            return jsonify({'mensaje': 'No hay productos disponibles para este emprendimiento'}), 200
+        return jsonify(productos), 200
+    except Exception as e:
+        print(f"Error al obtener los productos: {e}")
+        return jsonify({'mensaje': 'Error al obtener los productos'}), 500
+
+
 
 
 # Endpoint para obtener todos los productos de todos los emprendimientos

@@ -53,7 +53,7 @@ const ProductsTable = ({ data }) => {
             {data.map((item, index) => (
                 <tr>
                 <td>{item.id}</td>
-                <td>{item.nombre}</td>
+                <td>{item.nombre_producto}</td>
                 <td>{item.categoria}</td>
                 <td>S/.{item.precio}</td>
                 <td>

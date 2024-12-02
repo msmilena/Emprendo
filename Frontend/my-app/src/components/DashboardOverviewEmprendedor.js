@@ -7,7 +7,7 @@ const DashboardOverviewEmprendedor = () => {
   const [loading, setLoading] = useState(true); // Estado para mostrar un indicador de carga
   const [error, setError] = useState(null); // Estado para manejar errores
 
-  const idEmprendedor = localStorage.getItem("idusuario"); // O el ID que necesites
+  const idEmprendedor = localStorage.getItem("userId"); // O el ID que necesites
 
   useEffect(() => {
     const fetchData = async () => {
