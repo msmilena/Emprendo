@@ -36,7 +36,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/perfilCliente" element={<PerfilCliente />} />
         <Route path="/favoritos/:id" element={< FavoritosUsuarios />} />
-        <Route path="/categoria/:id" element={< ProductosxCategoria />} />
+        <Route path="/productosxCategoria/:categoryName" element={< ProductosxCategoria />} /> {/* Update the route */}
         <Route path="/listaEmprendimientos" element={< EmprendimientosList />} />
         <Route path="/detalleEmprendimiento/:id" element={< DetalleEmprendimiento />} />
         <Route path="/emprendimientoCategoria/:id" element={< EmprendimientoPorCategoria />} />

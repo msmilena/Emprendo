@@ -1,65 +1,43 @@
 // src/pages/Home.js
-import React, {  } from "react";
+import React, { useEffect, useState } from "react";
 import Footer2 from "../components/Footer2";
 import Nav from "../components/Nav";
 import ProductSectionsXCategoria from "../components/ProductSectionsXCategoria";
 import "./CSS/ProductosxCategoria.css";
+import { useParams } from "react-router-dom";
 
 function ProductosxCategoria() {
+  const { categoryName } = useParams(); // Get the category name from the URL
+  const [sectionsData, setSectionsData] = useState([]);
 
-    const sectionsData = [
-        {
-          title: "Emprendimiento 1",
-          products: [
-            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen" },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen" },
-          ]
-        },
-        {
-          title: "Emprendimiento 2",
-          products: [
-            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen",rating:2},
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:2 },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:2},
-          ]
-        },
-        {
-          title: "Emprendimiento 3",
-          products: [
-            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen",rating:3},
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:3},
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:3},
-          ]
-        },
-        {
-          title: "Emprendimiento 4",
-          products: [
-            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen",rating:3 },
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:3 },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:3},
-          ]
-        },
-        {
-          title: "Emprendimiento 5",
-          products: [
-            { category: "Tecnología", name: "Laptop Intel core", desc: "Descripción", price: "4040.47", imgURL: "url-de-imagen",rating:4},
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:4 },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:4 },
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:4 },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:4 },
-            { category: "Tecnología", name: "Samsung Galaxy Z Series", desc: "Descripción", price: "1825.58", imgURL: "url-de-imagen",rating:4 },
-            { category: "Tecnología", name: "LAPTOP ASUS AMDA RYZEN", desc: "Descripción", price: "3783.23", imgURL: "url-de-imagen",rating:4 },
-          ]
-        }
-      ];
+  useEffect(() => {
+    fetch(`https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/categoria/${categoryName}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const section = {
+          title: `Productos de ${categoryName}`,
+          products: data.flatMap(emprendimiento => 
+            emprendimiento.productos.map(product => ({
+              category: product.categoria_producto,
+              name: product.nombre_producto,
+              desc: product.descripcion_producto,
+              price: product.precio,
+              imgURL: product.imagen,
+              rating: product.cantidadFavoritos // Assuming rating is based on the number of favorites
+            }))
+          )
+        };
+        setSectionsData([section]);
+      })
+      .catch((error) => console.error("Error fetching products:", error));
+  }, [categoryName]);
 
   return (
     <div className="">
       <Nav />
       <section className="">
         <div className="categoria-container">
-          <h2>Categoría: <span>Tecnologia</span></h2>
+          <h2>Categoría: <span>{categoryName}</span></h2> {/* Use the category name from the URL */}
           <ProductSectionsXCategoria sectionsData={sectionsData} />
         </div>
       </section>

@@ -4,7 +4,7 @@ import { Carousel } from "react-bootstrap";
 import CategoryItem from "./CategoryItem";
 import "./CSS/DynamicCategoryList.css";
 
-function DynamicCategoryList({ categories }) {
+function DynamicCategoryList({ categories, onCategoryClick }) {
   // Divide las categorías en grupos de 5 para mostrarlas en cada diapositiva
   const chunkSize = 4;
   const groupedCategories = [];
@@ -18,7 +18,7 @@ function DynamicCategoryList({ categories }) {
         <Carousel.Item key={groupIndex}>
           <div className="d-flex justify-content-center">
             {group.map((category, index) => (
-              <div key={index} className="category-column">
+              <div key={index} className="category-column" onClick={() => onCategoryClick(category.title)}>
                 <CategoryItem imgURL={category.imgURL} title={category.title} />
               </div>
             ))}
