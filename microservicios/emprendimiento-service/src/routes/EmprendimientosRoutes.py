@@ -61,12 +61,21 @@ def get_infoEmprendimiento():
             return jsonify({'message': 'Falta el parámetro idEmprendimiento o idEmprendedor'}), 400
 
         if infoEmprendimiento is not None:
+            # Serializar la información del emprendimiento
             serialized_info = serialize_emprendimiento(infoEmprendimiento)
+
+            # Verificar si hay productos o el mensaje adicional
+            if 'productos' in infoEmprendimiento:
+                serialized_info['productos'] = infoEmprendimiento['productos']
+            elif 'mensaje_productos' in infoEmprendimiento:
+                serialized_info['mensaje_productos'] = infoEmprendimiento['mensaje_productos']
+
             return jsonify({'success': True, "emprendimientoData": serialized_info})
         else:
             return jsonify({'message': 'Emprendimiento no encontrado'}), 404
     except CustomException as e:
         return jsonify({'message': str(e), 'success': False}), 500
+
 
 
 @main.route('/guardarEmprendimiento', methods=['POST'])

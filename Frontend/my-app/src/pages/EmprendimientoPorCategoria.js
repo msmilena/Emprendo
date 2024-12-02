@@ -6,79 +6,21 @@ import Products from "../components/ProductsEmprendimientoCategoria";
 import Pagination from "../components/Pagination";
 import SearchBar from "../components/SearchBar";
 import "./CSS/EmprendimientoPorCategoria.css";
+import { useParams } from "react-router-dom";
 
 const GOOGLE_MAPS_API_KEY = "AIzaSyBcYYMGd6XzoGXr3GNobB49cEOJg_7N2wU"; 
 
 function EmprendimientoPorCategoria() {
-  const [info, setInfo] = useState(null); // Estado para la información del negocio
-  const [products, setProducts] = useState([
-    {
-      category: "Tecnología",
-      name: "Laptop Intel Core",
-      desc: "Descripción breve del producto",
-      imgURL: "URL_IMAGEN_LAPTOP",
-      price: 4040.47,
-      rating: 4.5,
-    },{
-      category: "Tecnología",
-      name: "Laptop Intel Core",
-      desc: "Descripción breve del producto",
-      imgURL: "URL_IMAGEN_LAPTOP",
-      price: 4040.47,
-      rating: 4.5,
-    },{
-      category: "Tecnología",
-      name: "Laptop Intel Core",
-      desc: "Descripción breve del producto",
-      imgURL: "URL_IMAGEN_LAPTOP",
-      price: 4040.47,
-      rating: 4.5,
-    },{
-      category: "Tecnología",
-      name: "Laptop Intel Core",
-      desc: "Descripción breve del producto",
-      imgURL: "URL_IMAGEN_LAPTOP",
-      price: 4040.47,
-      rating: 4.5,
-    },{
-      category: "Tecnología",
-      name: "Laptop Intel Core",
-      desc: "Descripción breve del producto",
-      imgURL: "URL_IMAGEN_LAPTOP",
-      price: 4040.47,
-      rating: 4.5,
-    },{
-      category: "Tecnología",
-      name: "Laptop Intel Core",
-      desc: "Descripción breve del producto",
-      imgURL: "URL_IMAGEN_LAPTOP",
-      price: 4040.47,
-      rating: 4.5,
-    },{
-      category: "Tecnología",
-      name: "Laptop Intel Core",
-      desc: "Descripción breve del producto",
-      imgURL: "URL_IMAGEN_LAPTOP",
-      price: 4040.47,
-      rating: 4.5,
-    },{
-      category: "Tecnología",
-      name: "Laptop Intel Core",
-      desc: "Descripción breve del producto",
-      imgURL: "URL_IMAGEN_LAPTOP",
-      price: 4040.47,
-      rating: 4.5,
-    },{
-      category: "Tecnología",
-      name: "Laptop Intel Core",
-      desc: "Descripción breve del producto",
-      imgURL: "URL_IMAGEN_LAPTOP",
-      price: 4040.47,
-      rating: 4.5,
-    }
 
-    // Agrega más productos según sea necesario...
-  ]);
+  const { id } = useParams(); // Obtén el id desde la URL
+
+  useEffect(() => {
+    // Usa el id para realizar alguna acción, como cargar datos específicos
+    console.log("ID del emprendimiento:", id);
+  }, [id]);
+
+  const [info, setInfo] = useState(null); // Estado para la información del negocio
+  const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -101,44 +43,65 @@ function EmprendimientoPorCategoria() {
     }
   };
 
-  // Cargar datos desde la API
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          "https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientos"
+  // Cargar datos desde la API con el id dinámico
+useEffect(() => {
+  const fetchData = async () => {
+    if (!id) return; // Asegúrate de que `id` no sea nulo o undefined
+
+    try {
+      const response = await fetch(
+        `http://127.0.0.1:8080/emprendimiento/emprendimientoInfo?idEmprendimiento=${id}`
+      );
+
+      console.log(response);
+      const responseData = await response.json();
+
+      console.log(responseData)
+
+      if (responseData.success) {
+        const emprendimiento = responseData.emprendimientoData;
+
+        const exactLocation = await getAddressFromCoordinates(
+          emprendimiento.localizacion.latitude,
+          emprendimiento.localizacion.longitude
         );
-        const responseData = await response.json();
 
-        if (responseData.success) {
-          const firstEmprendimiento = responseData.emprendimientos[0]; // Simulación: tomamos el primer emprendimiento
-          const exactLocation = await getAddressFromCoordinates(
-            firstEmprendimiento.localizacion.latitude,
-            firstEmprendimiento.localizacion.longitude
-          );
+        const transformedInfo = {
+          name: emprendimiento.nombreComercial,
+          description: emprendimiento.descripcion||"",
+          location: exactLocation, // Ubicación exacta
+          socials: emprendimiento.redesSociales || {},
+        };
 
-          const transformedInfo = {
-            name: firstEmprendimiento.nombreComercial,
-            description: firstEmprendimiento.descripcion,
-            location: exactLocation, // Ubicación exacta
-            socials: firstEmprendimiento.redesSociales || {},
-            rating: firstEmprendimiento.valoracion?.promedioValoracion || 0,
-          };
+        setInfo(transformedInfo);
 
-          setInfo(transformedInfo);
+        // Opcional: Actualiza también los productos si vienen en la respuesta
+        if (emprendimiento.productos) {
+          setProducts(emprendimiento.productos.map(product => ({
+            category: product.categoria_producto || "Sin categoría",
+            name: product.nombre_producto,
+            desc: product.descripcion_producto || "Sin descripción",
+            imgURL: product.imagen || "URL_IMAGEN_DEFAULT",
+            price: product.precio || 0,
+          })));
         }
-      } catch (error) {
-        console.error("Error fetching emprendimiento data:", error);
       }
-    };
+    } catch (error) {
+      console.error("Error fetching emprendimiento data:", error);
+    }
+  };
 
-    fetchData();
-  }, []);
+  fetchData();
+}, [id]);
+
 
   // Filtrar productos
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter(
+    (product) =>
+      product.name && // Verifica que `product.name` esté definido
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
   const paginatedProducts = filteredProducts.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,

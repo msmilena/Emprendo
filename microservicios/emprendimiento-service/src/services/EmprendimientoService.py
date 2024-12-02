@@ -15,13 +15,28 @@ class EmprendimientoService():
             db = get_connection()
             emprendimiento_ref = db.collection('emprendimientos').document(idEmprendimiento)
             emprendimiento_data = emprendimiento_ref.get()
+
             if emprendimiento_data.exists:
                 doc_data = emprendimiento_data.to_dict()
+                
+                # Verificar si hay una subcolección llamada 'productos'
+                productos_ref = emprendimiento_ref.collection('productos')
+                productos_docs = productos_ref.stream()  # Obtener documentos de la subcolección
+                
+                productos = [producto.to_dict() for producto in productos_docs]
+                
+                if productos:  # Si hay productos, agregarlos al resultado
+                    doc_data['productos'] = productos
+                else:  # Si no hay productos, agregar mensaje adicional
+                    doc_data['mensaje_productos'] = 'No hay productos disponibles.'
+                
                 print(doc_data)
                 return doc_data
+            
             return None
         except Exception as ex:
             raise CustomException(ex)
+
      
     @classmethod
     def get_top_emprendimientos(cls, limit=10):
