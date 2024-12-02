@@ -32,6 +32,8 @@ function Home() {
     navigate(`/productosxCategoria/${categoryName}`); // Navega a ProductosxCategoria con el nombre de la categoría
   };
 
+  console.log(products)
+
   return (
     <div className="home--page--container">
       {/* Componente de navegación */}

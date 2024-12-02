@@ -11,7 +11,7 @@ function ProductosxCategoria() {
   const [sectionsData, setSectionsData] = useState([]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:8080/emprendimientos/categoria/${categoryName}`)
+    fetch(`https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/categoria/${categoryName}`)
       .then((response) => response.json())
       .then((data) => {
         /*const section = {

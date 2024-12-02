@@ -1,22 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useLocation } from "react-router-dom";
 import Nav from "../components/Nav";
 import Footer2 from "../components/Footer2";
 import "./CSS/DetalleProducto.css";
 
 const DetalleProducto = () => {
-  //const { id } = useParams(); // ID del producto desde la URL
+  const { id } = useParams(); // ID del producto desde la URL
   const [product, setProduct] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false); // Estado de favorito
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const location = useLocation(); 
+  const queryParams = new URLSearchParams(location.search);
+  const idEmprendimiento = queryParams.get("idEmprendimiento");
 
-  const id = "2YE1oM0ThlMC5R7P45g5";
+  //const id = "2YE1oM0ThlMC5R7P45g5";
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await fetch(
-          `https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/3i1fXE90tVVpnWzjk2UN/productos/${id}`
+          `https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/${idEmprendimiento}/productos/${id}`
         );
         if (!response.ok) {
           throw new Error("Producto no encontrado");
@@ -32,13 +35,13 @@ const DetalleProducto = () => {
     };
 
     fetchProduct();
-  }, [id]);
+  }, [idEmprendimiento,id]);
 
   const toggleFavorite = async () => {
     try {
       // Simula enviar al servidor si es favorito o no
       await fetch(
-        `https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/3i1fXE90tVVpnWzjk2UN/productos/${id}/favorito`,
+        `https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/${idEmprendimiento}/productos/${id}/favorito`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

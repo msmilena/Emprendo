@@ -232,12 +232,16 @@ def get_emprendimientos_by_categoria(categoria):
             if 'localizacion' in emprendimiento_data:
                 del emprendimiento_data['localizacion']
             
+            # ID del emprendimiento
+            idEmprendimiento = emprendimiento.id
+            
             # Acceder a la subcolección 'productos'
             productos_ref = emprendimiento.reference.collection('productos')
             productos = []
             for producto_doc in productos_ref.stream():
                 producto_data = producto_doc.to_dict()
                 producto_data['id'] = producto_doc.id  # Agregar el ID del documento
+                producto_data['idEmprendimiento'] = idEmprendimiento  # Agregar el ID del emprendimiento
                 productos.append(producto_data)
             
             emprendimiento_data['productos'] = productos  # Agregar los productos al emprendimiento
@@ -251,6 +255,7 @@ def get_emprendimientos_by_categoria(categoria):
     except Exception as e:
         print(f"Error al obtener los emprendimientos por categoría: {e}")
         return jsonify({'mensaje': 'Error al obtener los emprendimientos por categoría'}), 500
+
 
 
 @app.route('/categorias_subcategorias', methods=['GET'])

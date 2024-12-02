@@ -2,11 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./CSS/ProductItem.css";
 
-const ProductItem = ({ id, category, name, desc, imgURL, price }) => {
+const ProductItem = ({ id, idEmprendimiento, category, name, desc, imgURL, price }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/detalleProducto/${id}`);
+    // Redirige a la ruta que incluye tanto id como idEmprendimiento
+    navigate(`/detalleProducto/${id}?idEmprendimiento=${idEmprendimiento}`);
   };
 
   return (

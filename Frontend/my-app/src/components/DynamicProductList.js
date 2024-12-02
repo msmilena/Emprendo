@@ -29,6 +29,7 @@ function DynamicProductList({ products }) {
               <div key={index} className="product-column">
                 <ProductItem
                   id={product.id}
+                  idEmprendimiento={product.idEmprendimiento}
                   category={product.categoria_producto}
                   name={product.nombre_producto}
                   desc={product.descripcion_producto}

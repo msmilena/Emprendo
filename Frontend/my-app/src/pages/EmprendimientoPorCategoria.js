@@ -50,7 +50,7 @@ useEffect(() => {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8080/emprendimiento/emprendimientoInfo?idEmprendimiento=${id}`
+        ` https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientoInfo?idEmprendimiento=${id}`
       );
 
       console.log(response);

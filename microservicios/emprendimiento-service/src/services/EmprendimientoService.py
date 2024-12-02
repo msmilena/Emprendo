@@ -18,12 +18,22 @@ class EmprendimientoService():
 
             if emprendimiento_data.exists:
                 doc_data = emprendimiento_data.to_dict()
-                
+
+                # Agregar el idEmprendimiento al diccionario principal
+                doc_data['idEmprendimiento'] = idEmprendimiento
+
                 # Verificar si hay una subcolección llamada 'productos'
                 productos_ref = emprendimiento_ref.collection('productos')
                 productos_docs = productos_ref.stream()  # Obtener documentos de la subcolección
                 
-                productos = [producto.to_dict() for producto in productos_docs]
+                # Agregar idEmprendimiento a cada producto
+                productos = [
+                    {
+                        **producto.to_dict(),  # Copiar los datos del producto
+                        'idEmprendimiento': idEmprendimiento  # Agregar el idEmprendimiento
+                    }
+                    for producto in productos_docs
+                ]
                 
                 if productos:  # Si hay productos, agregarlos al resultado
                     doc_data['productos'] = productos
@@ -36,6 +46,7 @@ class EmprendimientoService():
             return None
         except Exception as ex:
             raise CustomException(ex)
+
 
      
     @classmethod
