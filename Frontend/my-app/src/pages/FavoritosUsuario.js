@@ -31,6 +31,7 @@ function FavoritosUsuario() {
           // Transformar datos al formato esperado
           const transformedProducts = responseData.favoritos.map((item) => ({
             id: item.idProducto,
+            idEmprendimiento: item.idEmprendimiento,
             name: item.nombre_producto,
             category: item.categoria_producto,
             price: item.precio,
