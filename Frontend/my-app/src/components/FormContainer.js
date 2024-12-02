@@ -1,4 +1,3 @@
-// src/components/FormContainer.js
 import React, { useState, useEffect } from "react";
 import TextInput from "./TextInput";
 import TextArea from "./TextArea";
@@ -19,11 +18,10 @@ const FormContainer = () => {
     descripcion: data.descripcion || "",
     categoria: data.categoria || "",
     subCategoria: data.subCategoria || "",
-    // Optional fields (commented out if not in use)
-    // facebook: data.redesSociales?.facebook || "",
-    // instagram: data.redesSociales?.instagram || "",
-    // twitter: data.redesSociales?.twitter || "",
-    // logo: data.image_url || "",
+    facebook: data.redesSociales?.facebook || "",
+    instagram: data.redesSociales?.instagram || "",
+    twitter: data.redesSociales?.twitter || "",
+    logo: data.image_url || "",  // URL de la imagen
   });
   const [initialData, setInitialData] = useState({ ...formData });
   const [isEditing, setIsEditing] = useState(false);
@@ -109,7 +107,9 @@ const FormContainer = () => {
   };
 
   const handleLogoUpload = (file) => {
-    setFormData({ ...formData, logo: file });
+    // Asumiendo que el LogoUploader puede manejar imágenes y se espera una URL
+    const imageUrl = URL.createObjectURL(file);  // O su lógica para obtener URL
+    setFormData({ ...formData, logo: imageUrl });
   };
 
   const handleSubmit = () => {
@@ -145,7 +145,9 @@ const FormContainer = () => {
           <SelectInput disabled={!isEditing} label="Categoría" name="categoria" value={formData.categoria} options={categorias.map((category) => category.value)} onChange={handleChange} />
           <SelectInput disabled={!isEditing} label="Sub Categorías" name="subCategoria" value={formData.subCategoria} options={subcategorias.map((subcategory) => subcategory.value)} onChange={handleChange} />
           <SocialLinks disabled={!isEditing} facebook={formData.facebook} instagram={formData.instagram} twitter={formData.twitter} onChange={handleChange} />
+          
           <LogoUploader disabled={!isEditing} logo={formData.logo} onUpload={handleLogoUpload} />
+          
           <div className="form-buttons">
             {isEditing && <SubmitButton className="cancelarBtn" nameText="Cancelar" onClick={handleCancel} />}
             <SubmitButton className="guaAgreBtn" nameText={isEditing ? "Guardar cambios" : "Actualizar"} onClick={handleButtonClick} />
