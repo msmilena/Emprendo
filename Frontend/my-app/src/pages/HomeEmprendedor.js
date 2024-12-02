@@ -1,5 +1,5 @@
 // src/App.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../components/SidebarEmprendedor";
 import Header from "../components/HeaderEmprendedor";
 import DashboardOverview from "../components/DashboardOverviewEmprendedor";
@@ -8,6 +8,9 @@ import Button from "../components/Button";
 import './CSS/HomeEmprendedor.css';
 
 function HomeEmprendedor() {
+  const [showDashboard, setShowDashboard] = useState(false);
+  const [idEmprendimiento, setIdEmprendimiento] = useState("");
+
   useEffect(() => {
     const fetchEmprendimientoData = async () => {
       const userId = localStorage.getItem("userId"); // Obtener el ID del usuario desde localStorage
@@ -30,6 +33,7 @@ function HomeEmprendedor() {
       if (emprendimientoData.success && emprendimientoData.emprendimientoData.length > 0) {
         console.log("Datos de emprendimiento:", emprendimientoData.emprendimientoData[0]);
         localStorage.setItem("emprendimientoData", JSON.stringify(emprendimientoData.emprendimientoData[0]));  // Guardar el emprendimientoData
+        setIdEmprendimiento(emprendimientoData.emprendimientoData[0].idEmprendimiento); // Set the idEmprendimiento
       } else {
         console.log("No se pudo obtener el emprendimientoData.");
       }
@@ -48,11 +52,21 @@ function HomeEmprendedor() {
           <p className="custom-button">
             <Button 
               variant="primary" 
-              onClick={() => alert("Botón presionado")}
+              onClick={() => setShowDashboard(true)}
             >
               Ver dashboard
             </Button>
           </p>
+          {showDashboard && idEmprendimiento && (
+            <iframe
+              src={`https://lookerstudio.google.com/embed/reporting/e52f3640-5699-4aed-b15c-1d3a8df5eb6f/page/xwOXE?params=%7B%22ds17.filtroemprendimiento%22:%22${idEmprendimiento}%22%7D`}
+              width="100%"
+              height="600px"
+              frameBorder="0"
+              style={{ border: 0 }}
+              allowFullScreen
+            ></iframe>
+          )}
           <DashboardOverview />
           <TopProductsList />
         </div>
