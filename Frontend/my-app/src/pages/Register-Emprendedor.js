@@ -39,7 +39,6 @@ function RegisterEmprendedor() {
         },
         (error) => {
           console.error("No se pudo obtener la ubicación. Por favor, permite el acceso a la ubicación en tu navegador.");
-          console.error(`Código de error: ${error.code}, Mensaje: ${error.message}`);
           //console.error(Código de error: ${error.code}, Mensaje: ${error.message});
         },
         {

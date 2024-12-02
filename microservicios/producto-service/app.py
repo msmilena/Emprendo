@@ -4,6 +4,7 @@ from firebase_admin import credentials, firestore
 from google.cloud import storage
 import datetime
 import json
+from werkzeug.utils import secure_filename
 
 from flask_cors import CORS, cross_origin
 
@@ -23,14 +24,36 @@ BUCKET_NAME = 'emprendo-1c101.firebasestorage.app'  # El nombre del bucket extra
 storage_client = storage.Client.from_service_account_json('credentials.json')
 bucket = storage_client.bucket(BUCKET_NAME)
 
+class CustomException(Exception):
+    """Excepción personalizada para manejar errores específicos."""
+    def __init__(self, message):
+        super().__init__(message)
+        self.message = message
+
+    def __str__(self):
+        return f"CustomException: {self.message}"
 
 # Subir imagen a Firebase Storage
 def upload_image_to_storage(image, filename):
-    if not filename.startswith('productos/'):
-        filename = f'productos/{filename}'
-    blob = bucket.blob(filename)
-    blob.upload_from_file(image, content_type=image.content_type)
-    return blob.public_url
+    try:
+        if not filename.startswith('productos/'):
+            filename = f'productos/{secure_filename(filename)}'
+
+        # Obtener el bucket desde el cliente de storage
+        bucket = storage_client.bucket(BUCKET_NAME)
+        blob = bucket.blob(filename)
+
+        # Subir la imagen
+        blob.upload_from_file(image, content_type=image.content_type)
+
+        # Hacer pública la imagen
+        blob.make_public()
+        return blob.public_url
+
+    except Exception as e:
+        print(f"Error al subir la imagen a Firebase Storage: {e}")
+        raise CustomException("No se pudo subir la imagen al almacenamiento.")
+
 
 
 # Eliminar imagen de Firebase Storage
