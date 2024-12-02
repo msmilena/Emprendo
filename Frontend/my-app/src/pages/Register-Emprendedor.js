@@ -35,7 +35,7 @@ function RegisterEmprendedor() {
           localStorage.setItem("latitude", latitude);
           localStorage.setItem("longitude", longitude);
           
-          console.log("Ubicación obtenida con alta precisión");
+          //console.log("Ubicación obtenida con alta precisión");
         },
         (error) => {
           console.error("No se pudo obtener la ubicación. Por favor, permite el acceso a la ubicación en tu navegador.");
@@ -109,7 +109,7 @@ function RegisterEmprendedor() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      console.log("User registered:", user);
+      //console.log("User registered:", user);
 
       // Prepare form data for user registration
       const userData = {

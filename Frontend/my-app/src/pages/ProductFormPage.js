@@ -37,10 +37,10 @@ const ProductFormPage = ({ mode }) => {
 
     const handleSave = (formData) => {
         if (isEditMode) {
-            console.log('Guardar cambios de edición:', formData);
+            //console.log('Guardar cambios de edición:', formData);
             // Endpoint guardar producto
         } else if (isNewMode) {
-            console.log('Agregar nuevo producto:', formData);
+            //console.log('Agregar nuevo producto:', formData);
             // Endpoint nuevo producto
         }
         navigate('/productosEmprendedor'); // Redirigir después de guardar

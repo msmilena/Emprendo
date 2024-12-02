@@ -59,7 +59,7 @@ const ProductForm = ({ productData, onSave, isEditMode, isViewMode, isNewMode })
             return; // No avanza si hay errores
         }
         setErrors({}); // Limpia errores si todo está bien
-        console.log("Producto actualizado");
+        //console.log("Producto actualizado");
         navigate('/productosEmprendedor/APEQO6fohuDykka1Uqjn')
     };
     const navigate = useNavigate();
@@ -67,7 +67,7 @@ const ProductForm = ({ productData, onSave, isEditMode, isViewMode, isNewMode })
         navigate('/productosEmprendedor/editar/APEQO6fohuDykka1Uqjn');
     };
     const handleCancel = () => {
-        console.log("Edición cancelada");
+        //console.log("Edición cancelada");
         navigate('/productosEmprendedor/APEQO6fohuDykka1Uqjn')
     };
 

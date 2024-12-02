@@ -3,6 +3,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 from google.cloud import storage
 import datetime
+import json
 
 app = Flask(__name__)
 
@@ -171,6 +172,13 @@ def get_product_by_id(id_emprendimiento, id_producto):
     # Retornar los datos del producto
     product_data = producto.to_dict()
     return jsonify(product_data), 200
+
+
+@app.route('/categorias', methods=['GET'])
+def get_categorias():
+    with open('categoriasHome.json', 'r') as file:
+        categorias = json.load(file)
+    return jsonify(categorias), 200
 
 
 if __name__ == '__main__':

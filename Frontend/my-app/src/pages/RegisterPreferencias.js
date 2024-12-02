@@ -14,7 +14,7 @@ const RegisterPreferencias = () => {
   
     const handleFinalize = () => {
       // Aquí puedes guardar los datos o hacer algo con ellos
-      console.log("Preferencias finalizadas");
+      //console.log("Preferencias finalizadas");
     };
   
     return (

@@ -31,7 +31,7 @@ function PerfilCliente() {
     }, []);
 
     const handleChangeDetails = (e) => {
-      console.log(e);
+      //console.log(e);
       setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
     };
   
@@ -45,7 +45,7 @@ function PerfilCliente() {
   
     const handleSubmit = async () => {
         const userId = localStorage.getItem("userId");
-        console.log("User ID:", userId);
+        //console.log("User ID:", userId);
         if (userId) {
             const formData = new FormData();
             formData.append("idUser", userId); // Use userId from localStorage
@@ -61,15 +61,15 @@ function PerfilCliente() {
                     body: formData
                 });
                 const result = await response.json();
-                console.log(result);
+                //console.log(result);
                 if (result.success) {
                     // Fetch updated user info
                     const infoResponse = await fetch(`https://emprendo-usuario-service-26932749356.us-west1.run.app/user/info?idUser=${userId}`);
                     const updatedUserInfo = await infoResponse.json();
                     if (updatedUserInfo.success) {
-                        console.log("Updated user info:", updatedUserInfo.userData);
+                        //console.log("Updated user info:", updatedUserInfo.userData);
                         localStorage.setItem("user", JSON.stringify(updatedUserInfo.userData));
-                        console.log("Updated localStorage:", localStorage.getItem("user"));
+                        //console.log("Updated localStorage:", localStorage.getItem("user"));
                         setUserDetails({
                             ...updatedUserInfo.userData,
                             avatar: updatedUserInfo.userData.urlPerfil || userDetails.avatar.previewUrl

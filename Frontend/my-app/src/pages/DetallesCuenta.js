@@ -22,7 +22,7 @@ const DetallesCuenta = () => {
   const [editPassword, setEditPassword] = useState(false);
 
   const handleChangeDetails = (e) => {
-    console.log(e);
+    //console.log(e);
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
   };
 
@@ -36,7 +36,7 @@ const DetallesCuenta = () => {
 
   const handleSubmit = () => {
     //hacer lo que se desee con la info
-    console.log(userDetails);
+    //console.log(userDetails);
   };
 
   return (

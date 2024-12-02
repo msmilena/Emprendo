@@ -35,7 +35,7 @@ function Login() {
           localStorage.setItem("latitude", latitude);
           localStorage.setItem("longitude", longitude);
 
-          console.log("Ubicación obtenida con alta precisión");
+          //console.log("Ubicación obtenida con alta precisión");
         },
         (error) => {
           // Maneja errores si no se puede obtener la ubicación
@@ -55,7 +55,7 @@ function Login() {
 
   // Función para manejar el inicio de sesión con correo y contraseña
   const handleLogin = async () => {
-    console.log("login"); // Mensaje en consola para depuración
+    //console.log("login"); // Mensaje en consola para depuración
     try {
       // Autentica al usuario usando Firebase
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -71,7 +71,7 @@ function Login() {
         body: JSON.stringify({ token }), // Envía el token en el cuerpo de la solicitud
       });
       const data = await response.json();
-      console.log(data);
+      //console.log(data);
       if (data.success) {
         setUserId(user.uid);
         localStorage.setItem("userId", user.uid);
@@ -95,13 +95,13 @@ function Login() {
 
   // Función para manejar el inicio de sesión con Google
   const handleGoogleLogin = async () => {
-    console.log("google login"); // Mensaje en consola para depuración
+    //console.log("google login"); // Mensaje en consola para depuración
     const provider = new GoogleAuthProvider(); // Configura el proveedor de Google
     try {
       // Autentica al usuario con Google usando Firebase
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user; // Obtiene el usuario autenticado
-      console.log("User logged in with Google:", user);
+      //console.log("User logged in with Google:", user);
 
       const token = await user.getIdToken(); // Obtiene el token del usuario
 

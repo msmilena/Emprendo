@@ -41,7 +41,7 @@ const DetalleEmprendimiento = () => {
   
 
   const handleRatingChange = (newRating) => {
-    console.log('New rating:', newRating); // Ver el valor del rating antes de enviarlo
+    //console.log('New rating:', newRating); // Ver el valor del rating antes de enviarlo
     setRating(newRating);
     handleSubmitRating(newRating); // Llamar a handleSubmitRating después de actualizar el estado
   };

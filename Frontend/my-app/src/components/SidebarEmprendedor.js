@@ -9,7 +9,10 @@ const SidebarEmprendedor = () => {
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("emprendimientoData"));
-    setEmprendimientoData(data);
+    console.log("Datos de emprendimiento:", data);
+    if (data) {
+      setEmprendimientoData(data);
+    }
   }, []);
 
   const navigate = useNavigate();
@@ -20,10 +23,15 @@ const SidebarEmprendedor = () => {
   return (
     <div className="sidebar">
       <div className="logo-section">
-        {emprendimientoData && (
+        {emprendimientoData ? (
           <>
             <img src={emprendimientoData.image_url} alt="Emprendimiento Logo" className="logo" style={{ width: "150px", height: "150px", objectFit: "cover", borderRadius: "50%" }} />
             <h2 className="nombreEmprendimiento" style={{ wordWrap: "break-word", textAlign: "center" }}>{emprendimientoData.nombreComercial}</h2>
+          </>
+        ) : (
+          <>
+            <img src={ecoVidaLogo} alt="Default Logo" className="logo" style={{ width: "150px", height: "150px", objectFit: "cover", borderRadius: "50%" }} />
+            <h2 className="nombreEmprendimiento" style={{ wordWrap: "break-word", textAlign: "center" }}>Nombre del Emprendimiento</h2>
           </>
         )}
       </div>

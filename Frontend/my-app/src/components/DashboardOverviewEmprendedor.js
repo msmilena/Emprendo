@@ -21,7 +21,7 @@ const DashboardOverviewEmprendedor = () => {
         const response = await fetch(
           `https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/resumenDashboardEmprendimiento?idEmprendedor=${idEmprendedor}`
         );
-        console.log(response);
+        //console.log(response);
         if (!response.ok) {
           throw new Error("Error al obtener los datos del servidor");
         }

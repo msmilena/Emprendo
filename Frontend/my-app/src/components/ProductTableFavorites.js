@@ -4,7 +4,7 @@ import "./CSS/ProductTable.css";
 
 const ProductTableFavorites = ({ products }) => {
   const handleDelete = (productId) => {
-    console.log(`Producto con ID ${productId} eliminado`);
+    //console.log(`Producto con ID ${productId} eliminado`);
     // Aquí puedes agregar la lógica para eliminar el producto
   };
 

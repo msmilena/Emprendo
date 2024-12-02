@@ -39,7 +39,7 @@ const FormContainer = () => {
 
   const handleSubmit = () => {
     // Lógica para enviar el formulario
-    console.log("Datos del formulario enviados:", formData);
+    //console.log("Datos del formulario enviados:", formData);
     // Switch back to view mode after saving
     setIsEditing(false);
 

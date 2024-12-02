@@ -29,7 +29,7 @@ function RegisterUsuario() {
       // Crear usuario con Firebase Authentication
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      console.log("User registered:", user);
+      //console.log("User registered:", user);
 
       // Enviar datos del usuario a la API para registrarlo en Firestore
       const response = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/register", {
@@ -49,7 +49,7 @@ function RegisterUsuario() {
 
       const data = await response.json();
       if (data.success) {
-        console.log("Usuario registrado en Firestore:", data.message);
+        //console.log("Usuario registrado en Firestore:", data.message);
         // Redirigir al usuario a la página de inicio o a otra página
         navigate("/login"); // Ajusta la ruta según tu configuración
       } else {
@@ -66,7 +66,7 @@ function RegisterUsuario() {
     try {
       const userCredential = await signInWithPopup(auth, provider);
       const user = userCredential.user;
-      console.log("User registered with Google:", user);
+      //console.log("User registered with Google:", user);
 
       // Enviar datos del usuario a la API para registrarlo en Firestore
       const response = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/register", {
@@ -86,7 +86,7 @@ function RegisterUsuario() {
 
       const data = await response.json();
       if (data.success) {
-        console.log("Usuario registrado en Firestore:", data.message);
+        //console.log("Usuario registrado en Firestore:", data.message);
         // Redirigir al usuario a la página de inicio o a otra página
         navigate("/login"); // Ajusta la ruta según tu configuración
       } else {

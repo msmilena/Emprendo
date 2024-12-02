@@ -10,18 +10,18 @@ import './CSS/HomeEmprendedor.css';
 function HomeEmprendedor() {
   useEffect(() => {
     const fetchEmprendimientoData = async () => {
-      const userId = localStorage.getItem("idusuario"); // O el ID que necesites
-      const response = await fetch(`https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientoPorEmprendedor?idEmprendedor=${userId}`);
-      //const response = await fetch("https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientoPorEmprendedor?idEmprendedor=4MIr6M0SyDFdMhb0Nloa");
+      const userId = localStorage.getItem("userId"); // O el ID que necesites
+      const response = await fetch(`https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientoInfo?idEmprendedor=${userId}`);
       const data = await response.json();
-  
-      if (data.success) {
-        localStorage.setItem("emprendimientoId", data.emprendimientoId);  // Guardar el emprendimientoId
+      
+      if (data.success && data.emprendimientoData.length > 0) {
+        console.log("Datos de emprendimiento:", data.emprendimientoData[0]);
+        localStorage.setItem("emprendimientoData", JSON.stringify(data.emprendimientoData[0]));  // Guardar el emprendimientoData
       } else {
-        console.log("No se pudo obtener el emprendimientoId.");
+        //console.log("No se pudo obtener el emprendimientoData.");
       }
   
-      console.log("Datos de emprendimiento:", data);
+      //console.log("Datos de emprendimiento:", data);
     };
   
     fetchEmprendimientoData();

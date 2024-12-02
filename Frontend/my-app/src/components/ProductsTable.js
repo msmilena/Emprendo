@@ -26,7 +26,7 @@ const ProductsTable = ({ data }) => {
     };
 
     const handleDeleteConfirm = () => {
-        console.log('Eliminar', selectedProduct.id);
+        //console.log('Eliminar', selectedProduct.id);
         setIsModalOpen(false);
         setSelectedProduct(null);
     };

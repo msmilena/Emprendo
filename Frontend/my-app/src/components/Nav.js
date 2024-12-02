@@ -16,7 +16,7 @@ const Nav = () => {
     const user = localStorage.getItem("user");
     if (user) {
       const userData = JSON.parse(user);
-      console.log(userData);
+      //console.log(userData);
       setIsLoggedIn(true);
       setUserName(userData.nombre);
       setProfileImageUrl(userData.urlPerfil);

@@ -7,7 +7,7 @@ import fotoPerfil from "../assets/fotoPerfilSeñor.jpg"
 const BusinessInfo = ({ info }) => {
     const handleRatingChange = (id, newRating) => {
         // Aquí puedes actualizar el valor de la valoración en la base de datos o estado
-        console.log(`Emprendimiento ${id} valorado con ${newRating} estrellas`);
+        //console.log(`Emprendimiento ${id} valorado con ${newRating} estrellas`);
       };
   return (
     <section className="business-info">
