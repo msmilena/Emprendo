@@ -5,7 +5,13 @@ from google.cloud import storage
 import datetime
 import json
 
+from flask_cors import CORS, cross_origin
+
+
+
 app = Flask(__name__)
+
+CORS(app, origins="*", supports_credentials=True, methods=["GET", "POST", "PUT", "DELETE"], allow_headers=["Content-Type", "Authorization"])
 
 # Inicializar Firebase Admin SDK y Firestore
 cred = credentials.Certificate('credentials.json')
