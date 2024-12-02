@@ -190,3 +190,22 @@ class EmprendimientoService():
             return None
         except Exception as ex:
             raise CustomException(ex)
+        
+        
+    @classmethod
+    def guardar_publicidad(cls, id_emprendimiento, imagen_url):
+        try:
+            # Referencia a la colección `publicidad`
+            db = get_connection()
+            collection_ref = db.collection('publicidad')
+            
+            # Documento con un ID generado automáticamente
+            document_ref = collection_ref.document()
+            
+            # Datos a guardar
+            document_ref.set({
+                'idEmprendimiento': id_emprendimiento,
+                'imagen': imagen_url
+            })
+        except Exception as e:
+            raise Exception(f"Error al guardar la publicidad: {str(e)}")
