@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import SidebarEmprendedor from "../components/SidebarEmprendedor";
 import { MdEdit } from "react-icons/md";
 import "./CSS/DetallesCuenta.css";
@@ -7,22 +7,22 @@ import HeaderEmprendedor from "../components/HeaderEmprendedor";
 import TextInput from "../components/TextInput";
 import AvatarInput from "../components/AvatarInput";
 
-const initialUserInfo = {
-  name: "Esmeralda",
-  surname: "Arango Quispe",
-  email: "earangoquispe@gmail.com",
-  password: "earango",
-  avatar:
-    "https://mx.web.img3.acsta.net/c_310_420/pictures/19/11/12/22/54/0812791.jpg",
-};
-
 const DetallesCuenta = () => {
-  const [userDetails, setUserDetails] = useState(initialUserInfo);
+  // Obtener los datos del usuario desde localStorage
+  const storedUserData = JSON.parse(localStorage.getItem("userData"));
+
+  // Establecer el estado inicial con los datos obtenidos
+  const [userDetails, setUserDetails] = useState({
+    name: storedUserData?.nombre || "",  // Si no hay datos, se usa una cadena vacía por defecto
+    email: storedUserData?.email || "",
+    password: storedUserData?.password || "",
+    avatar: storedUserData?.urlPerfil || "",
+  });
+
   const [editEmail, setEditEmail] = useState(false);
   const [editPassword, setEditPassword] = useState(false);
 
   const handleChangeDetails = (e) => {
-    //console.log(e);
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
   };
 
@@ -35,14 +35,13 @@ const DetallesCuenta = () => {
   };
 
   const handleSubmit = () => {
-    //hacer lo que se desee con la info
-    //console.log(userDetails);
+    // Realizar lo que desees con la información (como enviar los datos a un servidor)
+    console.log(userDetails);
   };
 
   return (
     <div className="account--details--page">
       <SidebarEmprendedor />
-
       <div className="main-content">
         <HeaderEmprendedor />
         <div className="dashboard-content">
@@ -52,15 +51,6 @@ const DetallesCuenta = () => {
               label="Nombres"
               name="name"
               value={userDetails.name}
-              disabled={true}
-              className="form--field marginTop20px"
-              onChange={handleChangeDetails}
-            />
-            
-            <TextInput
-              label="Apellidos"
-              name="surname"
-              value={userDetails.surname}
               disabled={true}
               className="form--field marginTop20px"
               onChange={handleChangeDetails}
@@ -75,10 +65,7 @@ const DetallesCuenta = () => {
                 onChange={handleChangeDetails}
                 className="editable-field marginTop20px"
               />
-              <div
-                className="edit--btn"
-                onClick={() => setEditEmail(!editEmail)}
-              >
+              <div className="edit--btn" onClick={() => setEditEmail(!editEmail)}>
                 <MdEdit />
               </div>
             </div>
@@ -93,16 +80,13 @@ const DetallesCuenta = () => {
                 onChange={handleChangeDetails}
                 className="editable-field marginTop20px"
               />
-              <div
-                className="edit--btn"
-                onClick={() => setEditPassword(!editPassword)}
-              >
+              <div className="edit--btn" onClick={() => setEditPassword(!editPassword)}>
                 <MdEdit />
               </div>
             </div>
 
             <AvatarInput
-            className=" marginTop20px"
+              className=" marginTop20px"
               label="Imagen de perfil"
               avatar={userDetails.avatar}
               onChange={handleChangeAvatar}
@@ -116,4 +100,4 @@ const DetallesCuenta = () => {
   );
 };
 
-export default DetallesCuenta;
+export default DetallesCuenta;

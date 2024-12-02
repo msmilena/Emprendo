@@ -35,16 +35,44 @@ const ProductFormPage = ({ mode }) => {
         }
     }, [id,isEditMode, isViewMode,isNewMode]);
 
-    const handleSave = (formData) => {
-        if (isEditMode) {
-            //console.log('Guardar cambios de edición:', formData);
-            // Endpoint guardar producto
-        } else if (isNewMode) {
-            //console.log('Agregar nuevo producto:', formData);
-            // Endpoint nuevo producto
+    const handleSave = async (formData) => {
+        const data = JSON.parse(localStorage.getItem("emprendimientoData"));
+        const id_emprendimiento = data.idEmprendimiento;
+    
+        if (isNewMode) {
+            console.log(formData)
+            try {
+                const formDataToSend = new FormData();
+                formDataToSend.append("imagen", formData.imagen); // Archivo de imagen
+                formDataToSend.append("nombre_producto", formData.nombre_producto);
+                formDataToSend.append("descripcion_producto", formData.descripcion_producto);
+                formDataToSend.append("flgDisponible", formData.disponible ? "true" : "false");
+                formDataToSend.append("categoria_producto", formData.categoria_producto);
+                formDataToSend.append("precio", formData.precio);
+                formDataToSend.append("cantidadFavoritos", 0);
+
+                console.log(formDataToSend);
+    
+                const response = await fetch(`http://127.0.0.1:8080/emprendimientos/${id_emprendimiento}/agregar_producto`, {
+                    method: "POST",
+                    body: formDataToSend,
+                });
+    
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    alert(`Error: ${errorData.error}`);
+                    return;
+                }
+    
+                const result = await response.json();
+                alert(result.message); // Mostrar mensaje de éxito
+                navigate("/productosEmprendedor"); // Redirigir después de guardar
+            } catch (error) {
+                console.error("Error al agregar producto:", error);
+                alert("Hubo un error al agregar el producto.");
+            }
         }
-        navigate('/productosEmprendedor'); // Redirigir después de guardar
-    };
+    }    
     
     return (
         <div className="app-container">

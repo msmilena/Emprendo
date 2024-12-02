@@ -10,24 +10,33 @@ import './CSS/HomeEmprendedor.css';
 function HomeEmprendedor() {
   useEffect(() => {
     const fetchEmprendimientoData = async () => {
-      const userId = localStorage.getItem("userId"); // O el ID que necesites
-      const response = await fetch(`https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientoInfo?idEmprendedor=${userId}`);
-      const data = await response.json();
+      const userId = localStorage.getItem("userId"); // Obtener el ID del usuario desde localStorage
+
+      // Obtener la información del usuario
+      const userResponse = await fetch(`https://emprendo-usuario-service-26932749356.us-west1.run.app//user/info?idUser=${userId}`);
+      const userData = await userResponse.json();
       
-      if (data.success && data.emprendimientoData.length > 0) {
-        console.log("Datos de emprendimiento:", data.emprendimientoData[0]);
-        localStorage.setItem("emprendimientoData", JSON.stringify(data.emprendimientoData[0]));  // Guardar el emprendimientoData
+      if (userData.success && userData.userData) {
+        console.log("Datos de usuario:", userData.userData);
+        localStorage.setItem("userData", JSON.stringify(userData.userData));  // Guardar la información del usuario
       } else {
-        //console.log("No se pudo obtener el emprendimientoData.");
+        console.log("No se encontró información del usuario.");
       }
-  
-      //console.log("Datos de emprendimiento:", data);
+
+      // Obtener los datos del emprendimiento
+      const emprendimientoResponse = await fetch(`https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientoInfo?idEmprendedor=${userId}`);
+      const emprendimientoData = await emprendimientoResponse.json();
+
+      if (emprendimientoData.success && emprendimientoData.emprendimientoData.length > 0) {
+        console.log("Datos de emprendimiento:", emprendimientoData.emprendimientoData[0]);
+        localStorage.setItem("emprendimientoData", JSON.stringify(emprendimientoData.emprendimientoData[0]));  // Guardar el emprendimientoData
+      } else {
+        console.log("No se pudo obtener el emprendimientoData.");
+      }
     };
-  
+
     fetchEmprendimientoData();
-  }, []);
-  
-  
+  }, []); // El array vacío asegura que la solicitud se haga solo una vez al cargar el componente
 
   return (
     <div className="app-container">
