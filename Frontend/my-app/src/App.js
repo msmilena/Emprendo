@@ -22,6 +22,7 @@ import ProductFormPage from "./pages/ProductFormPage";
 import EmprendimientoDatos from "./pages/EmprendimientoDatos";
 import PublicidadEmprendedor from "./pages/PublicidadEmprendedor";
 import DetallesCuenta from "./pages/DetallesCuenta";
+import DetalleProducto from "./pages/DetalleProducto";
 import './App.css'
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
         <Route path="/emprendimientoDatos/:id" element={< EmprendimientoDatos />} />
         <Route path="/publicidadEmprendedor/:id" element={< PublicidadEmprendedor />} />
         <Route path="/miPerfilEmprendedor/:id" element={< DetallesCuenta  />} />
+        <Route path="/detalleProducto/:id" element={< DetalleProducto />} />
         {/*<Route path="/registerPreferencias" element={<RegisterPreferencias />} />*/}
   
      
