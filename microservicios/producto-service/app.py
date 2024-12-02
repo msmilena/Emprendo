@@ -225,20 +225,25 @@ def get_emprendimientos_by_categoria(categoria):
         result = []
         for emprendimiento in emprendimientos:
             emprendimiento_data = emprendimiento.to_dict()
-            print(emprendimiento_data)
-            #emprendimiento_data['id'] = emprendimiento.id  # Add the document ID
-            # Remove non-serializable fields
+            
+            # Limpiar campos innecesarios
             if 'idEmprendedor' in emprendimiento_data:
                 del emprendimiento_data['idEmprendedor']
             if 'localizacion' in emprendimiento_data:
                 del emprendimiento_data['localizacion']
+            
+            # Acceder a la subcolección 'productos'
             productos_ref = emprendimiento.reference.collection('productos')
-            productos = [doc.to_dict() for doc in productos_ref.stream()]
-            for producto in productos:
-                producto['id'] = 'producto.id'  # Add the document ID for each product
-            emprendimiento_data['productos'] = productos
+            productos = []
+            for producto_doc in productos_ref.stream():
+                producto_data = producto_doc.to_dict()
+                producto_data['id'] = producto_doc.id  # Agregar el ID del documento
+                productos.append(producto_data)
+            
+            emprendimiento_data['productos'] = productos  # Agregar los productos al emprendimiento
             result.append(emprendimiento_data)
         
+        # Verificar si hay resultados
         if not result:
             return jsonify({'mensaje': 'No hay emprendimientos disponibles para esta categoría'}), 200
         

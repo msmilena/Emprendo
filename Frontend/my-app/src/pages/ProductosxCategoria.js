@@ -11,10 +11,10 @@ function ProductosxCategoria() {
   const [sectionsData, setSectionsData] = useState([]);
 
   useEffect(() => {
-    fetch(`https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/categoria/${categoryName}`)
+    fetch(`http://127.0.0.1:8080/emprendimientos/categoria/${categoryName}`)
       .then((response) => response.json())
       .then((data) => {
-        const section = {
+        /*const section = {
           title: `Productos de ${categoryName}`,
           products: data.flatMap(emprendimiento => 
             emprendimiento.productos.map(product => ({
@@ -26,8 +26,8 @@ function ProductosxCategoria() {
               rating: product.cantidadFavoritos // Assuming rating is based on the number of favorites
             }))
           )
-        };
-        setSectionsData([section]);
+        };*/
+        setSectionsData(data);
       })
       .catch((error) => console.error("Error fetching products:", error));
   }, [categoryName]);

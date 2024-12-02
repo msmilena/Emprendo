@@ -28,11 +28,12 @@ function DynamicProductList({ products }) {
             {group.map((product, index) => (
               <div key={index} className="product-column">
                 <ProductItem
-                  category={product.category}
-                  name={product.name}
-                  desc={product.desc}
-                  price={product.price}
-                  imgURL={product.imgURL}
+                  id={product.id}
+                  category={product.categoria_producto}
+                  name={product.nombre_producto}
+                  desc={product.descripcion_producto}
+                  price={product.precio}
+                  imgURL={product.imagen}
                 />
               </div>
             ))}
