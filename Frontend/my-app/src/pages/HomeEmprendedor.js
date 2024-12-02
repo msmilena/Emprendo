@@ -59,7 +59,7 @@ function HomeEmprendedor() {
           </p>
           {showDashboard && idEmprendimiento && (
             <iframe
-              src={`https://lookerstudio.google.com/embed/reporting/e52f3640-5699-4aed-b15c-1d3a8df5eb6f/page/xwOXE?params=%7B%22ds17.filtroemprendimiento%22:%22${idEmprendimiento}%22%7D`}
+              src={`https://lookerstudio.google.com/embed/reporting/e52f3640-5699-4aed-b15c-1d3a8df5eb6f/page/p_736wl58fnd?params=%7B%22ds17.filtroemprendimiento%22:%22${idEmprendimiento}%22%7D`}
               width="100%"
               height="600px"
               frameBorder="0"
