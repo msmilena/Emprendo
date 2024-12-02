@@ -8,10 +8,30 @@ import Footer2 from "../components/Footer2"; // Componente del pie de página
 import Nav from "../components/Nav"; // Componente de navegación
 import DynamicCategoryList from "../components/DynamicCategoryList"; // Componente dinámico para mostrar categorías
 import DynamicProductList from "../components/DynamicProductList"; // Componente dinámico para mostrar productos
-import categoriesData from "../dataFalsa/categoriasHome.json"; // Datos simulados de categorías (JSON)
-import productsData from "../dataFalsa/productosTendenciaHomes.json"; // Datos simulados de productos en tendencia (JSON)
+import { useEffect, useState } from "react"; // Importa useEffect y useState de React
+import { useNavigate } from "react-router-dom"; // Importa useNavigate de react-router-dom
 
 function Home() {
+  const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
+  const navigate = useNavigate(); // Inicializa useNavigate
+
+  useEffect(() => {
+    fetch("https://emprendo-producto-service-26932749356.us-west1.run.app/categorias")
+      .then((response) => response.json())
+      .then((data) => setCategories(data))
+      .catch((error) => console.error("Error fetching categories:", error));
+
+    fetch("https://emprendo-producto-service-26932749356.us-west1.run.app/productos")
+      .then((response) => response.json())
+      .then((data) => setProducts(data))
+      .catch((error) => console.error("Error fetching products:", error));
+  }, []);
+
+  const handleCategoryClick = (categoryName) => {
+    navigate(`/productosxCategoria/${categoryName}`); // Navega a ProductosxCategoria con el nombre de la categoría
+  };
+
   return (
     <div className="home--page--container">
       {/* Componente de navegación */}
@@ -38,8 +58,8 @@ function Home() {
       {/* Sección de categorías */}
       <section className="category--section--container">
         <p className="home--page--title--section">Categorías</p>
-        {/* Componente dinámico para mostrar la lista de categorías, con datos simulados */}
-        <DynamicCategoryList categories={categoriesData} />
+        {/* Componente dinámico para mostrar la lista de categorías */}
+        <DynamicCategoryList categories={categories} onCategoryClick={handleCategoryClick} /> {/* Pasa el manejador */}
       </section>
 
       {/* Sección de exploración (productos y emprendedores) */}
@@ -67,8 +87,8 @@ function Home() {
 
         {/* Sección de productos en tendencia */}
         <p className="home--page--title--section">Productos en tendencia</p>
-        {/* Componente dinámico para mostrar productos en tendencia, con datos simulados */}
-        <DynamicProductList products={productsData} />
+        {/* Componente dinámico para mostrar productos en tendencia */}
+        <DynamicProductList products={products} />
       </section>
 
       {/* Pie de página */}

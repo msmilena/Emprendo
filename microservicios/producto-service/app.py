@@ -160,8 +160,6 @@ def get_products_of_emprendimiento(id_emprendimiento):
         return jsonify({'mensaje': 'Error al obtener los productos'}), 500
 
 
-
-
 # Endpoint para obtener todos los productos de todos los emprendimientos
 @app.route('/productos', methods=['GET'])
 def get_all_products():
@@ -193,6 +191,82 @@ def get_categorias():
     with open('categoriasHome.json', 'r') as file:
         categorias = json.load(file)
     return jsonify(categorias), 200
+
+
+@app.route('/emprendimientos/categoria/<categoria>', methods=['GET'])
+def get_emprendimientos_by_categoria(categoria):
+    try:
+        emprendimientos_ref = db.collection('emprendimientos')
+        emprendimientos = emprendimientos_ref.where('categoria', '==', categoria).stream()
+        
+        result = []
+        for emprendimiento in emprendimientos:
+            emprendimiento_data = emprendimiento.to_dict()
+            print(emprendimiento_data)
+            #emprendimiento_data['id'] = emprendimiento.id  # Add the document ID
+            # Remove non-serializable fields
+            if 'idEmprendedor' in emprendimiento_data:
+                del emprendimiento_data['idEmprendedor']
+            if 'localizacion' in emprendimiento_data:
+                del emprendimiento_data['localizacion']
+            productos_ref = emprendimiento.reference.collection('productos')
+            productos = [doc.to_dict() for doc in productos_ref.stream()]
+            for producto in productos:
+                producto['id'] = 'producto.id'  # Add the document ID for each product
+            emprendimiento_data['productos'] = productos
+            result.append(emprendimiento_data)
+        
+        if not result:
+            return jsonify({'mensaje': 'No hay emprendimientos disponibles para esta categoría'}), 200
+        
+        return jsonify(result), 200
+    except Exception as e:
+        print(f"Error al obtener los emprendimientos por categoría: {e}")
+        return jsonify({'mensaje': 'Error al obtener los emprendimientos por categoría'}), 500
+
+
+@app.route('/categorias_subcategorias', methods=['GET'])
+def get_categorias_subcategorias():
+    categorias_subcategorias = {
+        "Manufactura y Producción": [
+            "Productos alimenticios y bebidas",
+            "Textiles y confección",
+            "Productos de madera y papel",
+            "Productos químicos",
+            "Metales y productos metálicos"
+        ],
+        "Comercio": [
+            "Venta al por mayor",
+            "Venta al por menor"
+        ],
+        "Servicios": [
+            "Servicios profesionales",
+            "Servicios de transporte",
+            "Servicios financieros",
+            "Servicios de salud"
+        ],
+        "Tecnología y comunicaciones": [
+            "Servicios informáticos",
+            "Telecomunicaciones"
+        ],
+        "Educación y cultura": [
+            "Servicios educativos",
+            "Actividades culturales y recreativas"
+        ],
+        "Construcción y bienes raíces": [
+            "Construcción",
+            "Actividades inmobiliarias"
+        ],
+        "Hotelería y turismo": [
+            "Alojamiento",
+            "Servicios turísticos"
+        ],
+        "Servicios personales": [
+            "Servicios de belleza",
+            "Mantenimiento y reparación"
+        ]
+    }
+    return jsonify(categorias_subcategorias), 200
 
 
 if __name__ == '__main__':
