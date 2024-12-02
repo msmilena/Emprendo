@@ -34,7 +34,7 @@ function PublicidadEmprendedor() {
       formData.append("idEmprendimiento", data.idEmprendimiento); // Reemplaza con el ID real del emprendimiento
       formData.append("imagen", file);
 
-      const response = await fetch("http://127.0.0.1:8080/emprendimiento/guardarPublicidad", {
+      const response = await fetch("https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/guardarPublicidad", {
         method: "POST",
         body: formData,
       });
