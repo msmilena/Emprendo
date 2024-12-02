@@ -1,3 +1,4 @@
+// ProductFormPage.js
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ProductForm from '../components/ProductForm';
@@ -10,37 +11,43 @@ const ProductFormPage = ({ mode }) => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [data, setData] = useState(null);
+    const [mensaje, setMensaje] = useState("");
     const isEditMode = mode === 'edit';
     const isViewMode = mode === 'view';
     const isNewMode = mode === 'new';
 
-    
     useEffect(() => {
-        if (isEditMode || isViewMode) {
-            const mockData = {
-                cantidadFavoritos: 4,
-                categoria_producto: "Sábanas de algodón",
-                descripcion_producto: "Ipsum aut neque non quibusdam ratione sunt.",
-                flgDisponible: true,
-                imagen: new File([""], "imagen_simulada.png", { type: "image/png" }),
-                nombre_producto: "consequuntur",
-                precio: 39.09,
-                disponible:true,
-                id: "gsrvbdsf",
-            };
-            setData(mockData);
-        }else if (isNewMode) {
-            // Limpiar data para nuevo producto
-            setData(null);
-        }
-    }, [id,isEditMode, isViewMode,isNewMode]);
+        const fetchProductDetails = async () => {
+            const emprendimientoData = JSON.parse(localStorage.getItem("emprendimientoData"));
+            const id_emprendimiento = emprendimientoData?.idEmprendimiento;
+
+            if (isEditMode || isViewMode) {
+                try {
+                    const response = await fetch(`http://127.0.0.1:8080/emprendimientos/${id_emprendimiento}/productos/${id}`);
+                    if (!response.ok) {
+                        throw new Error(`Error al obtener los detalles del producto: ${response.statusText}`);
+                    }
+                    const productData = await response.json();
+                    setData(productData);
+                } catch (error) {
+                    console.error(error);
+                    setMensaje("No se pudieron cargar los datos del producto.");
+                }
+            } else if (isNewMode) {
+                // Limpiar data para nuevo producto
+                setData(null);
+            }
+        };
+
+        fetchProductDetails();
+    }, [id, isEditMode, isViewMode, isNewMode]);
 
     const handleSave = async (formData) => {
         const data = JSON.parse(localStorage.getItem("emprendimientoData"));
         const id_emprendimiento = data.idEmprendimiento;
-    
+
         if (isNewMode) {
-            console.log(formData)
+            console.log(formData);
             try {
                 const formDataToSend = new FormData();
                 formDataToSend.append("imagen", formData.imagen); // Archivo de imagen
@@ -51,19 +58,17 @@ const ProductFormPage = ({ mode }) => {
                 formDataToSend.append("precio", formData.precio);
                 formDataToSend.append("cantidadFavoritos", 0);
 
-                console.log(formDataToSend);
-    
                 const response = await fetch(`http://127.0.0.1:8080/emprendimientos/${id_emprendimiento}/agregar_producto`, {
                     method: "POST",
                     body: formDataToSend,
                 });
-    
+
                 if (!response.ok) {
                     const errorData = await response.json();
                     alert(`Error: ${errorData.error}`);
                     return;
                 }
-    
+
                 const result = await response.json();
                 alert(result.message); // Mostrar mensaje de éxito
                 navigate("/productosEmprendedor/APEQO6fohuDykka1Uqjn"); // Redirigir después de guardar
@@ -72,8 +77,8 @@ const ProductFormPage = ({ mode }) => {
                 alert("Hubo un error al agregar el producto.");
             }
         }
-    }    
-    
+    };
+
     return (
         <div className="app-container">
             <Sidebar />
@@ -99,7 +104,7 @@ const ProductFormPage = ({ mode }) => {
                                 isNewMode={isNewMode}
                             />
                         ) : (
-                            <p>Cargando...</p>
+                            <p>{mensaje || "Cargando..."}</p>
                         )
                     ) : (
                         <ProductForm
@@ -114,7 +119,6 @@ const ProductFormPage = ({ mode }) => {
             </div>
         </div>
     );
-    
 };
 
 export default ProductFormPage;
