@@ -13,11 +13,11 @@ const ProductsTable = ({ data }) => {
     const navigate = useNavigate();
 
     const handleViewClick = (product) => {
-        navigate(`/productosEmprendedor/ver/${product.id}`);
+        navigate(`/productosEmprendedor/ver/${product.id_producto}`);
     };
 
     const handleEditClick = (product) => {
-        navigate(`/productosEmprendedor/editar/${product.id}`);
+        navigate(`/productosEmprendedor/editar/${product.id_producto}`);
     };
 
     const handleDeleteClick = (product) => {
@@ -52,9 +52,9 @@ const ProductsTable = ({ data }) => {
             <tbody>
             {data.map((item, index) => (
                 <tr>
-                <td>{item.id}</td>
+                <td>{item.id_producto}</td>
                 <td>{item.nombre_producto}</td>
-                <td>{item.categoria}</td>
+                <td>{item.categoria_producto}</td>
                 <td>S/.{item.precio}</td>
                 <td>
                 <div className="action-buttons">
@@ -89,9 +89,9 @@ const ProductsTable = ({ data }) => {
             productData={selectedProduct}
         >
             <h3>¿Está seguro de eliminar este producto?</h3>
-            <p>ID - <strong>{selectedProduct?.id}</strong></p>
-            <p>Nombre - <strong>{selectedProduct?.nombre}</strong></p>
-            <p>Categoría - <strong>{selectedProduct?.categoria}</strong></p>
+            <p>ID - <strong>{selectedProduct?.id_producto}</strong></p>
+            <p>Nombre - <strong>{selectedProduct?.nombre_producto}</strong></p>
+            <p>Categoría - <strong>{selectedProduct?.categoria_producto}</strong></p>
             <p>Precio - <strong>{selectedProduct?.precio}</strong></p>
         </Modal>
 

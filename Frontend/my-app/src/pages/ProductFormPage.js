@@ -66,7 +66,7 @@ const ProductFormPage = ({ mode }) => {
     
                 const result = await response.json();
                 alert(result.message); // Mostrar mensaje de éxito
-                navigate("/productosEmprendedor"); // Redirigir después de guardar
+                navigate("/productosEmprendedor/APEQO6fohuDykka1Uqjn"); // Redirigir después de guardar
             } catch (error) {
                 console.error("Error al agregar producto:", error);
                 alert("Hubo un error al agregar el producto.");
