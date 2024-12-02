@@ -172,3 +172,21 @@ def get_emprendimiento_por_emprendedor():
             return jsonify({'message': 'No se encontró emprendimiento para el emprendedor especificado'}), 404
     except CustomException as e:
         return jsonify({'message': str(e), 'success': False}), 500
+
+@main.route('/guardarPublicidad', methods=['POST'])
+def guardar_publicidad():
+    try:
+        # Obtén los datos del cuerpo de la solicitud
+        data = request.json
+        id_emprendimiento = data.get('idEmprendimiento')
+        imagen_url = data.get('imagen')
+
+        if not id_emprendimiento or not imagen_url:
+            return jsonify({"error": "idEmprendimiento e imagen son campos requeridos"}), 400
+
+        # Guarda los datos en Firestore
+        EmprendimientoService.guardar_publicidad(id_emprendimiento, imagen_url)
+
+        return jsonify({"message": "Publicidad guardada con éxito"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500

@@ -10,21 +10,52 @@ function PublicidadEmprendedor() {
   ); // Imagen inicial de la publicidad
   const [isEditing, setIsEditing] = useState(false); // Controla si estamos editando
   const [newImage, setNewImage] = useState(null); // Imagen cargada temporalmente
+  const [file, setFile] = useState(null); // Archivo real seleccionado
+  const [loading, setLoading] = useState(false); // Indicador de carga
+
+  const data = JSON.parse(localStorage.getItem("emprendimientoData"));
 
   // Maneja la carga de la nueva imagen
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      const imageUrl = URL.createObjectURL(selectedFile);
       setNewImage(imageUrl);
+      setFile(selectedFile);
     }
   };
 
   // Confirmar el cambio de imagen
-  const handlePublish = () => {
-    setCurrentImage(newImage);
-    setNewImage(null);
-    setIsEditing(false);
+  const handlePublish = async () => {
+    setLoading(true); // Muestra el indicador de carga
+
+    try {
+      const formData = new FormData();
+      formData.append("idEmprendimiento", data.idEmprendimiento); // Reemplaza con el ID real del emprendimiento
+      formData.append("imagen", file);
+
+      const response = await fetch("http://127.0.0.1:8080/emprendimiento/guardarPublicidad", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Error al guardar la publicidad");
+      }
+
+      const result = await response.json();
+      console.log("Publicidad guardada con éxito:", result);
+
+      // Actualiza la imagen actual y cierra el modo de edición
+      setCurrentImage(newImage);
+      setNewImage(null);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Error al publicar:", error);
+      alert("Ocurrió un error al guardar la publicidad");
+    } finally {
+      setLoading(false); // Oculta el indicador de carga
+    }
   };
 
   // Cancelar el cambio
@@ -51,7 +82,7 @@ function PublicidadEmprendedor() {
               <SubmitButton
                 className="width50"
                 onClick={() => setIsEditing(true)}
-                 nameText="Cambiar publicidad"
+                nameText="Cambiar publicidad"
               />
             </div>
           ) : (
@@ -76,12 +107,17 @@ function PublicidadEmprendedor() {
                 />
               </div>
               <div className="form-buttons">
-                <SubmitButton className="cancelarBtn" onClick={handleCancel} nameText="Cancelar"/>
+                <SubmitButton
+                  className="cancelarBtn"
+                  onClick={handleCancel}
+                  nameText="Cancelar"
+                />
                 <SubmitButton
                   className="guaAgreBtn"
                   onClick={handlePublish}
-                  disabled={!newImage}
-                  nameText="Guardar"/>
+                  disabled={!newImage || loading}
+                  nameText={loading ? "Guardando..." : "Guardar"}
+                />
               </div>
             </div>
           )}

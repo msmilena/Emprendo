@@ -1,29 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Nav from "../components/Nav";
 import Footer2 from "../components/Footer2";
 import "./CSS/DetalleProducto.css";
 
 const DetalleProducto = () => {
-  //const { id } = useParams(); // ID del producto desde la URL
+  const { id } = useParams(); // ID del producto desde la URL
   const [product, setProduct] = useState(null);
   const [isFavorite, setIsFavorite] = useState(false); // Estado de favorito
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const idEmprendimiento = queryParams.get("idEmprendimiento");
+  
+  // Obtener idUsuario desde el contexto o sesión del usuario (deberás implementar esto de acuerdo a tu aplicación)
+  const idUsuario =  localStorage.getItem("userId"); // Asegúrate de obtener el idUsuario correctamente
 
-  const id = "2YE1oM0ThlMC5R7P45g5";
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const response = await fetch(
-          `https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/3i1fXE90tVVpnWzjk2UN/productos/${id}`
+          `https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/${idEmprendimiento}/productos/${id}`
         );
         if (!response.ok) {
           throw new Error("Producto no encontrado");
         }
         const data = await response.json();
         setProduct(data);
-        //setIsFavorite(data.cantidadFavoritos > 0); // Suponer que ya es favorito si tiene más de 0 favoritos
       } catch (err) {
         setError(err.message);
       } finally {
@@ -32,22 +36,31 @@ const DetalleProducto = () => {
     };
 
     fetchProduct();
-  }, [id]);
+  }, [idEmprendimiento, id]);
 
   const toggleFavorite = async () => {
     try {
-      // Simula enviar al servidor si es favorito o no
-      await fetch(
-        `https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/3i1fXE90tVVpnWzjk2UN/productos/${id}/favorito`,
+      // Enviar la solicitud al servidor Flask para guardar el favorito
+      const response = await fetch(
+        `https://emprendo-valoracion-service-26932749356.us-west1.run.app/valoracion/guardarFavorito?idUsuario=${idUsuario}`, // Enviar el idUsuario como parámetro de URL
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ favorite: !isFavorite }),
+          body: JSON.stringify({
+            iEmprendimiento: idEmprendimiento, // Enviar el idEmprendimiento
+            idProducto: id, // Enviar el idProducto
+          }),
         }
       );
-      setIsFavorite(!isFavorite); // Alterna el estado local
+
+      const result = await response.json();
+      if (result.success) {
+        setIsFavorite(!isFavorite); // Alterna el estado local si la operación fue exitosa
+      } else {
+        console.error(result.message); // Mostrar el mensaje de error en caso de fallo
+      }
     } catch (err) {
-      console.error("Error al actualizar favorito:", err);
+      console.error("Error al guardar favorito:", err);
     }
   };
 
@@ -68,9 +81,12 @@ const DetalleProducto = () => {
           <div className="product-info-2">
             <div className="favorite-section">
               <button className="stock-status">
-              {product.flgDisponible ? "Disponible" : "Sin stock"}
-            </button>
-            <button className="favorite-button" >
+                {product.flgDisponible ? "Disponible" : "Sin stock"}
+              </button>
+              <button
+                className="favorite-button"
+                onClick={toggleFavorite} // Llama a toggleFavorite al hacer click
+              >
                 {isFavorite ? "💖" : "🤍"} {/* Cambia según el estado */}
               </button>
             </div>

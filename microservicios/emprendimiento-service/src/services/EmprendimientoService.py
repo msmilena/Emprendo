@@ -18,24 +18,37 @@ class EmprendimientoService():
 
             if emprendimiento_data.exists:
                 doc_data = emprendimiento_data.to_dict()
-                
+
+                # Agregar el idEmprendimiento al diccionario principal
+                doc_data['idEmprendimiento'] = idEmprendimiento
+
                 # Verificar si hay una subcolección llamada 'productos'
                 productos_ref = emprendimiento_ref.collection('productos')
                 productos_docs = productos_ref.stream()  # Obtener documentos de la subcolección
-                
-                productos = [producto.to_dict() for producto in productos_docs]
-                
+
+                # Agregar idEmprendimiento y id del producto a cada producto
+                productos = [
+                    {
+                        **producto.to_dict(),  # Copiar los datos del producto
+                        'idEmprendimiento': idEmprendimiento,  # Agregar el idEmprendimiento
+                        'idProducto': producto.id  # Agregar el id del producto
+                    }
+                    for producto in productos_docs
+                ]
+
                 if productos:  # Si hay productos, agregarlos al resultado
                     doc_data['productos'] = productos
                 else:  # Si no hay productos, agregar mensaje adicional
                     doc_data['mensaje_productos'] = 'No hay productos disponibles.'
-                
+
                 print(doc_data)
                 return doc_data
-            
+
             return None
         except Exception as ex:
             raise CustomException(ex)
+
+
 
      
     @classmethod
@@ -177,3 +190,22 @@ class EmprendimientoService():
             return None
         except Exception as ex:
             raise CustomException(ex)
+        
+        
+    @classmethod
+    def guardar_publicidad(cls, id_emprendimiento, imagen_url):
+        try:
+            # Referencia a la colección `publicidad`
+            db = get_connection()
+            collection_ref = db.collection('publicidad')
+            
+            # Documento con un ID generado automáticamente
+            document_ref = collection_ref.document()
+            
+            # Datos a guardar
+            document_ref.set({
+                'idEmprendimiento': id_emprendimiento,
+                'imagen': imagen_url
+            })
+        except Exception as e:
+            raise Exception(f"Error al guardar la publicidad: {str(e)}")

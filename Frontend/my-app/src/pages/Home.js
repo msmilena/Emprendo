@@ -1,5 +1,3 @@
-// src/pages/Home.js
-
 import React from "react"; // Importa React para construir el componente
 import "./CSS/Home.css"; // Importa los estilos específicos para la página Home
 import { BsSearch } from "react-icons/bs"; // Icono de búsqueda
@@ -12,25 +10,36 @@ import { useEffect, useState } from "react"; // Importa useEffect y useState de 
 import { useNavigate } from "react-router-dom"; // Importa useNavigate de react-router-dom
 
 function Home() {
-  const [categories, setCategories] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]); // Estado para las categorías
+  const [products, setProducts] = useState([]); // Estado para los productos
+  const [loading, setLoading] = useState(true); // Estado para saber si los productos están cargando
   const navigate = useNavigate(); // Inicializa useNavigate
 
   useEffect(() => {
+    // Cargar categorías
     fetch("https://emprendo-producto-service-26932749356.us-west1.run.app/categorias")
       .then((response) => response.json())
       .then((data) => setCategories(data))
       .catch((error) => console.error("Error fetching categories:", error));
 
-    fetch("https://emprendo-producto-service-26932749356.us-west1.run.app/productos")
+    // Cargar productos
+    fetch("https://emprendo-producto-service-26932749356.us-west1.run.app/productos/mas_favoritos")
       .then((response) => response.json())
-      .then((data) => setProducts(data))
-      .catch((error) => console.error("Error fetching products:", error));
+      .then((data) => {
+        setProducts(data);
+        setLoading(false); // Una vez que los productos se cargan, se actualiza el estado de carga
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+        setLoading(false); // Si hay un error, también se detiene el estado de carga
+      });
   }, []);
 
   const handleCategoryClick = (categoryName) => {
     navigate(`/productosxCategoria/${categoryName}`); // Navega a ProductosxCategoria con el nombre de la categoría
   };
+
+  console.log(products);
 
   return (
     <div className="home--page--container">
@@ -87,8 +96,12 @@ function Home() {
 
         {/* Sección de productos en tendencia */}
         <p className="home--page--title--section">Productos en tendencia</p>
-        {/* Componente dinámico para mostrar productos en tendencia */}
-        <DynamicProductList products={products} />
+        {/* Mostrar "Cargando..." si los productos aún no se han cargado */}
+        {loading ? (
+          <p>Cargando...</p>
+        ) : (
+          <DynamicProductList products={products} />
+        )}
       </section>
 
       {/* Pie de página */}

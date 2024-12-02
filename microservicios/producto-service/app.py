@@ -189,9 +189,38 @@ def get_all_products():
     emprendimientos = db.collection('emprendimientos').stream()
     all_products = []
     for emprendimiento in emprendimientos:
+        id_emprendimiento = emprendimiento.id  # Obtener el ID del emprendimiento
         productos_ref = emprendimiento.reference.collection('productos')
-        all_products.extend([doc.to_dict() for doc in productos_ref.stream()])
+        for producto in productos_ref.stream():
+            product_data = producto.to_dict()
+            product_data['idEmprendimiento'] = id_emprendimiento  # Agregar idEmprendimiento
+            product_data['id'] = producto.id  # Agregar idProducto
+            all_products.append(product_data)
     return jsonify(all_products), 200
+
+@app.route('/productos/mas_favoritos', methods=['GET'])
+def get_top_favoritos():
+    emprendimientos = db.collection('emprendimientos').stream()
+    all_products = []
+    
+    # Recolectamos todos los productos con su información
+    for emprendimiento in emprendimientos:
+        id_emprendimiento = emprendimiento.id  # Obtener el ID del emprendimiento
+        productos_ref = emprendimiento.reference.collection('productos')
+        
+        for producto in productos_ref.stream():
+            product_data = producto.to_dict()
+            product_data['idEmprendimiento'] = id_emprendimiento  # Agregar idEmprendimiento
+            product_data['id'] = producto.id  # Agregar idProducto
+            all_products.append(product_data)
+    
+    # Ordenamos los productos por la cantidad de favoritos (de mayor a menor)
+    sorted_products = sorted(all_products, key=lambda x: x.get('cantidadFavoritos', 0), reverse=True)
+    
+    # Devolvemos los primeros 15 productos
+    top_15_products = sorted_products[:15]
+    
+    return jsonify(top_15_products), 200
 
 
 # Endpoint para obtener un solo producto por su ID
@@ -232,12 +261,16 @@ def get_emprendimientos_by_categoria(categoria):
             if 'localizacion' in emprendimiento_data:
                 del emprendimiento_data['localizacion']
             
+            # ID del emprendimiento
+            idEmprendimiento = emprendimiento.id
+            
             # Acceder a la subcolección 'productos'
             productos_ref = emprendimiento.reference.collection('productos')
             productos = []
             for producto_doc in productos_ref.stream():
                 producto_data = producto_doc.to_dict()
                 producto_data['id'] = producto_doc.id  # Agregar el ID del documento
+                producto_data['idEmprendimiento'] = idEmprendimiento  # Agregar el ID del emprendimiento
                 productos.append(producto_data)
             
             emprendimiento_data['productos'] = productos  # Agregar los productos al emprendimiento
@@ -251,6 +284,7 @@ def get_emprendimientos_by_categoria(categoria):
     except Exception as e:
         print(f"Error al obtener los emprendimientos por categoría: {e}")
         return jsonify({'mensaje': 'Error al obtener los emprendimientos por categoría'}), 500
+
 
 
 @app.route('/categorias_subcategorias', methods=['GET'])
