@@ -23,7 +23,7 @@ const ProductFormPage = ({ mode }) => {
 
             if (isEditMode || isViewMode) {
                 try {
-                    const response = await fetch(`http://127.0.0.1:8080/emprendimientos/${id_emprendimiento}/productos/${id}`);
+                    const response = await fetch(`https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/${id_emprendimiento}/productos/${id}`);
                     if (!response.ok) {
                         throw new Error(`Error al obtener los detalles del producto: ${response.statusText}`);
                     }
@@ -58,7 +58,7 @@ const ProductFormPage = ({ mode }) => {
                 formDataToSend.append("precio", formData.precio);
                 formDataToSend.append("cantidadFavoritos", 0);
 
-                const response = await fetch(`http://127.0.0.1:8080/emprendimientos/${id_emprendimiento}/agregar_producto`, {
+                const response = await fetch(`https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/${id_emprendimiento}/agregar_producto`, {
                     method: "POST",
                     body: formDataToSend,
                 });
