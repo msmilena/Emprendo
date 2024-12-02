@@ -28,13 +28,15 @@
     color: #3d5a80;
   }
   
-  .product-image {
-    width: 150px; /* Ajusta el ancho deseado */
-    height: 150px; /* Ajusta la altura deseada */
-    object-fit: cover; /* Recorta la imagen para llenar el contenedor */
-    border-radius: 8px; /* Opcional: Bordes redondeados */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Opcional: Sombra */
-    background-color: #f0f0f0; /* Fondo gris claro si la imagen no carga */
+  .favorites-table .product-image {
+    max-width: 150px;
+    max-height: 150px;
+    object-fit: cover;
+    min-width: 150px;
+    min-height: 150px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f0;
   }
   
   

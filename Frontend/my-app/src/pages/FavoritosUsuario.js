@@ -17,12 +17,13 @@ function FavoritosUsuario() {
   // Estado para la página actual de la paginación
   const [currentPage, setCurrentPage] = useState(1);
 
+  const idUsuario =  localStorage.getItem("userId");
   // Cargar datos de favoritos desde la API
   useEffect(() => {
     const fetchFavorites = async () => {
       try {
         const response = await fetch(
-          "https://emprendo-valoracion-service-26932749356.us-west1.run.app/valoracion/getFavoritos/usuario?idUsuario=2Sj1GLY4OmW4VrrZeV1P"
+          `https://emprendo-valoracion-service-26932749356.us-west1.run.app/valoracion/getFavoritos/usuario?idUsuario=${idUsuario}`
         );
         const responseData = await response.json();
 
@@ -43,7 +44,7 @@ function FavoritosUsuario() {
     };
 
     fetchFavorites();
-  }, []);
+  }, [idUsuario]);
 
 // Filtra los productos según el término de búsqueda en nombre o categoría
 const filteredProducts = products.filter((product) =>

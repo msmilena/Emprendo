@@ -125,7 +125,7 @@ class ValoracionService():
     def save_favorito(cls, idUsuario, idEmprendimiento, idProducto):
         try:
             db = get_connection()
-
+            print(idUsuario,idEmprendimiento,idProducto)
             emprendimiento_ref = db.collection('emprendimientos').document(idEmprendimiento)
             producto_ref = emprendimiento_ref.collection('productos').document(idProducto)
 

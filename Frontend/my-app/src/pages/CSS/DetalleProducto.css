@@ -26,11 +26,10 @@
   }
   
   .product-image {
-    max-width: 100%;
-    min-width: 500px;
-
-    height: auto;
-    border-radius: 8px;
+        /* max-width: 100%; */
+        width: 450px;
+        height: 450px;
+        border-radius: 8px;
   }
   
   .product-info-2 {
