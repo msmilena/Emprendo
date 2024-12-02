@@ -16,7 +16,7 @@ function ProductosEmprendedor() {
     useEffect(() => {
         const fetchProductos = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8080/emprendimientos/${id_emprendimiento}/productos`, {
+                const response = await fetch(`https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/${id_emprendimiento}/productos`, {
                     method: 'GET',
                 });
                 console.log(response)
