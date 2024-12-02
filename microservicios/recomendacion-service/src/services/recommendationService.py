@@ -97,8 +97,8 @@ class RecommendationService:
     def get_recommendations(self, id_emprendimiento, top_n=5):
         """Obtener recomendaciones basadas en un emprendimiento"""
         # Ensure data is fetched and processed
-        if self.data is None:
-            self.fetch_data()
+        #if self.data is None:
+        self.fetch_data()
         
         if self.correlation_matrix is None:
             raise ValueError("Correlation matrix not computed.")
