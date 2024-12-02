@@ -25,27 +25,29 @@ class EmprendimientoService():
                 # Verificar si hay una subcolección llamada 'productos'
                 productos_ref = emprendimiento_ref.collection('productos')
                 productos_docs = productos_ref.stream()  # Obtener documentos de la subcolección
-                
-                # Agregar idEmprendimiento a cada producto
+
+                # Agregar idEmprendimiento y id del producto a cada producto
                 productos = [
                     {
                         **producto.to_dict(),  # Copiar los datos del producto
-                        'idEmprendimiento': idEmprendimiento  # Agregar el idEmprendimiento
+                        'idEmprendimiento': idEmprendimiento,  # Agregar el idEmprendimiento
+                        'idProducto': producto.id  # Agregar el id del producto
                     }
                     for producto in productos_docs
                 ]
-                
+
                 if productos:  # Si hay productos, agregarlos al resultado
                     doc_data['productos'] = productos
                 else:  # Si no hay productos, agregar mensaje adicional
                     doc_data['mensaje_productos'] = 'No hay productos disponibles.'
-                
+
                 print(doc_data)
                 return doc_data
-            
+
             return None
         except Exception as ex:
             raise CustomException(ex)
+
 
 
      

@@ -75,9 +75,12 @@ useEffect(() => {
 
         setInfo(transformedInfo);
 
+        console.log('Emprendimiento Productos', emprendimiento.productos)
         // Opcional: Actualiza también los productos si vienen en la respuesta
-        if (emprendimiento.productos) {
+        if ( emprendimiento.productos) {
           setProducts(emprendimiento.productos.map(product => ({
+            id:product.idProducto||0,
+            idEmprendimiento:product.idEmprendimiento||0,
             category: product.categoria_producto || "Sin categoría",
             name: product.nombre_producto,
             desc: product.descripcion_producto || "Sin descripción",
