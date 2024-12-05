@@ -121,7 +121,7 @@ function RegisterEmprendedor() {
       };
 
       // Register user
-      const userResponse = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.appauth/register", {
+      const userResponse = await fetch("https://emprendo-usuario-service-26932749356.us-west1.run.app/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
