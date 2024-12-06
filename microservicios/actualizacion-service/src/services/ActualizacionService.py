@@ -33,13 +33,38 @@ class ActualizacionService():
 
             # Fetch existing ids from BigQuery
             query = f"SELECT idUser FROM `{table_id}`"
-            query_job = client.query(query)
-            for row in query_job:
-                existing_ids.add(row["idUser"])
+            try:
+                query_job = client.query(query)
+                for row in query_job:
+                    existing_ids.add(row["idUser"])
+            except:
+                # Table does not exist, create it
+                schema = [
+                    bigquery.SchemaField("idUser", "STRING"),
+                    bigquery.SchemaField("email", "STRING"),
+                    bigquery.SchemaField("fechaCreacion", "RECORD", fields=[
+                        bigquery.SchemaField("date_time", "TIMESTAMP"),
+                        bigquery.SchemaField("string", "STRING"),
+                        bigquery.SchemaField("provided", "STRING")
+                    ]),
+                    bigquery.SchemaField("nombre", "STRING"),
+                    bigquery.SchemaField("password", "STRING"),
+                    bigquery.SchemaField("primerLogin", "STRING"),
+                    bigquery.SchemaField("tipo", "STRING"),
+                    bigquery.SchemaField("tipoAuth", "INT64"),
+                    bigquery.SchemaField("urlPerfil", "STRING"),
+                    bigquery.SchemaField("localizacion", "RECORD", fields=[
+                        bigquery.SchemaField("lat", "FLOAT"),
+                        bigquery.SchemaField("long", "FLOAT")
+                    ])
+                ]
+                table = bigquery.Table(table_id, schema=schema)
+                client.create_table(table)
 
             for doc in users_docs:
                 user_data = doc.to_dict()
                 fecha_creacion = user_data.get("fechaCreacion")
+                localizacion = user_data.get("localizacion")
                 print(doc.id)
                 row = {
                     "idUser": doc.id,
@@ -55,6 +80,10 @@ class ActualizacionService():
                     "tipo": user_data.get("tipo"),
                     "tipoAuth": int(user_data.get("tipoAuth")) if user_data.get("tipoAuth") is not None else None,
                     "urlPerfil": user_data.get("urlPerfil"),
+                    "localizacion": {
+                        "lat": localizacion.latitude if localizacion else None,
+                        "long": localizacion.longitude if localizacion else None
+                    },
                 }
                 rows_to_insert.append(row)
 
@@ -72,9 +101,21 @@ class ActualizacionService():
                 bigquery.SchemaField("primerLogin", "STRING"),
                 bigquery.SchemaField("tipo", "STRING"),
                 bigquery.SchemaField("tipoAuth", "INT64"),
-                bigquery.SchemaField("urlPerfil", "STRING")
+                bigquery.SchemaField("urlPerfil", "STRING"),
+                bigquery.SchemaField("localizacion", "RECORD", fields=[
+                    bigquery.SchemaField("lat", "FLOAT"),
+                    bigquery.SchemaField("long", "FLOAT")
+                ])
             ]
 
+            # Delete the original table if it exists
+            client.delete_table(table_id, not_found_ok=True)
+
+            # Create the main table with the new schema
+            table = bigquery.Table(table_id, schema=schema)
+            client.create_table(table, exists_ok=True)
+
+            # Create the staging table
             table = bigquery.Table(staging_table_id, schema=schema)
             client.create_table(table, exists_ok=True)
 
@@ -247,9 +288,10 @@ class ActualizacionService():
 
             client = bigquery.Client(credentials=credentials, project=credentials.project_id)
             table_id = 'emprendo-1c101.emprendofirestore.productos'
-            staging_table_id = f"{table_id}_staging"
+            recommendations_table_id = 'emprendo-1c101.emprendofirestore.productos_recomendations'
 
             rows_to_insert = []
+            recommendations_rows_to_insert = []
 
             for emprendimiento_doc in emprendimientos_docs:
                 productos_ref = emprendimiento_doc.reference.collection('productos')
@@ -269,11 +311,21 @@ class ActualizacionService():
                         "flgDisponible": producto_data.get("flgDisponible"),
                         "imagen": producto_data.get("imagen"),
                         "nombre_producto": producto_data.get("nombre_producto"),
-                        "precio": producto_data.get("precio")
+                        "precio": producto_data.get("precio"),
+                        "id": doc.id,  # New field
+                        "title": producto_data.get("nombre_producto"),  # New field
+                        "categories": [producto_data.get("categoria_producto")]  # Wrap in array
                     }
                     rows_to_insert.append(row)
 
-            # Create the staging table
+                    recommendations_row = {
+                        "id": doc.id,
+                        "title": producto_data.get("nombre_producto"),
+                        "categories": [producto_data.get("categoria_producto")]
+                    }
+                    recommendations_rows_to_insert.append(recommendations_row)
+
+            # Create the main table schema
             schema = [
                 bigquery.SchemaField("idProducto", "STRING"),
                 bigquery.SchemaField("idEmprendimiento", "STRING"),
@@ -284,32 +336,44 @@ class ActualizacionService():
                 bigquery.SchemaField("flgDisponible", "BOOLEAN"),
                 bigquery.SchemaField("imagen", "STRING"),
                 bigquery.SchemaField("nombre_producto", "STRING"),
-                bigquery.SchemaField("precio", "FLOAT")
+                bigquery.SchemaField("precio", "FLOAT"),
+                bigquery.SchemaField("id", "STRING", mode="REQUIRED"),  # New field
+                bigquery.SchemaField("title", "STRING", mode="REQUIRED"),  # New field
+                bigquery.SchemaField("categories", "STRING", mode="REPEATED")  # New field
             ]
 
-            table = bigquery.Table(staging_table_id, schema=schema)
-            client.create_table(table, exists_ok=True)
+            # Create the recommendations table schema
+            recommendations_schema = [
+                bigquery.SchemaField("id", "STRING", mode="REQUIRED"),
+                bigquery.SchemaField("title", "STRING", mode="REQUIRED"),
+                bigquery.SchemaField("categories", "STRING", mode="REPEATED")
+            ]
 
-            # Verify the staging table exists
-            table = client.get_table(staging_table_id)
+            # Check if the main table exists, if not create it
+            try:
+                client.get_table(table_id)
+            except:
+                table = bigquery.Table(table_id, schema=schema)
+                client.create_table(table)
 
-            # Insert data into the staging table
-            errors = client.insert_rows_json(staging_table_id, rows_to_insert, row_ids=[None] * len(rows_to_insert))
+            # Check if the recommendations table exists, if not create it
+            try:
+                client.get_table(recommendations_table_id)
+            except:
+                recommendations_table = bigquery.Table(recommendations_table_id, schema=recommendations_schema)
+                client.create_table(recommendations_table)
+
+            # Insert data into the main table
+            errors = client.insert_rows_json(table_id, rows_to_insert, row_ids=[None] * len(rows_to_insert))
             if errors:
-                raise CustomException(f"Errors occurred while inserting rows into staging table: {errors}")
+                raise CustomException(f"Errors occurred while inserting rows into main table: {errors}")
 
-            # Replace the main table with the staging table
-            replace_query = f"""
-            CREATE OR REPLACE TABLE `{table_id}` AS
-            SELECT * FROM `{staging_table_id}`
-            """
-            query_job = client.query(replace_query)
-            query_job.result()
+            # Insert data into the recommendations table
+            recommendations_errors = client.insert_rows_json(recommendations_table_id, recommendations_rows_to_insert, row_ids=[None] * len(recommendations_rows_to_insert))
+            if recommendations_errors:
+                raise CustomException(f"Errors occurred while inserting rows into recommendations table: {recommendations_errors}")
 
-            # Drop the staging table
-            client.delete_table(staging_table_id, not_found_ok=True)
-
-            return {"success": True, "message": "BigQuery table updated successfully"}
+            return {"success": True, "message": "BigQuery tables updated successfully"}
         except Exception as ex:
             raise CustomException(ex)
 

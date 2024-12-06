@@ -83,7 +83,7 @@ def get_category_recommendations():
 
 @main.route('/recomendaciones/<string:item_id>', methods=['GET'])
 def hacer_recomendacion(item_id):
-    n = int(request.args.get('n', 3))
+    n = int(request.args.get('n', 10))
     
     try:
         # IMPORTACIÓN DE DATOS DESDE BIGQUERY
@@ -126,7 +126,21 @@ def hacer_recomendacion(item_id):
             # Ordena por similitud de manera descendente y selecciona los primeros n resultados
             recomendaciones = recomendaciones.sort_values(by='similitud', ascending=False).head(n)
             
-            return jsonify(recomendaciones.to_dict(orient="records"))
+            # Obtener detalles de los emprendimientos recomendados
+            detailed_recommendations = []
+            for _, row in recomendaciones.iterrows():
+                id_emprendimiento = row['id2']
+                response = requests.get(f"https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientoInfo?idEmprendimiento={id_emprendimiento}")
+                if response.status_code == 200:
+                    detailed_recommendations.append(response.json())
+                else:
+                    detailed_recommendations.append({
+                        'error': f"Failed to fetch details for ID {id_emprendimiento}",
+                        'status_code': response.status_code,
+                        'response': response.text
+                    })
+            
+            return jsonify(detailed_recommendations)
         else:
             return jsonify({'error': f"Error: El ID {item_id} no se encuentra en las columnas del DataFrame."}), 404
     except Exception as e:
