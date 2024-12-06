@@ -14,11 +14,11 @@ function HomeEmprendedor() {
   useEffect(() => {
     const fetchEmprendimientoData = async () => {
       const userId = localStorage.getItem("userId"); // Obtener el ID del usuario desde localStorage
-
+      console.log("ID de usuario:", userId);
       // Obtener la información del usuario
       const userResponse = await fetch(`https://emprendo-usuario-service-26932749356.us-west1.run.app//user/info?idUser=${userId}`);
       const userData = await userResponse.json();
-      
+      console.log("Datos de usuario:", userData.userData);
       if (userData.success && userData.userData) {
         console.log("Datos de usuario:", userData.userData);
         localStorage.setItem("userData", JSON.stringify(userData.userData));  // Guardar la información del usuario

@@ -19,7 +19,6 @@ function ProductosEmprendedor() {
                 const response = await fetch(`https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/${id_emprendimiento}/productos`, {
                     method: 'GET',
                 });
-                console.log(response)
 
                 if (!response.ok) {
                     const errorData = await response.json();
@@ -46,6 +45,37 @@ function ProductosEmprendedor() {
         }
     }, [id_emprendimiento]);
 
+    // Función para manejar la eliminación de un producto
+    const handleDeleteProduct = async (productId) => {
+        const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este producto?");
+        if (!confirmDelete) return;
+
+        try {
+            const response = await fetch(
+                `https://emprendo-producto-service-26932749356.us-west1.run.app/emprendimientos/${id_emprendimiento}/productos/${productId}`,
+                {
+                    method: 'DELETE',
+                }
+            );
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                alert(`Error al eliminar producto: ${errorData.mensaje}`);
+                return;
+            }
+
+            alert("Producto eliminado correctamente.");
+
+            // Actualiza la lista de productos después de eliminar
+            setProductos((prevProductos) =>
+                prevProductos.filter((producto) => producto.id !== productId)
+            );
+        } catch (error) {
+            console.error("Error al eliminar producto:", error);
+            alert("Hubo un error al eliminar el producto.");
+        }
+    };
+
     const handleAddProduct = () => {
         navigate('/productosEmprendedor/nuevo');
     };
@@ -60,10 +90,13 @@ function ProductosEmprendedor() {
                     {mensaje ? (
                         <p className="mensaje-error">{mensaje}</p> // Mostrar mensaje si existe
                     ) : (
-                        <ProductsTable data={productos} /> // Mostrar tabla si hay productos
+                        <ProductsTable
+                            data={productos}
+                            onDelete={handleDeleteProduct} // Pasa la función como prop
+                        />
                     )}
-                    <Button 
-                        variant="btn-center btn-color-verde" 
+                    <Button
+                        variant="btn-center btn-color-verde"
                         onClick={handleAddProduct}
                         style={{ backgroundColor: "#4CAF50" }}
                     >
