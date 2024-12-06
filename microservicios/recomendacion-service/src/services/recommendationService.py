@@ -33,14 +33,16 @@ class RecommendationService:
     def fetch_data(self):
         """Obtiene datos de BigQuery y preprocesa la información"""
         query = """
-         SELECT e.*,
-            ARRAY_TO_STRING(e.tags, ',') as tags_string,
+        
+        SELECT e.*,
+         e.localizacion.lat as latitud,
+         e.localizacion.long as longitud,
                r.idUsuario,
                r.valoracion as rating,
                r.idValoracion
-        FROM `emprendo-1c101.emprendo_produccion.prod_emprendimiento` e
-        LEFT JOIN `emprendo-1c101.emprendo_produccion.prod_valoraciones` r
-        ON e.idEmprendimeinto = r.idEmprendimiento
+        FROM `emprendo-1c101.emprendofirestore.emprendimientos` e
+        LEFT JOIN `emprendo-1c101.emprendofirestore.valoraciones` r
+        ON e.idEmprendimiento = r.idEmprendimiento
         """
         # Set Up Google Cloud Credentials
         credentials_path = 'credenciales.json'
@@ -57,7 +59,7 @@ class RecommendationService:
             raise ValueError("No data available. Call fetch_data() first.")
         
         # Filtrar las columnas necesarias
-        df_recsys = self.data[['idUsuario', 'idEmprendimeinto', 'rating', 'nombreComercial']]
+        df_recsys = self.data[['idUsuario', 'idEmprendimiento', 'rating', 'nombreComercial']]
         print(df_recsys.shape)
         print(df_recsys.head())
         
@@ -65,7 +67,7 @@ class RecommendationService:
         self.utility_matrix = df_recsys.pivot_table(
             values='rating',
             index='idUsuario',
-            columns='idEmprendimeinto',
+            columns='idEmprendimiento',
             fill_value=0
         )
         
@@ -133,5 +135,73 @@ class RecommendationService:
         user_recommendations = [(self.utility_matrix.index[i], corr_urecom[i].round(2)) for i in np.where(uids)[0]]
         
         return sorted(user_recommendations, key=lambda x: x[1], reverse=True)[:top_n]
+    
+    def get_location_based_recommendations(self, user_latitude, user_longitude, top_n=5, max_distance_km=50):
+        """
+        Obtener recomendaciones basadas en ubicación y preferencias del usuario
+        
+        Args:
+        - user_latitude: Latitud del usuario
+        - user_longitude: Longitud del usuario
+        - top_n: Número de recomendaciones a devolver
+        - max_distance_km: Distancia máxima para considerar emprendimientos
+        
+        Returns:
+        Lista de emprendimientos recomendados con su distancia
+        """
+        if self.data is None:
+            self.fetch_data()
+        
+        # Calcular distancias usando la fórmula de Haversine
+        def haversine_distance(lat1, lon1, lat2, lon2):
+            R = 6371  # Radio de la Tierra en kilómetros
+            
+            # Convertir grados a radianes
+            lat1, lon1, lat2, lon2 = map(np.radians, [lat1, lon1, lat2, lon2])
+            
+            # Diferencias
+            dlat = lat2 - lat1
+            dlon = lon2 - lon1
+            
+            # Fórmula de Haversine
+            a = np.sin(dlat/2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon/2)**2
+            c = 2 * np.arcsin(np.sqrt(a))
+            distance = R * c
+            
+            return distance
+
+        # Filtrar emprendimientos cercanos
+        self.data['distance'] = self.data.apply(
+            lambda row: haversine_distance(
+                user_latitude, user_longitude, 
+                row['latitud'], row['longitud']
+            ), 
+            axis=1
+        )
+        
+        # Filtrar por distancia máxima
+        nearby_ventures = self.data[self.data['distance'] <= max_distance_km]
+        
+        # Combinar recomendaciones por correlación y distancia
+        recommendations = []
+        
+        for _, venture in nearby_ventures.iterrows():
+            # Obtener correlación y detalles del emprendimiento
+            venture_recommendations = self.get_recommendations(venture['idEmprendimiento'])
+            
+            for corr, rec_venture_id in venture_recommendations:
+                rec_venture = self.data[self.data['idEmprendimiento'] == rec_venture_id].iloc[0]
+                
+                recommendations.append({
+                    'venture_id': rec_venture_id,
+                    'venture_name': rec_venture['nombreComercial'],
+                    'correlation': corr,
+                    'distance': rec_venture['distance']
+                })
+        
+        # Ordenar por correlación y distancia
+        recommendations.sort(key=lambda x: (x['correlation'], -x['distance']), reverse=True)
+        
+        return recommendations[:top_n]
     
 recommendation_service = RecommendationService()
