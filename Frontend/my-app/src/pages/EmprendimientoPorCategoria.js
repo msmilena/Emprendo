@@ -23,6 +23,7 @@ function EmprendimientoPorCategoria() {
   const [products, setProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [recommendations, setRecommendations] = useState([]); // Estado para las recomendaciones
 
   const ITEMS_PER_PAGE = 5; // Cantidad de productos por página
 
@@ -53,10 +54,10 @@ useEffect(() => {
         ` https://emprendo-emprendimiento-service-26932749356.us-west1.run.app/emprendimiento/emprendimientoInfo?idEmprendimiento=${id}`
       );
 
-      console.log(response);
+      //console.log(response);
       const responseData = await response.json();
 
-      console.log(responseData)
+      //console.log(responseData)
 
       if (responseData.success) {
         const emprendimiento = responseData.emprendimientoData;
@@ -94,7 +95,37 @@ useEffect(() => {
     }
   };
 
+  const fetchRecommendations = async () => {
+    try {
+      const response = await fetch(
+        `https://emprendo-recomendacion-service-26932749356.us-west1.run.app/recommendation/recomendaciones/${id}`
+      );
+      const responseData = await response.json();
+
+      if (responseData.success) {
+        const transformedRecommendations = await Promise.all(
+          responseData.map(async (item) => ({
+            id: item.emprendimientoData.idEmprendimiento,
+            name: item.emprendimientoData.nombreComercial,
+            location: await getAddressFromCoordinates(
+              item.emprendimientoData.localizacion.latitude,
+              item.emprendimientoData.localizacion.longitude,
+              GOOGLE_MAPS_API_KEY
+            ),
+            rating: item.emprendimientoData.valoracion?.promedioValoracion || 0,
+            imageUrl: item.emprendimientoData.image_url || "URL_IMAGEN_DEFAULT",
+          }))
+        );
+        setRecommendations(transformedRecommendations);
+        console.log('Recomendaciones',transformedRecommendations)
+      }
+    } catch (error) {
+      console.error("Error fetching recommendations:", error);
+    }
+  };
+
   fetchData();
+  fetchRecommendations();
 }, [id]);
 
 
@@ -145,6 +176,8 @@ useEffect(() => {
             totalPages={totalPages}
             onPageChange={handlePageChange}
           />
+          <h2>Recomendaciones</h2>
+          <Products products={recommendations} />
         </div>
       </section>
       <Footer2 />

@@ -15,7 +15,7 @@ const ITEMS_PER_PAGE = 6; // Elementos por página
 function EmprendimientosList() {
   const { id } = useParams(); // Obtén el id desde la URL
   const [data, setData] = useState([]); // Estado para los datos de la API
-  const [recommendations, setRecommendations] = useState([]); // Estado para las recomendaciones
+  //const [recommendations, setRecommendations] = useState([]); // Estado para las recomendaciones
   const [searchTerm, setSearchTerm] = useState("");
   const [locationFilter, setLocationFilter] = useState("");
   const [filteredData, setFilteredData] = useState([]);
@@ -55,36 +55,36 @@ function EmprendimientosList() {
       }
     };
 
-    const fetchRecommendations = async () => {
-      try {
-        const response = await fetch(
-          `https://emprendo-recomendacion-service-26932749356.us-west1.run.app/recommendation/recomendaciones/${id}`
-        );
-        const responseData = await response.json();
+    // const fetchRecommendations = async () => {
+    //   try {
+    //     const response = await fetch(
+    //       `https://emprendo-recomendacion-service-26932749356.us-west1.run.app/recommendation/recomendaciones/${id}`
+    //     );
+    //     const responseData = await response.json();
 
-        if (responseData.success) {
-          const transformedRecommendations = await Promise.all(
-            responseData.map(async (item) => ({
-              id: item.emprendimientoData.idEmprendimiento,
-              name: item.emprendimientoData.nombreComercial,
-              location: await getAddressFromCoordinates(
-                item.emprendimientoData.localizacion.latitude,
-                item.emprendimientoData.localizacion.longitude,
-                GOOGLE_MAPS_API_KEY
-              ),
-              rating: item.emprendimientoData.valoracion?.promedioValoracion || 0,
-              imageUrl: item.emprendimientoData.image_url || fotoPerfil,
-            }))
-          );
-          setRecommendations(transformedRecommendations);
-        }
-      } catch (error) {
-        console.error("Error fetching recommendations:", error);
-      }
-    };
+    //     if (responseData.success) {
+    //       const transformedRecommendations = await Promise.all(
+    //         responseData.map(async (item) => ({
+    //           id: item.emprendimientoData.idEmprendimiento,
+    //           name: item.emprendimientoData.nombreComercial,
+    //           location: await getAddressFromCoordinates(
+    //             item.emprendimientoData.localizacion.latitude,
+    //             item.emprendimientoData.localizacion.longitude,
+    //             GOOGLE_MAPS_API_KEY
+    //           ),
+    //           rating: item.emprendimientoData.valoracion?.promedioValoracion || 0,
+    //           imageUrl: item.emprendimientoData.image_url || fotoPerfil,
+    //         }))
+    //       );
+    //       setRecommendations(transformedRecommendations);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching recommendations:", error);
+    //   }
+    // };
 
     fetchData();
-    fetchRecommendations();
+    //fetchRecommendations();
   }, [id]);
 
   // Lista única de ubicaciones extraídas de los datos
@@ -160,8 +160,8 @@ function EmprendimientosList() {
               onPageChange={handlePageChange}
             />
           )}
-          <h2>Recomendaciones</h2>
-          <EmprendimientosListDetalle data={recommendations} />
+          {/* <h2>Recomendaciones</h2>
+          <EmprendimientosListDetalle data={recommendations} /> */}
         </div>
       </section>
       <Footer2 />
