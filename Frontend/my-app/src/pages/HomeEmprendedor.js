@@ -42,6 +42,11 @@ function HomeEmprendedor() {
     fetchEmprendimientoData();
   }, []); // El array vacío asegura que la solicitud se haga solo una vez al cargar el componente
 
+  const openDashboardInNewTab = () => {
+    const dashboardUrl = `https://lookerstudio.google.com/embed/u/0/reporting/e52f3640-5699-4aed-b15c-1d3a8df5eb6f/page/xwOXE?params=%7B%22ds26.favidemp%22:%22${idEmprendimiento}%22,%22ds27.validemp%22:%22${idEmprendimiento}%22%7D`;
+    window.open(dashboardUrl, '_blank');
+  };
+
   return (
     <div className="app-container">
       <Sidebar />
@@ -55,6 +60,12 @@ function HomeEmprendedor() {
               onClick={() => setShowDashboard(true)}
             >
               Ver dashboard
+            </Button>
+            <Button 
+              variant="secondary" 
+              onClick={openDashboardInNewTab}
+            >
+              Abrir dashboard en nueva pestaña
             </Button>
           </p>
           {showDashboard && idEmprendimiento && (
